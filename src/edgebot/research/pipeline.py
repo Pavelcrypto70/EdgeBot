@@ -58,8 +58,8 @@ def run_proof_research(
         classified = classify_universe(
             universe,
             heavy_top_n=15,
-            fast_min_abs_delta_pct=4.0,
-            fast_top_n=max_fast + 5,
+            fast_min_abs_delta_pct=2.5,
+            fast_top_n=max(max_fast + 8, 20),
         )
         heavy = classified[classified["bucket"] == "heavy"].head(max_heavy)
         fast = classified[classified["bucket"] == "fast"].head(max_fast)

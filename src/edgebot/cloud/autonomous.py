@@ -77,8 +77,8 @@ def merge_whitelist(
 
 def run_autonomous_cycle(
     *,
-    max_heavy: int = 10,
-    max_fast: int = 8,
+    max_heavy: int = 8,
+    max_fast: int = 14,
     do_proof: bool = True,
     do_cross: bool = True,
     quiet: bool = False,

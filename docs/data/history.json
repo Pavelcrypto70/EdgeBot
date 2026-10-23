@@ -21,5 +21,46 @@
     "sources": [
       "seed"
     ]
+  },
+  {
+    "run_id": "20261023_140052_fast",
+    "ts": "2026-10-23T14:00:52Z",
+    "whitelist_n": 13,
+    "added": [
+      "AEROUSDT",
+      "ALTUSDT",
+      "BIRBUSDT",
+      "BTCUSDT",
+      "BTRUSDT",
+      "DASHUSDT",
+      "DOODUSDT",
+      "LITUSDT",
+      "MAGMAUSDT",
+      "PTBUSDT",
+      "USELESSUSDT"
+    ],
+    "removed": [
+      "NEARUSDT",
+      "SOLUSDT",
+      "ZECUSDT"
+    ],
+    "symbols": [
+      "AEROUSDT",
+      "ALTUSDT",
+      "BIRBUSDT",
+      "BTCUSDT",
+      "BTRUSDT",
+      "DASHUSDT",
+      "DOODUSDT",
+      "ETHUSDT",
+      "LITUSDT",
+      "MAGMAUSDT",
+      "PTBUSDT",
+      "SOXLUSDT",
+      "USELESSUSDT"
+    ],
+    "sources": [
+      "proof_fast"
+    ]
   }
 ]

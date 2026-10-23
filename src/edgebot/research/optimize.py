@@ -9,27 +9,39 @@ import pandas as pd
 from edgebot.backtest.engine import simulate_signals, split_train_oos, summarize_trades
 from edgebot.strategies.ema_ma import StrategyParams, generate_signals
 
-# Шире сетка — ищем рабочий винрейт, не «красивую теорию»
-SEARCH_GRID = {
-    "ema_fast": [8, 12, 15, 20, 25],
-    "ema_slow": [21, 34, 50, 80],
+# Тяжёлые — спокойнее
+HEAVY_GRID = {
+    "ema_fast": [12, 15, 20, 25],
+    "ema_slow": [34, 50, 80, 100],
     "atr_mult": [1.0, 1.2, 1.5],
     "take_profit_r": [1.0, 1.5, 2.0],
     "min_htf_slope": [0.0, 0.0005],
 }
 
-STYLES = ("heavy", "fast")  # оба стиля сигналов на каждую монету
+# Быстрые монеты — короткие EMA, чаще входы
+FAST_GRID = {
+    "ema_fast": [5, 8, 9, 12],
+    "ema_slow": [13, 21, 26, 34],
+    "atr_mult": [0.9, 1.0, 1.2],
+    "take_profit_r": [1.0, 1.2, 1.5],
+    "min_htf_slope": [0.0, 0.0003],
+}
 
 
-def _param_grid() -> list[StrategyParams]:
-    keys = list(SEARCH_GRID.keys())
+def _param_grid(bucket: str = "heavy") -> list[StrategyParams]:
+    if bucket == "fast":
+        grid = FAST_GRID
+        styles = ("fast", "cross")
+    else:
+        grid = HEAVY_GRID
+        styles = ("heavy", "cross")
+    keys = list(grid.keys())
     out: list[StrategyParams] = []
-    for style in STYLES:
-        for vals in product(*(SEARCH_GRID[k] for k in keys)):
+    for style in styles:
+        for vals in product(*(grid[k] for k in keys)):
             kw = dict(zip(keys, vals, strict=True))
             if kw["ema_fast"] >= kw["ema_slow"]:
                 continue
-            # skip absurdly wide spreads
             if kw["ema_slow"] / max(kw["ema_fast"], 1) > 8:
                 continue
             out.append(StrategyParams(name=style, allow_short=True, **kw))
@@ -59,7 +71,7 @@ def optimize_symbol(
     cut, _n = split_train_oos(len(entry), oos_frac)
     best: dict[str, Any] | None = None
 
-    for params in _param_grid():
+    for params in _param_grid(bucket):
         p = StrategyParams(**{**asdict(params), "allow_short": allow_short})
         sigs = generate_signals(entry, htf, p, allow_short=allow_short)
         if sigs.empty:

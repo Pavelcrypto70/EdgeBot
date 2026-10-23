@@ -45,7 +45,7 @@ jobs:
           EDGEBOT_DEMO: "auto"
           BYBIT_DATA_HOST: "public"
           BYBIT_TESTNET: "false"
-        run: python -m edgebot.cli autonomous --heavy 8 --fast 6
+        run: python -m edgebot.cli autonomous --heavy 6 --fast 14
 
       - name: Commit public data
         run: |
