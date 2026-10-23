@@ -13,7 +13,9 @@ permissions:
 
 concurrency:
   group: edgebot-trading-live
+  # один тик за раз — иначе конфликты при пуше каждую минуту
   cancel-in-progress: false
+  # pending ждут очереди (GitHub Actions)
 
 jobs:
   tick:
@@ -41,13 +43,21 @@ jobs:
 
       - name: Commit trading state
         run: |
+          set -e
           git config user.name "edgebot-bot"
           git config user.email "edgebot-bot@users.noreply.github.com"
+          # Свежий тик важнее merge: копируем файлы, синкаемся с main, кладём поверх, пушим.
+          cp docs/data/trading.json /tmp/trading.json
+          cp docs/data/trading_state.json /tmp/trading_state.json
+          git fetch origin main
+          git reset --hard origin/main
+          mkdir -p docs/data
+          cp /tmp/trading.json docs/data/trading.json
+          cp /tmp/trading_state.json docs/data/trading_state.json
           git add docs/data/trading.json docs/data/trading_state.json
           if git diff --staged --quiet; then
             echo "No trading changes"
             exit 0
           fi
           git commit -m "chore: live trading tick $(date -u +%Y-%m-%dT%H:%MZ)"
-          git pull --rebase origin main || true
-          git push
+          git push origin HEAD:main
