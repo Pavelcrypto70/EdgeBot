@@ -496,6 +496,9 @@ class PaperEmulator:
                 if bool(entry.attrs.get("edgebot_demo")):
                     # synthetic ~$100 — не открываем
                     self._demo_entries_skipped += 1
+                    errs = entry.attrs.get("edgebot_fallback_errors")
+                    if errs and self._demo_entries_skipped <= 2:
+                        self.log(f"нет живых баров {bot.symbol}: {errs}")
                     continue
                 if len(entry) < 60:
                     continue

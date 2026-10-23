@@ -33,40 +33,105 @@ def _tag_bars(frame: pd.DataFrame, *, demo: bool, source: str) -> pd.DataFrame:
 _BINANCE_TF = {1: "1m", 3: "3m", 5: "5m", 15: "15m", 30: "30m", 60: "1h", 240: "4h", 1440: "1d"}
 
 
-def _fetch_binance_bars(symbol: str, interval: int, limit: int) -> pd.DataFrame:
-    """Публичные фьючерсы Binance — запасной канал, если Bybit с облака даёт 403."""
+def _http_json(url: str, params: dict) -> object:
     import httpx
 
-    tf = _BINANCE_TF.get(int(interval))
-    if not tf:
-        raise RuntimeError(f"unsupported interval for binance fallback: {interval}")
-    url = "https://fapi.binance.com/fapi/v1/klines"
     with httpx.Client(timeout=12.0) as http:
         r = http.get(
             url,
-            params={"symbol": symbol, "interval": tf, "limit": min(int(limit), 1500)},
-            headers={"Accept": "application/json", "User-Agent": "EdgeBot/0.1"},
+            params=params,
+            headers={
+                "Accept": "application/json",
+                "User-Agent": (
+                    "Mozilla/5.0 (compatible; EdgeBot/0.1; +https://github.com/Pavelcrypto70/EdgeBot)"
+                ),
+            },
         )
         r.raise_for_status()
-        rows = r.json()
-    if not isinstance(rows, list) or not rows:
-        raise RuntimeError("empty binance klines")
-    # [openTime, open, high, low, close, volume, closeTime, quoteVolume, ...]
+        return r.json()
+
+
+def _frame_from_ohlcv(
+    starts: list,
+    opens: list,
+    highs: list,
+    lows: list,
+    closes: list,
+    volumes: list,
+    turnovers: list | None = None,
+) -> pd.DataFrame:
     frame = pd.DataFrame(
         {
-            "start": [r[0] for r in rows],
-            "open": [r[1] for r in rows],
-            "high": [r[2] for r in rows],
-            "low": [r[3] for r in rows],
-            "close": [r[4] for r in rows],
-            "volume": [r[5] for r in rows],
-            "turnover": [r[7] for r in rows],
+            "start": starts,
+            "open": opens,
+            "high": highs,
+            "low": lows,
+            "close": closes,
+            "volume": volumes,
+            "turnover": turnovers if turnovers is not None else volumes,
         }
     )
     for col in ("open", "high", "low", "close", "volume", "turnover"):
         frame[col] = pd.to_numeric(frame[col], errors="coerce")
     frame["ts"] = pd.to_datetime(pd.to_numeric(frame["start"], errors="coerce"), unit="ms", utc=True)
     return frame.dropna(subset=["close"]).reset_index(drop=True)
+
+
+def _fetch_binance_bars(symbol: str, interval: int, limit: int) -> pd.DataFrame:
+    """Публичные фьючерсы Binance — запасной канал, если Bybit с облака даёт 403."""
+    tf = _BINANCE_TF.get(int(interval))
+    if not tf:
+        raise RuntimeError(f"unsupported interval for binance fallback: {interval}")
+    rows = _http_json(
+        "https://fapi.binance.com/fapi/v1/klines",
+        {"symbol": symbol, "interval": tf, "limit": min(int(limit), 1500)},
+    )
+    if not isinstance(rows, list) or not rows:
+        raise RuntimeError("empty binance klines")
+    # [openTime, open, high, low, close, volume, closeTime, quoteVolume, ...]
+    return _frame_from_ohlcv(
+        [r[0] for r in rows],
+        [r[1] for r in rows],
+        [r[2] for r in rows],
+        [r[3] for r in rows],
+        [r[4] for r in rows],
+        [r[5] for r in rows],
+        [r[7] for r in rows],
+    )
+
+
+_OKX_TF = {1: "1m", 3: "3m", 5: "5m", 15: "15m", 30: "30m", 60: "1H", 240: "4H", 1440: "1D"}
+
+
+def _fetch_okx_bars(symbol: str, category: str, interval: int, limit: int) -> pd.DataFrame:
+    """OKX swap/spot — часто доступен с IP GitHub Actions (US), где Binance режется."""
+    tf = _OKX_TF.get(int(interval))
+    if not tf:
+        raise RuntimeError(f"unsupported interval for okx fallback: {interval}")
+    base = symbol.upper().replace("USDT", "")
+    if not base or base == symbol.upper():
+        raise RuntimeError(f"bad symbol for okx: {symbol}")
+    inst = f"{base}-USDT-SWAP" if category == "linear" else f"{base}-USDT"
+    payload = _http_json(
+        "https://www.okx.com/api/v5/market/candles",
+        {"instId": inst, "bar": tf, "limit": str(min(int(limit), 300))},
+    )
+    if not isinstance(payload, dict) or str(payload.get("code")) != "0":
+        raise RuntimeError(f"okx error: {payload}")
+    rows = list(payload.get("data") or [])
+    if not rows:
+        raise RuntimeError(f"empty okx klines for {inst}")
+    rows.reverse()  # OKX: newest first → oldest first
+    # [ts, o, h, l, c, vol, volCcy, volCcyQuote, confirm]
+    return _frame_from_ohlcv(
+        [r[0] for r in rows],
+        [r[1] for r in rows],
+        [r[2] for r in rows],
+        [r[3] for r in rows],
+        [r[4] for r in rows],
+        [r[5] for r in rows],
+        [r[7] for r in rows],
+    )
 
 
 def fetch_bars(
@@ -90,13 +155,22 @@ def fetch_bars(
     except Exception:
         if settings.edgebot_demo == "never":
             raise
-        try:
-            alt = _fetch_binance_bars(symbol, interval, limit)
-            if alt.empty:
-                raise RuntimeError("empty binance")
-            return _tag_bars(alt, demo=False, source="binance")
-        except Exception:
-            return _tag_bars(demo_klines(limit, seed=demo_seed), demo=True, source="demo")
+        errors: list[str] = []
+        for source, loader in (
+            ("binance", lambda: _fetch_binance_bars(symbol, interval, limit)),
+            ("okx", lambda: _fetch_okx_bars(symbol, category, interval, limit)),
+        ):
+            try:
+                alt = loader()
+                if alt.empty:
+                    raise RuntimeError("empty")
+                return _tag_bars(alt, demo=False, source=source)
+            except Exception as exc:  # noqa: BLE001
+                errors.append(f"{source}:{exc}")
+                continue
+        frame = _tag_bars(demo_klines(limit, seed=demo_seed), demo=True, source="demo")
+        frame.attrs["edgebot_fallback_errors"] = errors
+        return frame
 
 
 @dataclass(slots=True)
