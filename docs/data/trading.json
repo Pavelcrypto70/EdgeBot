@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T17:32:06Z",
+  "updated_at": "2026-10-23T17:33:41Z",
   "status": "ok",
   "balance_start_usdt": 1000.0,
   "equity_usdt": 991.41,
@@ -77,7 +77,11 @@
     "[2026-10-23 17:32:00] очередь загружена · 7 монет из whitelist",
     "[2026-10-23 17:32:00] В ЭФИРЕ · старт · 7 монет в работе",
     "[2026-10-23 17:32:04] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-23 17:32:06] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 17:32:06] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 17:33:35] очередь загружена · 7 монет из whitelist",
+    "[2026-10-23 17:33:35] В ЭФИРЕ · старт · 7 монет в работе",
+    "[2026-10-23 17:33:39] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 17:33:41] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
   ],
   "bars_source": "mixed:demo+okx",
   "note_ru": "Живой эфир по whitelist: старт 1000 USDT, ордер 300 USDT (×3). Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. Входы только по живым свечам Bybit; при 403/demo — пропуск. Сейчас бары: mixed:demo+okx."
