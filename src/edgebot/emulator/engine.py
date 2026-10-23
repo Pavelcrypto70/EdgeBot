@@ -394,12 +394,42 @@ class PaperEmulator:
         self.ticks += 1
         marks_cache: dict[str, dict[str, float]] = {}
         try:
-            # 1) refresh marks + exits
+            # 1) refresh marks + exits (по марке и по high/low свечей — не пропустить стоп/тейк)
             for sym, pos in list(self.positions.items()):
                 mmap = self._ticker_map(client, pos.category, marks_cache)
                 mark = mmap.get(sym)
+                try:
+                    bars = fetch_bars(
+                        client, pos.category, sym, self.entry_tf, 12
+                    )
+                except Exception:
+                    bars = None
+                if bars is not None and len(bars) >= 2:
+                    # последние закрытые свечи после входа
+                    for j in range(max(0, len(bars) - 8), len(bars)):
+                        hi = float(bars["high"].iloc[j])
+                        lo = float(bars["low"].iloc[j])
+                        if pos.side == "long":
+                            if lo <= pos.stop:
+                                self._close(pos, pos.stop, "stop")
+                                break
+                            if hi >= pos.take:
+                                self._close(pos, pos.take, "take")
+                                break
+                        else:
+                            if hi >= pos.stop:
+                                self._close(pos, pos.stop, "stop")
+                                break
+                            if lo <= pos.take:
+                                self._close(pos, pos.take, "take")
+                                break
+                    if sym not in self.positions:
+                        continue
                 if mark is None:
                     continue
+                if sym not in self.positions:
+                    continue
+                pos = self.positions[sym]
                 pos.update_mark(mark)
                 if pos.side == "long":
                     if mark <= pos.stop:
@@ -412,7 +442,9 @@ class PaperEmulator:
                     elif mark <= pos.take:
                         self._close(pos, pos.take, "take")
 
-            # 2) entries for bots without position
+            # 2) входы: любые новые сигналы на последних lookback барах (не только «прямо сейчас»)
+            # lookback=10 на 15m ≈ 2.5ч — перекрывает задержки Actions
+            lookback = 10
             for bot in list(self.bots.values()):
                 if bot.symbol in self.positions:
                     continue
@@ -431,20 +463,31 @@ class PaperEmulator:
                 sigs = generate_signals(entry, htf, bot.params())
                 if sigs.empty:
                     continue
-                last = sigs.iloc[-1]
-                # только свежий сигнал на последних 2 барах
-                if int(last["i"]) < len(entry) - 3:
+                min_i = max(0, len(entry) - lookback)
+                window = sigs[sigs["i"].astype(int) >= min_i]
+                if window.empty:
                     continue
-                key = f"{last['i']}:{last['side']}:{float(last['entry']):.8g}"
-                if self._last_signal_key.get(bot.symbol) == key:
+                seen = self._last_signal_key.get(bot.symbol)
+                pick = None
+                pick_key = None
+                for _, row in window.iloc[::-1].iterrows():
+                    key = f"{int(row['i'])}:{row['side']}:{float(row['entry']):.8g}"
+                    if key == seen:
+                        break
+                    pick = row
+                    pick_key = key
+                    break
+                if pick is None or pick_key is None:
                     continue
                 mmap = self._ticker_map(client, bot.category, marks_cache)
                 mark = mmap.get(bot.symbol)
                 if mark is None:
                     mark = float(entry["close"].iloc[-1])
-                opened = self._try_open(bot, last, mark)
+                opened = self._try_open(bot, pick, mark)
+                # даже если не хватило маржи — помечаем сигнал, чтобы не долбить его вечно
+                self._last_signal_key[bot.symbol] = pick_key
                 if opened:
-                    self._last_signal_key[bot.symbol] = key
+                    self.log(f"вход по сигналу бара i={int(pick['i'])} · {bot.symbol}")
 
             if self.ticks % 5 == 1:
                 self.log(

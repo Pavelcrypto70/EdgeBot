@@ -1,7 +1,21 @@
-async function loadJson(path) {
-  const res = await fetch(path + "?t=" + Date.now());
-  if (!res.ok) throw new Error(path + " " + res.status);
+// Свежие тики читаем с raw main (не ждём деплой Pages каждые 10 мин)
+const RAW_DATA =
+  "https://raw.githubusercontent.com/Pavelcrypto70/EdgeBot/main/docs/data/";
+
+async function loadJsonUrl(url) {
+  const res = await fetch(url + (url.includes("?") ? "&" : "?") + "t=" + Date.now(), {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(url + " " + res.status);
   return res.json();
+}
+
+async function loadJson(name) {
+  try {
+    return await loadJsonUrl(RAW_DATA + name);
+  } catch {
+    return await loadJsonUrl("data/" + name);
+  }
 }
 
 function chips(list, cls) {
@@ -140,9 +154,9 @@ function renderTrading(t) {
 async function main() {
   try {
     const [live, history, trading] = await Promise.all([
-      loadJson("data/live.json"),
-      loadJson("data/history.json").catch(() => []),
-      loadJson("data/trading.json").catch(() => null),
+      loadJson("live.json"),
+      loadJson("history.json").catch(() => []),
+      loadJson("trading.json").catch(() => null),
     ]);
     document.getElementById("statusPill").textContent =
       live.status === "ok" ? "онлайн · автоскан" : live.status || "ok";
@@ -154,7 +168,8 @@ async function main() {
     document.getElementById("diffAdd").innerHTML = chips(live.last_added, "add");
     document.getElementById("diffRem").innerHTML = chips(live.last_removed, "rem");
     document.getElementById("scanHint").textContent =
-      live.next_scan_hint_ru || "Скан ≈ каждые 4 часа";
+      live.next_scan_hint_ru ||
+      "Whitelist ≈ раз в 4 часа · входы по графику WL ≈ каждые 10 минут";
     document.getElementById("wlHint").textContent = "run " + (live.run_id || "—");
     renderWl(live.whitelist || []);
     renderHist(Array.isArray(history) ? history : []);
@@ -172,4 +187,4 @@ async function main() {
 }
 
 main();
-setInterval(main, 5 * 60 * 1000);
+setInterval(main, 60 * 1000);

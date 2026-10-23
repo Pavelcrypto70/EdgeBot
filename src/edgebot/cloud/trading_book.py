@@ -223,8 +223,9 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
         "by_symbol": by_symbol,
         "logs": snap.get("logs") or [],
         "note_ru": (
-            f"Живой эфир: старт {START_BALANCE:.0f} USDT, ордер {ORDER_NOTIONAL:.0f} USDT "
-            f"(×{int(LEVERAGE)}). Без бэктест-сделок."
+            f"Живой эфир по whitelist: старт {START_BALANCE:.0f} USDT, "
+            f"ордер {ORDER_NOTIONAL:.0f} USDT (×{int(LEVERAGE)}). "
+            "Прогон входов ≈ каждые 10 минут (только график WL, без полного скана)."
         ),
     }
 
