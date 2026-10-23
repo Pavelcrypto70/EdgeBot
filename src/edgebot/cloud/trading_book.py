@@ -196,12 +196,20 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
         )
     by_symbol.sort(key=lambda x: x["pnl"], reverse=True)
 
-    # подтянуть EMA из ботов
+    # подтянуть EMA / bucket из ботов
     for row in by_symbol:
         bot = emu.bots.get(row["symbol"])
         if bot:
             row["ema"] = f"{bot.ema_fast}/{bot.ema_slow}"
             row["strategy"] = bot.strategy
+            row["bucket"] = bot.strategy if bot.strategy in {"heavy", "fast"} else row.get("bucket")
+
+    by_symbol.sort(
+        key=lambda x: (
+            0 if x.get("bucket") == "heavy" else 1 if x.get("bucket") == "fast" else 2,
+            -float(x.get("pnl") or 0),
+        )
+    )
 
     return {
         "updated_at": _now_iso(),

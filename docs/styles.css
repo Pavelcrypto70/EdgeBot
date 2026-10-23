@@ -85,6 +85,20 @@ html, body {
 .n.good { color: var(--good); }
 .n.bad { color: var(--bad); }
 .n.teal { color: var(--teal); }
+.kpis .sub {
+  margin-top: 4px; color: var(--muted);
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+}
+
+.wl-group { margin-bottom: 16px; }
+.wl-group:last-child { margin-bottom: 0; }
+.wl-group-title {
+  font-size: 12px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.wl-group.heavy .wl-group-title { color: var(--teal); }
+.wl-group.fast .wl-group-title { color: var(--gold); }
+.wl-group.other .wl-group-title { color: var(--muted); }
 
 .layout {
   display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, .9fr); gap: 14px;

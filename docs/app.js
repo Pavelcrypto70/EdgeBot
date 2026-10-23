@@ -46,19 +46,40 @@ function renderTable(box, rows, heads, mapRow) {
   box.innerHTML = `<table><thead><tr>${heads.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table>`;
 }
 
+function wlRow(r) {
+  return `<tr>
+    <td class="sym">${r.symbol}</td>
+    <td>${r.strategy || r.bucket || "—"}</td>
+    <td>${r.ema_fast || "—"} / ${r.ema_slow || "—"}</td>
+    <td class="wr">${Number(r.winrate_pct || 0).toFixed(0)}%</td>
+    <td>${r.trades_n ?? "—"}</td>
+  </tr>`;
+}
+
+function renderWlSection(title, cls, rows) {
+  if (!rows.length) return "";
+  const heads = ["Монета", "Стратегия", "EMA", "Винрейт", "Сделок"];
+  return `<div class="wl-group ${cls}">
+    <div class="wl-group-title">${title} · ${rows.length}</div>
+    <table><thead><tr>${heads.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(wlRow).join("")}</tbody></table>
+  </div>`;
+}
+
 function renderWl(rows) {
-  renderTable(
-    document.getElementById("wlTable"),
-    rows,
-    ["Монета", "Стиль", "EMA", "Винрейт", "Сделок"],
-    (r) => `<tr>
-      <td class="sym">${r.symbol}</td>
-      <td>${r.strategy || r.bucket || "—"}</td>
-      <td>${r.ema_fast || "—"} / ${r.ema_slow || "—"}</td>
-      <td class="wr">${Number(r.winrate_pct || 0).toFixed(0)}%</td>
-      <td>${r.trades_n ?? "—"}</td>
-    </tr>`
-  );
+  const box = document.getElementById("wlTable");
+  if (!rows || !rows.length) {
+    box.innerHTML = "<div class='empty'>Пока пусто</div>";
+    return;
+  }
+  const heavy = rows.filter((r) => r.bucket === "heavy");
+  const fast = rows.filter((r) => r.bucket === "fast");
+  const other = rows.filter((r) => r.bucket !== "heavy" && r.bucket !== "fast");
+  const html =
+    renderWlSection("Медленные", "heavy", heavy) +
+    renderWlSection("Быстрые", "fast", fast) +
+    renderWlSection("Прочие", "other", other);
+  box.innerHTML = html || "<div class='empty'>Пока пусто</div>";
 }
 
 function renderHist(items) {
@@ -71,10 +92,16 @@ function renderHist(items) {
     .reverse()
     .slice(0, 10)
     .map(
-      (h) => `<div class="hist-item">
+      (h) => {
+        const hn = h.whitelist_heavy_n;
+        const fn = h.whitelist_fast_n;
+        const split =
+          hn != null || fn != null ? ` · медл ${hn ?? 0} / быстр ${fn ?? 0}` : "";
+        return `<div class="hist-item">
         <div class="t">${fmtTs(h.ts)}</div>
-        <div class="s">WL ${h.whitelist_n} · +${(h.added || []).length} · −${(h.removed || []).length}</div>
-      </div>`
+        <div class="s">WL ${h.whitelist_n}${split} · +${(h.added || []).length} · −${(h.removed || []).length}</div>
+      </div>`;
+      }
     )
     .join("");
 }
@@ -132,18 +159,37 @@ function renderTrading(t) {
     </tr>`
   );
 
-  renderTable(
-    document.getElementById("symTable"),
-    t.by_symbol || [],
-    ["Монета", "Сделок", "WR", "PnL", "EMA"],
-    (s) => `<tr>
+  const symRows = t.by_symbol || [];
+  const symHeavy = symRows.filter((s) => s.bucket === "heavy");
+  const symFast = symRows.filter((s) => s.bucket === "fast");
+  const symOther = symRows.filter((s) => s.bucket !== "heavy" && s.bucket !== "fast");
+  const symHeads = ["Монета", "Сделок", "WR", "PnL", "EMA"];
+  const symMap = (s) => `<tr>
       <td class="sym">${s.symbol}</td>
       <td>${s.trades}</td>
       <td class="wr">${Number(s.winrate_pct).toFixed(0)}%</td>
       <td class="${s.pnl >= 0 ? "wr" : "bad"}">${money(s.pnl)}</td>
       <td>${s.ema}</td>
-    </tr>`
-  );
+    </tr>`;
+  const symBox = document.getElementById("symTable");
+  if (!symRows.length) {
+    symBox.innerHTML = "<div class='empty'>Пока пусто</div>";
+  } else if (symHeavy.length || symFast.length) {
+    const part = (title, cls, rows) => {
+      if (!rows.length) return "";
+      return `<div class="wl-group ${cls}">
+        <div class="wl-group-title">${title} · ${rows.length}</div>
+        <table><thead><tr>${symHeads.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map(symMap).join("")}</tbody></table>
+      </div>`;
+    };
+    symBox.innerHTML =
+      part("Медленные", "heavy", symHeavy) +
+      part("Быстрые", "fast", symFast) +
+      part("Прочие", "other", symOther);
+  } else {
+    renderTable(symBox, symRows, symHeads, symMap);
+  }
 
   const logs = t.logs || [];
   document.getElementById("tradeLogs").textContent = logs.length
@@ -162,16 +208,23 @@ async function main() {
       live.status === "ok" ? "онлайн · автоскан" : live.status || "ok";
     document.getElementById("updatedAt").textContent =
       "скан: " + fmtTs(live.updated_at) + (trading ? " · торговля: " + fmtTs(trading.updated_at) : "");
-    document.getElementById("kpiWl").textContent = String(
-      live.whitelist_n ?? (live.whitelist || []).length
-    );
+    const wlAll = live.whitelist || [];
+    const heavyN =
+      live.whitelist_heavy_n ?? wlAll.filter((r) => r.bucket === "heavy").length;
+    const fastN =
+      live.whitelist_fast_n ?? wlAll.filter((r) => r.bucket === "fast").length;
+    const wlN = live.whitelist_n ?? wlAll.length;
+    document.getElementById("kpiWl").textContent = String(wlN);
+    document.getElementById("kpiWlSub").textContent =
+      heavyN || fastN ? `${heavyN} медл · ${fastN} быстр` : "";
     document.getElementById("diffAdd").innerHTML = chips(live.last_added, "add");
     document.getElementById("diffRem").innerHTML = chips(live.last_removed, "rem");
     document.getElementById("scanHint").textContent =
       live.next_scan_hint_ru ||
-      "Whitelist ≈ каждый час · входы по графику WL ≈ каждую ~1 минуту";
-    document.getElementById("wlHint").textContent = "run " + (live.run_id || "—");
-    renderWl(live.whitelist || []);
+      "Whitelist ≈ каждый час · медленные и быстрые вместе · входы ≈ каждую ~1 мин";
+    document.getElementById("wlHint").textContent =
+      `медл ${heavyN} · быстр ${fastN} · run ${live.run_id || "—"}`;
+    renderWl(wlAll);
     renderHist(Array.isArray(history) ? history : []);
     if (trading) renderTrading(trading);
     else {

@@ -60,6 +60,26 @@ def _slim(row: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
+def _bucket_rank(row: dict[str, Any]) -> int:
+    b = str(row.get("bucket") or "")
+    if b == "heavy":
+        return 0
+    if b == "fast":
+        return 1
+    return 2
+
+
+def _sort_whitelist(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Медленные (heavy) сверху, быстрые (fast) ниже — оба остаются в одном WL."""
+    return sorted(rows, key=lambda r: (_bucket_rank(r), str(r.get("symbol") or "")))
+
+
+def _bucket_counts(rows: list[dict[str, Any]]) -> tuple[int, int]:
+    heavy_n = sum(1 for r in rows if str(r.get("bucket") or "") == "heavy")
+    fast_n = sum(1 for r in rows if str(r.get("bucket") or "") == "fast")
+    return heavy_n, fast_n
+
+
 def merge_whitelist(
     previous: list[dict[str, Any]],
     fresh: list[dict[str, Any]],
@@ -71,7 +91,7 @@ def merge_whitelist(
     fresh_set = set(fresh_map)
     added = sorted(fresh_set - prev_set)
     removed = sorted(prev_set - fresh_set)
-    merged = [fresh_map[s] for s in sorted(fresh_set)]
+    merged = _sort_whitelist([fresh_map[s] for s in fresh_set])
     return merged, added, removed
 
 
@@ -167,6 +187,7 @@ def run_autonomous_cycle(
 
     fresh_wl = list(best.values())
     merged, added, removed = merge_whitelist(previous_wl, fresh_wl)
+    heavy_n, fast_n = _bucket_counts(merged)
 
     ts = _now_iso()
     run_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
@@ -176,12 +197,14 @@ def run_autonomous_cycle(
         "sources": sources,
         "researched": len(all_rows),
         "whitelist_n": len(merged),
+        "whitelist_heavy_n": heavy_n,
+        "whitelist_fast_n": fast_n,
         "added": added,
         "removed": removed,
         "whitelist": merged,
         "order": {"margin_usdt": 100, "leverage": 3, "notional_usdt": 300},
         "balance_start_usdt": 1000,
-        "note_ru": "Автоскан на серверах GitHub. Компьютер владельца может быть выключен.",
+        "note_ru": "Автоскан: медленные (heavy) и быстрые (fast) в одном whitelist, в отчёте разделены.",
     }
 
     live = {
@@ -190,11 +213,13 @@ def run_autonomous_cycle(
         "status": "ok",
         "whitelist": merged,
         "whitelist_n": len(merged),
+        "whitelist_heavy_n": heavy_n,
+        "whitelist_fast_n": fast_n,
         "last_added": added,
         "last_removed": removed,
         "order": snapshot["order"],
         "balance_start_usdt": 1000,
-        "next_scan_hint_ru": "Следующий скан whitelist ≈ каждый час",
+        "next_scan_hint_ru": "Следующий скан whitelist ≈ каждый час · медленные и быстрые вместе",
         "history_preview": {
             "added": added,
             "removed": removed,
@@ -209,8 +234,12 @@ def run_autonomous_cycle(
             "run_id": run_id,
             "ts": ts,
             "whitelist_n": len(merged),
+            "whitelist_heavy_n": heavy_n,
+            "whitelist_fast_n": fast_n,
             "added": added,
             "removed": removed,
+            "symbols_heavy": [r["symbol"] for r in merged if r.get("bucket") == "heavy"],
+            "symbols_fast": [r["symbol"] for r in merged if r.get("bucket") == "fast"],
             "symbols": [r["symbol"] for r in merged],
             "sources": sources,
         }
@@ -234,5 +263,7 @@ def run_autonomous_cycle(
     except Exception as book_exc:  # noqa: BLE001
         _log(f"торговая книга: {book_exc}")
 
-    _log(f"готово · WL={len(merged)} · +{added} · -{removed} · {live_path}")
+    _log(
+        f"готово · WL={len(merged)} (медл={heavy_n} быстр={fast_n}) · +{added} · -{removed} · {live_path}"
+    )
     return live
