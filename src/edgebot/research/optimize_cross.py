@@ -14,7 +14,7 @@ CROSS_GRID = {
     "ema_fast": [12, 15, 20, 25, 30],
     "ema_slow": [40, 50, 60, 80, 100],
     "atr_mult": [1.0, 1.2, 1.5],
-    "take_profit_r": [1.0, 1.2, 1.5, 2.0],
+    "take_profit_r": [1.2, 1.5, 2.0],
     "min_htf_slope": [0.0, 0.0008],  # 0 = крест без фильтра HTF
 }
 
@@ -32,13 +32,27 @@ def _cross_params() -> list[StrategyParams]:
     return out
 
 
-def _score(metrics: dict[str, Any]) -> float:
-    n = int(metrics.get("trades", 0) or 0)
-    wr = float(metrics.get("winrate", 0) or 0)
-    exp = float(metrics.get("expectancy_r", 0) or 0)
-    if n < 6:
+def _score(all_m: dict[str, Any], oos_m: dict[str, Any]) -> float:
+    from edgebot.research.proof import ProofGates
+
+    g = ProofGates()
+    n = int(all_m.get("trades", 0) or 0)
+    wr = float(all_m.get("winrate", 0) or 0)
+    exp = float(all_m.get("expectancy_r", 0) or 0)
+    pf = float(all_m.get("profit_factor", 0) or 0)
+    oos_n = int(oos_m.get("trades", 0) or 0)
+    oos_wr = float(oos_m.get("winrate", 0) or 0)
+    oos_exp = float(oos_m.get("expectancy_r", 0) or 0)
+    if n < g.min_trades:
         return -999.0
-    return wr * 100.0 + min(exp, 1.0) * 5.0 + min(n, 40) * 0.05
+    sc = wr * 100.0 + min(exp, 1.0) * 8.0 + min(pf, 3.0) * 2.0
+    if oos_n >= g.min_oos_trades:
+        sc += oos_wr * 25.0 + min(oos_exp, 1.0) * 6.0
+    else:
+        sc -= 20.0
+    if wr < g.target_winrate or exp < 0 or pf < 1.0:
+        sc -= 30.0
+    return sc
 
 
 def optimize_cross_symbol(
@@ -64,9 +78,7 @@ def optimize_cross_symbol(
         all_m = summarize_trades(trades)
         train_m = summarize_trades(trades[trades["entry_i"] < cut])
         oos_m = summarize_trades(trades[trades["entry_i"] >= cut])
-        sc = _score(all_m)
-        if oos_m["trades"] >= 4:
-            sc += float(oos_m["winrate"]) * 10.0
+        sc = _score(all_m, oos_m)
         cand = {
             "params": asdict(p),
             "all": all_m,

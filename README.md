@@ -38,7 +38,9 @@ python -m edgebot.cli autonomous --heavy 8 --fast 6
 | **heavy** | majors + топ по обороту | медленные EMA + HTF filter |
 | **fast** | остальные с крупной \|Δ 24h\| | быстрые EMA + pullback |
 
-Параметры ищутся сеткой на train; в whitelist только если OOS: достаточно сделок, WR, E[R]>0, PF>1.
+Параметры ищутся сеткой на train+OOS. В whitelist только если:
+**WR ≥ 55%**, **≥ 8 сделок**, **E[R] ≥ 0**, **PF ≥ 1**, и на OOS **≥ 3 сделок** с **WR ≥ 55%** и **E[R] ≥ 0**.
+Fast: EMA slow − fast ≥ 8, тейк ≥ 1.2R. Heavy/кресты: тейк ≥ 1.2R.
 
 ## CLI
 

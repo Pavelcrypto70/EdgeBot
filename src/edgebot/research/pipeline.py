@@ -49,7 +49,7 @@ def run_proof_research(
 
     bars_entry = max(cfg.analytics.bars_entry, 700)
     bars_htf = max(cfg.analytics.bars_htf, 350)
-    gates = ProofGates()
+    gates = ProofGates()  # WR≥55%, ≥8 сделок, E[R]≥0, PF≥1, OOS≥3
     artifacts: dict[str, Any] = {}
 
     with BybitClient() as client:
