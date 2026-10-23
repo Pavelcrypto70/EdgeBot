@@ -24,9 +24,49 @@ def klines_to_df(rows: list[list[str]]) -> pd.DataFrame:
     return frame.dropna(subset=["close"]).reset_index(drop=True)
 
 
-def _tag_demo(frame: pd.DataFrame, *, demo: bool) -> pd.DataFrame:
+def _tag_bars(frame: pd.DataFrame, *, demo: bool, source: str) -> pd.DataFrame:
     frame.attrs["edgebot_demo"] = bool(demo)
+    frame.attrs["edgebot_source"] = source
     return frame
+
+
+_BINANCE_TF = {1: "1m", 3: "3m", 5: "5m", 15: "15m", 30: "30m", 60: "1h", 240: "4h", 1440: "1d"}
+
+
+def _fetch_binance_bars(symbol: str, interval: int, limit: int) -> pd.DataFrame:
+    """Публичные фьючерсы Binance — запасной канал, если Bybit с облака даёт 403."""
+    import httpx
+
+    tf = _BINANCE_TF.get(int(interval))
+    if not tf:
+        raise RuntimeError(f"unsupported interval for binance fallback: {interval}")
+    url = "https://fapi.binance.com/fapi/v1/klines"
+    with httpx.Client(timeout=12.0) as http:
+        r = http.get(
+            url,
+            params={"symbol": symbol, "interval": tf, "limit": min(int(limit), 1500)},
+            headers={"Accept": "application/json", "User-Agent": "EdgeBot/0.1"},
+        )
+        r.raise_for_status()
+        rows = r.json()
+    if not isinstance(rows, list) or not rows:
+        raise RuntimeError("empty binance klines")
+    # [openTime, open, high, low, close, volume, closeTime, quoteVolume, ...]
+    frame = pd.DataFrame(
+        {
+            "start": [r[0] for r in rows],
+            "open": [r[1] for r in rows],
+            "high": [r[2] for r in rows],
+            "low": [r[3] for r in rows],
+            "close": [r[4] for r in rows],
+            "volume": [r[5] for r in rows],
+            "turnover": [r[7] for r in rows],
+        }
+    )
+    for col in ("open", "high", "low", "close", "volume", "turnover"):
+        frame[col] = pd.to_numeric(frame[col], errors="coerce")
+    frame["ts"] = pd.to_datetime(pd.to_numeric(frame["start"], errors="coerce"), unit="ms", utc=True)
+    return frame.dropna(subset=["close"]).reset_index(drop=True)
 
 
 def fetch_bars(
@@ -40,17 +80,23 @@ def fetch_bars(
 ) -> pd.DataFrame:
     settings = get_settings()
     if settings.edgebot_demo == "always":
-        return _tag_demo(demo_klines(limit, seed=demo_seed), demo=True)
+        return _tag_bars(demo_klines(limit, seed=demo_seed), demo=True, source="demo")
     try:
         rows = client.klines(category, symbol, interval, limit=limit)
         frame = klines_to_df(rows)
         if frame.empty:
             raise RuntimeError("empty klines")
-        return _tag_demo(frame, demo=False)
+        return _tag_bars(frame, demo=False, source="bybit")
     except Exception:
         if settings.edgebot_demo == "never":
             raise
-        return _tag_demo(demo_klines(limit, seed=demo_seed), demo=True)
+        try:
+            alt = _fetch_binance_bars(symbol, interval, limit)
+            if alt.empty:
+                raise RuntimeError("empty binance")
+            return _tag_bars(alt, demo=False, source="binance")
+        except Exception:
+            return _tag_bars(demo_klines(limit, seed=demo_seed), demo=True, source="demo")
 
 
 @dataclass(slots=True)

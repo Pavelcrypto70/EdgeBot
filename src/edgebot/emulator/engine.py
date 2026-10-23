@@ -128,8 +128,9 @@ class PaperEmulator:
     ticks: int = 0
     _last_signal_key: dict[str, str] = field(default_factory=dict)
     _started_at: str | None = None
-    last_bars_source: str = "unknown"  # bybit | demo | mixed
+    last_bars_source: str = "unknown"  # bybit | binance | demo | mixed
     _demo_entries_skipped: int = 0
+    _sources_seen: set[str] = field(default_factory=set)
 
     def __post_init__(self) -> None:
         self.wallet = float(self.starting_balance)
@@ -459,9 +460,8 @@ class PaperEmulator:
 
             # 2) входы: свежий сигнал.
             # fast — шире окно (откаты чаще), heavy/cross — узкое (чистый крест).
-            saw_demo = False
-            saw_live = False
             self._demo_entries_skipped = 0
+            self._sources_seen = set()
             for bot in list(self.bots.values()):
                 if bot.symbol in self.positions:
                     continue
@@ -491,12 +491,12 @@ class PaperEmulator:
                 except Exception as exc:  # noqa: BLE001
                     self.log(f"нет данных {bot.symbol}: {exc}")
                     continue
+                src = str(entry.attrs.get("edgebot_source") or ("demo" if entry.attrs.get("edgebot_demo") else "?"))
+                self._sources_seen.add(src)
                 if bool(entry.attrs.get("edgebot_demo")):
-                    saw_demo = True
-                    # на GitHub Actions Bybit часто 403 → demo ~$100; не открываем фейк
+                    # synthetic ~$100 — не открываем
                     self._demo_entries_skipped += 1
                     continue
-                saw_live = True
                 if len(entry) < 60:
                     continue
                 sigs = generate_signals(entry, htf, bot.params())
@@ -528,19 +528,19 @@ class PaperEmulator:
                 if opened:
                     self.log(
                         f"вход по сигналу бара i={int(pick['i'])} · {bot.symbol} · "
-                        f"режим {mode}"
+                        f"режим {mode} · {src}"
                     )
 
-            if saw_demo and saw_live:
-                self.last_bars_source = "mixed"
-            elif saw_demo:
-                self.last_bars_source = "demo"
-            elif saw_live:
-                self.last_bars_source = "bybit"
+            if not self._sources_seen:
+                self.last_bars_source = "unknown"
+            elif len(self._sources_seen) == 1:
+                self.last_bars_source = next(iter(self._sources_seen))
+            else:
+                self.last_bars_source = "mixed:" + "+".join(sorted(self._sources_seen))
             if self._demo_entries_skipped:
                 self.log(
-                    f"пропуск входов · demo-бары (Bybit недоступен) · "
-                    f"{self._demo_entries_skipped} монет"
+                    f"пропуск входов · demo-бары · {self._demo_entries_skipped} монет · "
+                    f"источник тика: {self.last_bars_source}"
                 )
 
             if self.ticks % 5 == 1:
