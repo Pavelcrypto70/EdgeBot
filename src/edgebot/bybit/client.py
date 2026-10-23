@@ -19,8 +19,16 @@ class BybitClient:
         # Market data is richer on mainnet public even if trading later uses testnet
         self.public_url = self.MAINNET if settings.bybit_data_host == "public" else base
         # connect/read timeouts — скринер не должен висеть минутами
+        # User-Agent нужен: с IP GitHub Actions Bybit часто режет «голый» httpx (403)
         self._client = httpx.Client(
-            timeout=httpx.Timeout(timeout, connect=8.0, read=timeout, write=8.0, pool=8.0)
+            timeout=httpx.Timeout(timeout, connect=8.0, read=timeout, write=8.0, pool=8.0),
+            headers={
+                "User-Agent": (
+                    "Mozilla/5.0 (compatible; EdgeBot/0.1; +https://github.com/Pavelcrypto70/EdgeBot)"
+                ),
+                "Accept": "application/json",
+            },
+            follow_redirects=True,
         )
 
     def close(self) -> None:

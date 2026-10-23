@@ -107,23 +107,44 @@ def run_autonomous_cycle(
         if not quiet:
             print(msg, flush=True)
 
-    if do_cross:
-        _log("=== автономный скан: кресты heavy ===")
-        cross = run_cross_heavy_research(cfg=cfg, max_heavy=max_heavy, quiet=quiet)
-        if not cross.results.empty:
-            all_rows.extend(cross.results.to_dict(orient="records"))
-            sources.append("cross")
-        _log(f"кресты: WL {len(cross.whitelist)} / {len(cross.results)}")
+    scan_error: str | None = None
+    try:
+        if do_cross:
+            _log("=== автономный скан: кресты heavy ===")
+            cross = run_cross_heavy_research(cfg=cfg, max_heavy=max_heavy, quiet=quiet)
+            if not cross.results.empty:
+                all_rows.extend(cross.results.to_dict(orient="records"))
+                sources.append("cross")
+            _log(f"кресты: WL {len(cross.whitelist)} / {len(cross.results)}")
 
-    if do_proof:
-        _log("=== автономный скан: Proof MA ===")
-        proof = run_proof_research(
-            cfg=cfg, max_heavy=max_heavy, max_fast=max_fast, quiet=quiet
-        )
-        if not proof.results.empty:
-            all_rows.extend(proof.results.to_dict(orient="records"))
-            sources.append("proof")
-        _log(f"proof: WL {len(proof.whitelist)} / {len(proof.results)}")
+        if do_proof:
+            _log("=== автономный скан: Proof MA ===")
+            proof = run_proof_research(
+                cfg=cfg, max_heavy=max_heavy, max_fast=max_fast, quiet=quiet
+            )
+            if not proof.results.empty:
+                all_rows.extend(proof.results.to_dict(orient="records"))
+                sources.append("proof")
+            _log(f"proof: WL {len(proof.whitelist)} / {len(proof.results)}")
+    except Exception as exc:  # noqa: BLE001
+        scan_error = str(exc)
+        _log(f"скан упал: {scan_error}")
+        if previous_wl:
+            _log("оставляем прошлый whitelist, сайт не обнуляем")
+            live = dict(prev_live) if isinstance(prev_live, dict) else {}
+            live.update(
+                {
+                    "updated_at": _now_iso(),
+                    "status": "degraded",
+                    "last_error": scan_error,
+                    "whitelist": previous_wl,
+                    "whitelist_n": len(previous_wl),
+                    "next_scan_hint_ru": "Скан сбойнул (часто 403 Bybit с облака). Данные прошлые, сайт жив.",
+                }
+            )
+            _write_json(live_path, live)
+            return live
+        raise
 
     # Если одна монета прошла в нескольких прогонах — берём с лучшим winrate
     best: dict[str, dict[str, Any]] = {}

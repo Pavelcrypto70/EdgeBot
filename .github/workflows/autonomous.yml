@@ -2,7 +2,6 @@ name: EdgeBot autonomous scan
 
 on:
   schedule:
-    # каждые 4 часа UTC — ПК владельца не нужен
     - cron: "0 */4 * * *"
   workflow_dispatch:
 
@@ -38,8 +37,11 @@ jobs:
           pip install -e .
 
       - name: Autonomous scan
+        id: scan
+        continue-on-error: true
         env:
-          EDGEBOT_DEMO: "never"
+          # auto: при 403 Bybit с IP Actions уйдём в demo-бары, сайт всё равно обновится
+          EDGEBOT_DEMO: "auto"
           BYBIT_DATA_HOST: "public"
           BYBIT_TESTNET: "false"
         run: python -m edgebot.cli autonomous --heavy 8 --fast 6
