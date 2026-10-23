@@ -109,9 +109,9 @@
   ],
   "last_removed": [],
   "order": {
-    "margin_usdt": 100,
+    "notional_usdt": 300,
     "leverage": 3,
-    "notional_usdt": 300
+    "margin_usdt": 100
   },
   "balance_start_usdt": 1000,
   "next_scan_hint_ru": "Следующий скан по расписанию ≈ каждые 4 часа",

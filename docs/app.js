@@ -86,7 +86,7 @@ function renderTrading(t) {
 
   const o = t.order || {};
   document.getElementById("kpiOrder").textContent =
-    `${o.margin_usdt || 100}$×${o.leverage || 3}=${o.notional_usdt || 300}$`;
+    `${o.notional_usdt || 300} USDT ×${o.leverage || 3}`;
 
   renderTable(
     document.getElementById("posTable"),

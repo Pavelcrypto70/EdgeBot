@@ -1,166 +1,26 @@
 {
-  "updated_at": "2026-10-23T11:52:47Z",
+  "updated_at": "2026-10-23T11:59:49Z",
   "status": "ok",
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 1002.85,
-  "realized_pnl": 2.85,
-  "unrealized_pnl": 0.0,
-  "winrate_pct": 55.6,
-  "closed_n": 9,
+  "equity_usdt": 1000.0,
+  "realized_pnl": 0.0,
+  "unrealized_pnl": 0,
+  "winrate_pct": 0.0,
+  "closed_n": 0,
   "open_n": 0,
   "order": {
-    "margin_usdt": 100.0,
+    "notional_usdt": 300.0,
     "leverage": 3.0,
-    "notional_usdt": 300.0
+    "margin_usdt": 100.0
   },
   "open_positions": [],
-  "closed_trades": [
-    {
-      "symbol": "SOLUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "entry": 103.89882100000001,
-      "exit": 104.321287,
-      "pnl": -1.55,
-      "reason": "стоп",
-      "win": false,
-      "closed_at": "2026-10-23 11:00:00+00:00"
-    },
-    {
-      "symbol": "SOXLUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "entry": 84.07477,
-      "exit": 84.375305,
-      "pnl": -1.4,
-      "reason": "закрытие",
-      "win": false,
-      "closed_at": "2026-10-23 10:30:00+00:00"
-    },
-    {
-      "symbol": "SOXLUSDT",
-      "side": "ЛОНГ",
-      "side_raw": "long",
-      "entry": 85.145536,
-      "exit": 86.00918950000002,
-      "pnl": 2.71,
-      "reason": "тейк",
-      "win": true,
-      "closed_at": "2026-10-23 05:15:00+00:00"
-    },
-    {
-      "symbol": "NEARUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "entry": 5.1204634,
-      "exit": 5.002964725,
-      "pnl": 6.55,
-      "reason": "тейк",
-      "win": true,
-      "closed_at": "2026-10-22 03:45:00+00:00"
-    },
-    {
-      "symbol": "ZECUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "entry": 1294.3015930000001,
-      "exit": 1282.8740324999999,
-      "pnl": 2.32,
-      "reason": "тейк",
-      "win": true,
-      "closed_at": "2026-10-22 03:15:00+00:00"
-    },
-    {
-      "symbol": "ETHUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "entry": 2448.4852339999998,
-      "exit": 2436.8118957499996,
-      "pnl": 1.1,
-      "reason": "тейк",
-      "win": true,
-      "closed_at": "2026-10-22 02:00:00+00:00"
-    },
-    {
-      "symbol": "SOXLUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "entry": 102.89912100000001,
-      "exit": 101.77838150000001,
-      "pnl": 2.94,
-      "reason": "тейк",
-      "win": true,
-      "closed_at": "2026-10-21 20:30:00+00:00"
-    },
-    {
-      "symbol": "SOXLUSDT",
-      "side": "ЛОНГ",
-      "side_raw": "long",
-      "entry": 103.801131,
-      "exit": 101.89513657142857,
-      "pnl": -5.84,
-      "reason": "стоп",
-      "win": false,
-      "closed_at": "2026-10-21 16:30:00+00:00"
-    },
-    {
-      "symbol": "SOXLUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "entry": 100.74976600000001,
-      "exit": 101.9755835,
-      "pnl": -3.98,
-      "reason": "стоп",
-      "win": false,
-      "closed_at": "2026-10-21 08:45:00+00:00"
-    }
-  ],
-  "by_symbol": [
-    {
-      "symbol": "NEARUSDT",
-      "trades": 1,
-      "winrate_pct": 100.0,
-      "pnl": 6.55,
-      "ema": "20/100",
-      "strategy": "cross"
-    },
-    {
-      "symbol": "ZECUSDT",
-      "trades": 1,
-      "winrate_pct": 100.0,
-      "pnl": 2.32,
-      "ema": "12/100",
-      "strategy": "cross"
-    },
-    {
-      "symbol": "ETHUSDT",
-      "trades": 1,
-      "winrate_pct": 100.0,
-      "pnl": 1.1,
-      "ema": "20/100",
-      "strategy": "cross"
-    },
-    {
-      "symbol": "SOLUSDT",
-      "trades": 1,
-      "winrate_pct": 0.0,
-      "pnl": -1.55,
-      "ema": "12/40",
-      "strategy": "cross"
-    },
-    {
-      "symbol": "SOXLUSDT",
-      "trades": 5,
-      "winrate_pct": 40.0,
-      "pnl": -5.57,
-      "ema": "12/50",
-      "strategy": "cross"
-    }
-  ],
+  "closed_trades": [],
+  "by_symbol": [],
   "logs": [
-    "[2026-10-23 11:52:44] очередь загружена · 5 монет из whitelist",
-    "[2026-10-23 11:52:44] В ЭФИРЕ · старт · 5 монет в работе",
-    "[2026-10-23 11:52:47] пульс · капитал 1000.00 USDT · открыто 0 · очередь 5"
+    "[2026-10-23T11:59:44Z] сброс книги · 1000 USDT · ордер 300$ ×3",
+    "[2026-10-23 11:59:44] очередь загружена · 5 монет из whitelist",
+    "[2026-10-23 11:59:44] В ЭФИРЕ · старт · 5 монет в работе",
+    "[2026-10-23 11:59:49] пульс · капитал 1000.00 USDT · открыто 0 · очередь 5"
   ],
-  "note_ru": "Бумажная статистика: закрытые сделки по параметрам whitelist на истории, открытые — live-тик эмулятора. Ордер 100$×3 = 300$ в позиции."
+  "note_ru": "Живой эфир: старт 1000 USDT, ордер 300 USDT (×3). Без бэктест-сделок."
 }

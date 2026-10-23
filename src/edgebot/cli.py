@@ -35,6 +35,14 @@ def main(argv: list[str] | None = None) -> None:
     p_auto.add_argument("--fast", type=int, default=8)
     p_auto.add_argument("--no-proof", action="store_true")
     p_auto.add_argument("--no-cross", action="store_true")
+    p_auto.add_argument(
+        "--reset-trading",
+        action="store_true",
+        help="Обнулить торговую книгу (1000 USDT, ордер 300$×3)",
+    )
+
+    p_book = sub.add_parser("trading-book", help="Обновить/сбросить публичную торговую книгу")
+    p_book.add_argument("--reset", action="store_true")
 
     args = parser.parse_args(argv)
 
@@ -125,6 +133,10 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.cmd == "autonomous":
         from edgebot.cloud.autonomous import run_autonomous_cycle
+        from edgebot.cloud.trading_book import reset_trading_book
+
+        if args.reset_trading:
+            reset_trading_book(quiet=False)
 
         live = run_autonomous_cycle(
             max_heavy=args.heavy,
@@ -139,6 +151,28 @@ def main(argv: list[str] | None = None) -> None:
                 "whitelist_n": live.get("whitelist_n"),
                 "added": live.get("last_added"),
                 "removed": live.get("last_removed"),
+            }
+        )
+        return
+
+    if args.cmd == "trading-book":
+        import json
+        from pathlib import Path
+
+        from edgebot.cloud.autonomous import PUBLIC_DIR
+        from edgebot.cloud.trading_book import reset_trading_book, update_trading_book
+
+        if args.reset:
+            reset_trading_book(quiet=False)
+        wl_path = PUBLIC_DIR / "whitelist.json"
+        wl = json.loads(wl_path.read_text(encoding="utf-8")) if wl_path.exists() else []
+        book = update_trading_book(wl, quiet=False, reset=False)
+        rprint(
+            {
+                "equity": book.get("equity_usdt"),
+                "closed_n": book.get("closed_n"),
+                "open_n": book.get("open_n"),
+                "order": book.get("order"),
             }
         )
         return
