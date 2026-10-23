@@ -1,14 +1,14 @@
 {
-  "wallet": 479.58482550971263,
-  "realized_pnl": -18.930174490287545,
-  "ticks": 3,
+  "wallet": 664.5776072907937,
+  "realized_pnl": -33.77239270920655,
+  "ticks": 4,
   "signal_mode_v": 4,
   "last_signal_key": {
     "AEROUSDT": "159:short:0.7465",
     "DASHUSDT": "157:long:53.68",
     "DOODUSDT": "156:short:0.001855",
     "LITUSDT": "159:short:3.3216",
-    "USELESSUSDT": "159:long:0.16784"
+    "USELESSUSDT": "159:long:0.1677"
   },
   "history": [
     {
@@ -58,6 +58,42 @@
       "opened_at": "2026-10-23 16:42:19",
       "closed_at": "2026-10-23 16:43:54",
       "win": false
+    },
+    {
+      "symbol": "DASHUSDT",
+      "side": "long",
+      "entry": 54.35,
+      "exit": 53.65314285714286,
+      "size": 5.519779208831647,
+      "pnl": -4.009381995005903,
+      "reason": "stop",
+      "opened_at": "2026-10-23 16:45:44",
+      "closed_at": "2026-10-23 16:47:25",
+      "win": false
+    },
+    {
+      "symbol": "DOODUSDT",
+      "side": "short",
+      "entry": 0.001754,
+      "exit": 0.0017807142857142856,
+      "size": 171037.6282782212,
+      "pnl": -4.7366611011565425,
+      "reason": "stop",
+      "opened_at": "2026-10-23 16:45:45",
+      "closed_at": "2026-10-23 16:47:25",
+      "win": false
+    },
+    {
+      "symbol": "USELESSUSDT",
+      "side": "long",
+      "entry": 0.16787,
+      "exit": 0.1645492857142857,
+      "size": 1787.097158515518,
+      "pnl": -6.096175122756559,
+      "reason": "stop",
+      "opened_at": "2026-10-23 16:45:53",
+      "closed_at": "2026-10-23 16:47:26",
+      "win": false
     }
   ],
   "positions": {
@@ -73,38 +109,8 @@
       "margin": 100.0,
       "risk": 0.014365714285714315,
       "opened_at": "2026-10-23 16:42:09",
-      "mark": 0.7498,
-      "unrealized": -1.3261888814467393
-    },
-    "DASHUSDT": {
-      "symbol": "DASHUSDT",
-      "category": "linear",
-      "side": "long",
-      "size": 5.519779208831647,
-      "entry": 54.35,
-      "stop": 53.65314285714286,
-      "take": 55.04685714285714,
-      "leverage": 3.0,
-      "margin": 100.0,
-      "risk": 0.6968571428571408,
-      "opened_at": "2026-10-23 16:45:44",
-      "mark": 54.35,
-      "unrealized": 0.0
-    },
-    "DOODUSDT": {
-      "symbol": "DOODUSDT",
-      "category": "linear",
-      "side": "short",
-      "size": 171037.6282782212,
-      "entry": 0.001754,
-      "stop": 0.0017807142857142856,
-      "take": 0.001721942857142857,
-      "leverage": 3.0,
-      "margin": 100.0,
-      "risk": 2.671428571428573e-05,
-      "opened_at": "2026-10-23 16:45:45",
-      "mark": 0.001754,
-      "unrealized": 0.0
+      "mark": 0.7508,
+      "unrealized": -1.7280643000669673
     },
     "LITUSDT": {
       "symbol": "LITUSDT",
@@ -118,22 +124,22 @@
       "margin": 100.0,
       "risk": 0.04012714285714303,
       "opened_at": "2026-10-23 16:45:48",
-      "mark": 3.3222,
-      "unrealized": 0.0
+      "mark": 3.3265,
+      "unrealized": -0.38829691168500524
     },
     "USELESSUSDT": {
       "symbol": "USELESSUSDT",
       "category": "linear",
       "side": "long",
-      "size": 1787.097158515518,
-      "entry": 0.16787,
-      "stop": 0.1645492857142857,
-      "take": 0.17119071428571428,
+      "size": 1788.9087656529518,
+      "entry": 0.1677,
+      "stop": 0.1643792857142857,
+      "take": 0.17102071428571428,
       "leverage": 3.0,
       "margin": 100.0,
       "risk": 0.003320714285714288,
-      "opened_at": "2026-10-23 16:45:53",
-      "mark": 0.16787,
+      "opened_at": "2026-10-23 16:47:33",
+      "mark": 0.1677,
       "unrealized": 0.0
     }
   },
@@ -176,6 +182,16 @@
     "[2026-10-23 16:45:48] вход по сигналу бара i=159 · LITUSDT · режим fast · okx",
     "[2026-10-23 16:45:53] ОТКРЫТИЕ ЛОНГ USELESSUSDT @ 0.16787 · маржа 100$ ×3 = 300$ в позиции · стоп 0.164549 · тейк 0.171191 · EMA 9/13",
     "[2026-10-23 16:45:53] вход по сигналу бара i=159 · USELESSUSDT · режим fast · okx",
-    "[2026-10-23 16:45:53] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 16:45:53] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 16:47:23] очередь загружена · 13 монет из whitelist",
+    "[2026-10-23 16:47:23] В ЭФИРЕ · старт · 13 монет в работе",
+    "[2026-10-23 16:47:25] СТОП ЛОНГ DASHUSDT @ 53.6531 результат -4.01 USDT",
+    "[2026-10-23 16:47:25] СТОП ШОРТ DOODUSDT @ 0.00178071 результат -4.74 USDT",
+    "[2026-10-23 16:47:26] СТОП ЛОНГ USELESSUSDT @ 0.164549 результат -6.10 USDT",
+    "[2026-10-23 16:47:27] нет живых баров ALTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ALTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:47:27] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:47:33] ОТКРЫТИЕ ЛОНГ USELESSUSDT @ 0.1677 · маржа 100$ ×3 = 300$ в позиции · стоп 0.164379 · тейк 0.171021 · EMA 9/13",
+    "[2026-10-23 16:47:33] вход по сигналу бара i=159 · USELESSUSDT · режим fast · okx",
+    "[2026-10-23 16:47:33] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
   ]
 }
