@@ -239,6 +239,66 @@ def extract_features(entry: pd.DataFrame, htf: pd.DataFrame) -> dict[str, float]
     }
 
 
+def fetch_last_price(symbol: str, category: str = "linear") -> float | None:
+    """Живая марка: Bybit может быть 403 с Actions — тогда OKX/Binance."""
+    import httpx
+
+    # 1) Bybit last price
+    try:
+        with httpx.Client(timeout=8.0) as http:
+            for host in ("https://api.bybit.com", "https://api.bytick.com"):
+                r = http.get(
+                    f"{host}/v5/market/tickers",
+                    params={"category": category, "symbol": symbol},
+                    headers={"Accept": "application/json", "User-Agent": "EdgeBot/0.1"},
+                )
+                if r.status_code == 403:
+                    continue
+                r.raise_for_status()
+                items = list((r.json().get("result") or {}).get("list") or [])
+                if not items:
+                    continue
+                raw = items[0].get("lastPrice") or items[0].get("markPrice")
+                return float(raw)
+    except Exception:
+        pass
+
+    # 2) OKX
+    try:
+        base = symbol.upper().replace("USDT", "")
+        inst = f"{base}-USDT-SWAP" if category == "linear" else f"{base}-USDT"
+        payload = _http_json(
+            "https://www.okx.com/api/v5/market/ticker",
+            {"instId": inst},
+        )
+        if isinstance(payload, dict) and str(payload.get("code")) == "0":
+            rows = list(payload.get("data") or [])
+            if rows:
+                return float(rows[0].get("last"))
+    except Exception:
+        pass
+
+    # 3) Binance futures
+    try:
+        payload = _http_json(
+            "https://fapi.binance.com/fapi/v1/ticker/price",
+            {"symbol": symbol},
+        )
+        if isinstance(payload, dict) and payload.get("price") is not None:
+            return float(payload["price"])
+    except Exception:
+        pass
+
+    # 4) last close from fallback bars
+    try:
+        bars = _fetch_okx_bars(symbol, category, 15, 3)
+        if not bars.empty:
+            return float(bars["close"].iloc[-1])
+    except Exception:
+        pass
+    return None
+
+
 def load_symbol_bundle(
     client: BybitClient,
     row: pd.Series,

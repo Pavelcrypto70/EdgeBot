@@ -6,7 +6,7 @@ from typing import Any
 
 import pandas as pd
 
-from edgebot.analytics.features import fetch_bars
+from edgebot.analytics.features import fetch_bars, fetch_last_price
 from edgebot.bybit.client import BybitClient
 from edgebot.config import AppConfig, data_dir, load_config
 from edgebot.strategies.ema_ma import StrategyParams, generate_signals
@@ -316,6 +316,30 @@ class PaperEmulator:
         cache[category] = out
         return out
 
+    def _resolve_mark(
+        self,
+        client: BybitClient,
+        category: str,
+        symbol: str,
+        marks_cache: dict[str, dict[str, float]],
+        bars: Any | None = None,
+    ) -> float | None:
+        """Марка для PnL: Bybit тикер → OKX/Binance → close последних баров."""
+        mmap = self._ticker_map(client, category, marks_cache)
+        mark = mmap.get(symbol)
+        if mark is not None and mark > 0:
+            return float(mark)
+        px = fetch_last_price(symbol, category)
+        if px is not None and px > 0:
+            marks_cache.setdefault(category, {})[symbol] = float(px)
+            return float(px)
+        if bars is not None and len(bars) and not bool(bars.attrs.get("edgebot_demo")):
+            try:
+                return float(bars["close"].iloc[-1])
+            except Exception:
+                return None
+        return None
+
     def _close(self, pos: Position, price: float, reason: str) -> None:
         fee = abs(pos.size * price) * self.fee_rate
         if pos.side == "long":
@@ -412,14 +436,14 @@ class PaperEmulator:
         try:
             # 1) refresh marks + exits (по марке и по high/low свечей — не пропустить стоп/тейк)
             for sym, pos in list(self.positions.items()):
-                mmap = self._ticker_map(client, pos.category, marks_cache)
-                mark = mmap.get(sym)
                 try:
                     bars = fetch_bars(
                         client, pos.category, sym, self.entry_tf, 12
                     )
                 except Exception:
                     bars = None
+                if bars is not None and bool(bars.attrs.get("edgebot_demo")):
+                    bars = None  # не обновляем PnL с synthetic ~$100
                 if bars is not None and len(bars) >= 2:
                     # последние закрытые свечи после входа
                     for j in range(max(0, len(bars) - 8), len(bars)):
@@ -441,7 +465,9 @@ class PaperEmulator:
                                 break
                     if sym not in self.positions:
                         continue
+                mark = self._resolve_mark(client, pos.category, sym, marks_cache, bars)
                 if mark is None:
+                    self.log(f"нет марки {sym} — PnL не обновлён в этом тике")
                     continue
                 if sym not in self.positions:
                     continue
@@ -521,8 +547,9 @@ class PaperEmulator:
                     break
                 if pick is None or pick_key is None:
                     continue
-                mmap = self._ticker_map(client, bot.category, marks_cache)
-                mark = mmap.get(bot.symbol)
+                mark = self._resolve_mark(
+                    client, bot.category, bot.symbol, marks_cache, entry
+                )
                 if mark is None:
                     mark = float(entry["close"].iloc[-1])
                 opened = self._try_open(bot, pick, mark)
