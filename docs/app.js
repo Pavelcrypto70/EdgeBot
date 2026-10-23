@@ -169,7 +169,7 @@ async function main() {
     document.getElementById("diffRem").innerHTML = chips(live.last_removed, "rem");
     document.getElementById("scanHint").textContent =
       live.next_scan_hint_ru ||
-      "Whitelist ≈ раз в 4 часа · входы по графику WL ≈ каждую минуту";
+      "Whitelist ≈ раз в 4 часа · входы по графику WL ≈ каждую ~1 минуту";
     document.getElementById("wlHint").textContent = "run " + (live.run_id || "—");
     renderWl(live.whitelist || []);
     renderHist(Array.isArray(history) ? history : []);

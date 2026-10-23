@@ -1,26 +1,24 @@
 name: EdgeBot live entries (whitelist)
 
-# Частый прогон ТОЛЬКО по whitelist: график → сигнал → вход/выход.
-# Полный ресёрч whitelist — autonomous.yml раз в ~4 часа.
+# Входы по whitelist. GitHub cron минимум раз в 5 мин;
+# дополнительно после успеха ставим следующий тик через ~55 сек (секрет EDGEBOT_TICK_TOKEN).
 on:
   schedule:
-    # каждую минуту UTC (GitHub иногда чуть задерживает очередь)
-    - cron: "* * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: edgebot-trading-live
-  # один тик за раз — иначе конфликты при пуше каждую минуту
   cancel-in-progress: false
-  # pending ждут очереди (GitHub Actions)
 
 jobs:
   tick:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +44,6 @@ jobs:
           set -e
           git config user.name "edgebot-bot"
           git config user.email "edgebot-bot@users.noreply.github.com"
-          # Свежий тик важнее merge: копируем файлы, синкаемся с main, кладём поверх, пушим.
           cp docs/data/trading.json /tmp/trading.json
           cp docs/data/trading_state.json /tmp/trading_state.json
           git fetch origin main
@@ -61,3 +58,17 @@ jobs:
           fi
           git commit -m "chore: live trading tick $(date -u +%Y-%m-%dT%H:%MZ)"
           git push origin HEAD:main
+
+      - name: Queue next tick (~1 min)
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.EDGEBOT_TICK_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "EDGEBOT_TICK_TOKEN не задан — только cron */5"
+            exit 0
+          fi
+          # не держим раннер минуту: планируем следующий dispatch после короткой паузы
+          sleep 55
+          gh workflow run "EdgeBot live entries (whitelist)" --ref main
+          echo "queued next tick"
