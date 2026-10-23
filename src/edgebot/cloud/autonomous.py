@@ -143,6 +143,12 @@ def run_autonomous_cycle(
                 }
             )
             _write_json(live_path, live)
+            try:
+                from edgebot.cloud.trading_book import update_trading_book
+
+                update_trading_book(previous_wl, quiet=quiet)
+            except Exception as book_exc:  # noqa: BLE001
+                _log(f"торговая книга: {book_exc}")
             return live
         raise
 
@@ -217,6 +223,16 @@ def run_autonomous_cycle(
 
     # плоский CSV-подобный JSON для удобства скачивания данных
     _write_json(PUBLIC_DIR / "whitelist.json", merged)
+
+    try:
+        from edgebot.cloud.trading_book import update_trading_book
+
+        book = update_trading_book(merged, quiet=quiet)
+        live["trading_equity"] = book.get("equity_usdt")
+        live["trading_wr"] = book.get("winrate_pct")
+        _write_json(live_path, live)
+    except Exception as book_exc:  # noqa: BLE001
+        _log(f"торговая книга: {book_exc}")
 
     _log(f"готово · WL={len(merged)} · +{added} · -{removed} · {live_path}")
     return live

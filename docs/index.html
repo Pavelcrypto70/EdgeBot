@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EdgeBot · публичный whitelist</title>
+  <title>EdgeBot · whitelist и торговля</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -14,7 +14,7 @@
   <header class="top">
     <div>
       <div class="brand">EDGE<span>BOT</span></div>
-      <p class="lede">Автономный скан Bybit. Сайт живёт на GitHub — ПК владельца может быть выключен.</p>
+      <p class="lede">Автономный скан и бумажная торговля по whitelist. Сайт на GitHub — ПК может быть выключен.</p>
     </div>
     <div class="meta">
       <div class="pill" id="statusPill">загрузка…</div>
@@ -24,16 +24,16 @@
 
   <section class="kpis">
     <article>
-      <div class="k">В whitelist</div>
-      <div class="n" id="kpiWl">—</div>
+      <div class="k">Капитал</div>
+      <div class="n" id="kpiEq">—</div>
     </article>
     <article>
-      <div class="k">Добавили</div>
-      <div class="n good" id="kpiAdd">—</div>
+      <div class="k">Винрейт</div>
+      <div class="n good" id="kpiWr">—</div>
     </article>
     <article>
-      <div class="k">Убрали</div>
-      <div class="n bad" id="kpiRem">—</div>
+      <div class="k">Whitelist</div>
+      <div class="n teal" id="kpiWl">—</div>
     </article>
     <article>
       <div class="k">Ордер</div>
@@ -41,20 +41,49 @@
     </article>
   </section>
 
-  <main class="layout">
+  <section class="trade-kpis" id="tradeKpis">
+    <article><div class="k">Зафиксировано</div><div class="n" id="kpiReal">—</div></article>
+    <article><div class="k">Плавающий</div><div class="n" id="kpiUnreal">—</div></article>
+    <article><div class="k">Закрыто</div><div class="n" id="kpiClosed">—</div></article>
+    <article><div class="k">Открыто</div><div class="n" id="kpiOpen">—</div></article>
+  </section>
+
+  <main class="layout layout-trade">
     <section class="panel">
       <div class="ph">
-        <h2>Текущий whitelist</h2>
-        <span class="hint" id="wlHint">данные из docs/data/live.json</span>
+        <h2>Открытые позиции</h2>
+        <span class="hint" id="posHint">live-тик</span>
       </div>
-      <div class="body" id="wlTable">
-        <div class="empty">Загрузка…</div>
+      <div class="body" id="posTable"><div class="empty">Загрузка…</div></div>
+    </section>
+
+    <section class="panel">
+      <div class="ph">
+        <h2>Закрытые сделки</h2>
+        <span class="hint">бумажная книга</span>
       </div>
+      <div class="body" id="closedTable"><div class="empty">Загрузка…</div></div>
+    </section>
+
+    <section class="panel">
+      <div class="ph">
+        <h2>По монетам</h2>
+        <span class="hint">PnL за окно</span>
+      </div>
+      <div class="body" id="symTable"><div class="empty">Загрузка…</div></div>
+    </section>
+
+    <section class="panel">
+      <div class="ph">
+        <h2>Whitelist</h2>
+        <span class="hint" id="wlHint">live.json</span>
+      </div>
+      <div class="body" id="wlTable"><div class="empty">Загрузка…</div></div>
     </section>
 
     <aside class="side">
       <section class="panel">
-        <div class="ph"><h2>Последний diff</h2></div>
+        <div class="ph"><h2>Последний diff скана</h2></div>
         <div class="body">
           <div class="diff-block">
             <div class="diff-title">Добавлено</div>
@@ -65,21 +94,26 @@
             <div id="diffRem" class="chips">—</div>
           </div>
           <p class="note" id="scanHint"></p>
+          <p class="note" id="tradeNote"></p>
         </div>
       </section>
 
       <section class="panel">
         <div class="ph"><h2>История сканов</h2></div>
-        <div class="body hist" id="histList">
-          <div class="empty">Пока пусто</div>
-        </div>
+        <div class="body hist" id="histList"><div class="empty">Пока пусто</div></div>
+      </section>
+
+      <section class="panel">
+        <div class="ph"><h2>Логи эфира</h2></div>
+        <div class="body"><pre class="emu-log" id="tradeLogs">—</pre></div>
       </section>
     </aside>
   </main>
 
   <footer class="foot">
-    <span>Скан на GitHub Actions ≈ каждые 4 часа</span>
-    <a id="rawLive" href="data/live.json">live.json</a>
+    <span>Скан ≈ каждые 4 часа · trading.json обновляется вместе со сканом</span>
+    <a href="data/live.json">live.json</a>
+    <a href="data/trading.json">trading.json</a>
     <a href="data/history.json">history.json</a>
     <a href="data/whitelist.json">whitelist.json</a>
   </footer>
