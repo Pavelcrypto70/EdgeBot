@@ -1,7 +1,7 @@
 {
   "wallet": 563.7973682738849,
   "realized_pnl": -34.0576317261154,
-  "ticks": 18,
+  "ticks": 19,
   "signal_mode_v": 4,
   "last_signal_key": {
     "AEROUSDT": "159:short:0.7465",
@@ -133,8 +133,8 @@
       "margin": 100.0,
       "risk": 0.014365714285714315,
       "opened_at": "2026-10-23 16:42:09",
-      "mark": 0.7552,
-      "unrealized": -3.496316141995953
+      "mark": 0.759,
+      "unrealized": -5.023442732752828
     },
     "LITUSDT": {
       "symbol": "LITUSDT",
@@ -148,8 +148,8 @@
       "margin": 100.0,
       "risk": 0.04012714285714303,
       "opened_at": "2026-10-23 16:45:48",
-      "mark": 3.3056,
-      "unrealized": 1.4990066823189405
+      "mark": 3.3178,
+      "unrealized": 0.3973270724218854
     },
     "USELESSUSDT": {
       "symbol": "USELESSUSDT",
@@ -163,8 +163,8 @@
       "margin": 100.0,
       "risk": 0.003320714285714288,
       "opened_at": "2026-10-23 16:47:33",
-      "mark": 0.16585,
-      "unrealized": -3.309481216457944
+      "mark": 0.16587,
+      "unrealized": -3.273703041144899
     },
     "DASHUSDT": {
       "symbol": "DASHUSDT",
@@ -178,15 +178,11 @@
       "margin": 100.0,
       "risk": 0.7131428571428557,
       "opened_at": "2026-10-23 16:55:44",
-      "mark": 53.6,
-      "unrealized": -1.6697588126159397
+      "mark": 53.71,
+      "unrealized": -1.0575139146567591
     }
   },
   "logs": [
-    "[2026-10-23 16:42:08] В ЭФИРЕ · старт · 13 монет в работе",
-    "[2026-10-23 16:42:09] ОТКРЫТИЕ ШОРТ AEROUSDT @ 0.7465 · маржа 100$ ×3 = 300$ в позиции · стоп 0.760866 · тейк 0.732134 · EMA 5/26",
-    "[2026-10-23 16:42:09] вход по сигналу бара i=159 · AEROUSDT · режим fast · okx",
-    "[2026-10-23 16:42:10] нет живых баров ALTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ALTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 16:42:11] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 16:42:13] ОТКРЫТИЕ ЛОНГ DASHUSDT @ 53.9 · маржа 100$ ×3 = 300$ в позиции · стоп 53.2057 · тейк 54.5943 · EMA 9/34",
     "[2026-10-23 16:42:13] вход по сигналу бара i=159 · DASHUSDT · режим fast · okx",
@@ -302,6 +298,10 @@
     "[2026-10-23 17:10:48] очередь загружена · 7 монет из whitelist",
     "[2026-10-23 17:10:48] В ЭФИРЕ · старт · 7 монет в работе",
     "[2026-10-23 17:10:55] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-23 17:10:57] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 17:10:57] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 17:12:31] очередь загружена · 7 монет из whitelist",
+    "[2026-10-23 17:12:31] В ЭФИРЕ · старт · 7 монет в работе",
+    "[2026-10-23 17:12:38] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 17:12:40] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
   ]
 }
