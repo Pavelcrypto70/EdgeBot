@@ -1,7 +1,7 @@
 {
   "wallet": 1000.0,
   "realized_pnl": 0.0,
-  "ticks": 2,
+  "ticks": 3,
   "signal_mode_v": 5,
   "settings_rev": 5,
   "last_signal_key": {},
@@ -18,6 +18,10 @@
     "[2026-10-23 17:15:53] очередь загружена · 7 монет из whitelist",
     "[2026-10-23 17:15:53] В ЭФИРЕ · старт · 7 монет в работе",
     "[2026-10-23 17:15:56] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-23 17:15:58] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 17:15:58] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 17:17:35] очередь загружена · 7 монет из whitelist",
+    "[2026-10-23 17:17:35] В ЭФИРЕ · старт · 7 монет в работе",
+    "[2026-10-23 17:17:37] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 17:17:38] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
   ]
 }
