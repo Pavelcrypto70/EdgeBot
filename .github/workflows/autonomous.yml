@@ -2,8 +2,8 @@ name: EdgeBot autonomous scan
 
 on:
   schedule:
-    # не на :00 часа — меньше шанс дропа из‑за нагрузки GitHub
-    - cron: "17 */4 * * *"
+    # каждый час (не на :00 — меньше дропа из‑за нагрузки GitHub)
+    - cron: "17 * * * *"
   workflow_dispatch:
 
 permissions:

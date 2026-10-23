@@ -194,7 +194,7 @@ def run_autonomous_cycle(
         "last_removed": removed,
         "order": snapshot["order"],
         "balance_start_usdt": 1000,
-        "next_scan_hint_ru": "Следующий скан по расписанию ≈ каждые 4 часа",
+        "next_scan_hint_ru": "Следующий скан whitelist ≈ каждый час",
         "history_preview": {
             "added": added,
             "removed": removed,
