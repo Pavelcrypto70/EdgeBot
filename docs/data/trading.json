@@ -1,34 +1,19 @@
 {
-  "updated_at": "2026-10-23T16:22:09Z",
+  "updated_at": "2026-10-23T16:23:49Z",
   "status": "ok",
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 1020.34,
-  "realized_pnl": 24.47,
+  "equity_usdt": 1010.36,
+  "realized_pnl": 14.98,
   "unrealized_pnl": 0.0,
-  "winrate_pct": 73.3,
-  "closed_n": 15,
-  "open_n": 5,
+  "winrate_pct": 63.2,
+  "closed_n": 19,
+  "open_n": 4,
   "order": {
     "notional_usdt": 300.0,
     "leverage": 3.0,
     "margin_usdt": 100.0
   },
   "open_positions": [
-    {
-      "symbol": "AEROUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "size": 403.33423,
-      "value": 300.0,
-      "entry": 0.7438,
-      "mark": 0.7438,
-      "pnl": 0.0,
-      "pnl_pct": 0.0,
-      "lev": "x3",
-      "margin": 100.0,
-      "stop": 0.7578742857142857,
-      "take": 0.7297257142857143
-    },
     {
       "symbol": "DASHUSDT",
       "side": "ЛОНГ",
@@ -45,52 +30,84 @@
       "take": 54.244
     },
     {
+      "symbol": "AEROUSDT",
+      "side": "ШОРТ",
+      "side_raw": "short",
+      "size": 403.605543,
+      "value": 300.0,
+      "entry": 0.7433,
+      "mark": 0.7433,
+      "pnl": 0.0,
+      "pnl_pct": 0.0,
+      "lev": "x3",
+      "margin": 100.0,
+      "stop": 0.7573742857142857,
+      "take": 0.7292257142857143
+    },
+    {
       "symbol": "DOODUSDT",
       "side": "ШОРТ",
       "side_raw": "short",
-      "size": 163398.69281,
+      "size": 164744.645799,
       "value": 300.0,
-      "entry": 0.001836,
-      "mark": 0.001836,
+      "entry": 0.001821,
+      "mark": 0.001821,
       "pnl": 0.0,
       "pnl_pct": 0.0,
       "lev": "x3",
       "margin": 100.0,
-      "stop": 0.0018645,
-      "take": 0.0018017999999999999
-    },
-    {
-      "symbol": "LITUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "size": 90.549636,
-      "value": 300.0,
-      "entry": 3.3131,
-      "mark": 3.3131,
-      "pnl": 0.0,
-      "pnl_pct": 0.0,
-      "lev": "x3",
-      "margin": 100.0,
-      "stop": 3.3552842857142857,
-      "take": 3.262478857142857
+      "stop": 0.0018477142857142856,
+      "take": 0.001788942857142857
     },
     {
       "symbol": "USELESSUSDT",
       "side": "ШОРТ",
       "side_raw": "short",
-      "size": 1811.484814,
+      "size": 1818.071632,
       "value": 300.0,
-      "entry": 0.16561,
-      "mark": 0.16561,
+      "entry": 0.16501,
+      "mark": 0.16501,
       "pnl": 0.0,
       "pnl_pct": 0.0,
       "lev": "x3",
       "margin": 100.0,
-      "stop": 0.168935,
-      "take": 0.162285
+      "stop": 0.16833857142857142,
+      "take": 0.16168142857142856
     }
   ],
   "closed_trades": [
+    {
+      "symbol": "USELESSUSDT",
+      "side": "ШОРТ",
+      "pnl": -6.19,
+      "reason": "стоп",
+      "when": "2026-10-23 16:23:42",
+      "win": false
+    },
+    {
+      "symbol": "LITUSDT",
+      "side": "ШОРТ",
+      "pnl": -3.99,
+      "reason": "стоп",
+      "when": "2026-10-23 16:23:42",
+      "win": false
+    },
+    {
+      "symbol": "DOODUSDT",
+      "side": "ШОРТ",
+      "pnl": -4.82,
+      "reason": "стоп",
+      "when": "2026-10-23 16:23:41",
+      "win": false
+    },
+    {
+      "symbol": "AEROUSDT",
+      "side": "ШОРТ",
+      "pnl": 5.51,
+      "reason": "тейк",
+      "when": "2026-10-23 16:23:41",
+      "win": true
+    },
     {
       "symbol": "USELESSUSDT",
       "side": "ЛОНГ",
@@ -259,20 +276,11 @@
       "bucket": "fast"
     },
     {
-      "symbol": "LITUSDT",
-      "trades": 1,
-      "winrate_pct": 100.0,
-      "pnl": 2.99,
-      "ema": "12/13",
-      "strategy": "fast",
-      "bucket": "fast"
-    },
-    {
-      "symbol": "USELESSUSDT",
-      "trades": 1,
-      "winrate_pct": 100.0,
-      "pnl": 2.95,
-      "ema": "9/13",
+      "symbol": "AEROUSDT",
+      "trades": 2,
+      "winrate_pct": 50.0,
+      "pnl": 2.49,
+      "ema": "5/26",
       "strategy": "fast",
       "bucket": "fast"
     },
@@ -286,40 +294,34 @@
       "bucket": "fast"
     },
     {
-      "symbol": "AEROUSDT",
-      "trades": 1,
-      "winrate_pct": 0.0,
-      "pnl": -3.02,
-      "ema": "5/26",
+      "symbol": "LITUSDT",
+      "trades": 2,
+      "winrate_pct": 50.0,
+      "pnl": -1.0,
+      "ema": "12/13",
+      "strategy": "fast",
+      "bucket": "fast"
+    },
+    {
+      "symbol": "USELESSUSDT",
+      "trades": 2,
+      "winrate_pct": 50.0,
+      "pnl": -3.25,
+      "ema": "9/13",
       "strategy": "fast",
       "bucket": "fast"
     },
     {
       "symbol": "DOODUSDT",
-      "trades": 2,
+      "trades": 3,
       "winrate_pct": 0.0,
-      "pnl": -6.75,
+      "pnl": -11.58,
       "ema": "5/13",
       "strategy": "fast",
       "bucket": "fast"
     }
   ],
   "logs": [
-    "[2026-10-23 16:09:55] вход по сигналу бара i=159 · BIRBUSDT · режим fast",
-    "[2026-10-23 16:09:55] ОТКРЫТИЕ ШОРТ DASHUSDT @ 107.965 · маржа 100$ ×3 = 300$ в позиции · стоп 109.218 · тейк 106.712 · EMA 9/34",
-    "[2026-10-23 16:09:55] вход по сигналу бара i=159 · DASHUSDT · режим fast",
-    "[2026-10-23 16:09:55] ОТКРЫТИЕ ШОРТ DOODUSDT @ 95.7959 · маржа 100$ ×3 = 300$ в позиции · стоп 96.8141 · тейк 94.5741 · EMA 5/13",
-    "[2026-10-23 16:09:55] вход по сигналу бара i=159 · DOODUSDT · режим fast",
-    "[2026-10-23 16:09:55] ОТКРЫТИЕ ЛОНГ LITUSDT @ 90.7349 · маржа 100$ ×3 = 300$ в позиции · стоп 89.9403 · тейк 91.6885 · EMA 12/13",
-    "[2026-10-23 16:09:55] вход по сигналу бара i=156 · LITUSDT · режим fast",
-    "[2026-10-23 16:09:55] ОТКРЫТИЕ ЛОНГ MAGMAUSDT @ 102.796 · маржа 100$ ×3 = 300$ в позиции · стоп 101.699 · тейк 103.893 · EMA 12/13",
-    "[2026-10-23 16:09:55] вход по сигналу бара i=156 · MAGMAUSDT · режим fast",
-    "[2026-10-23 16:09:55] ОТКРЫТИЕ ШОРТ PTBUSDT @ 101.061 · маржа 100$ ×3 = 300$ в позиции · стоп 101.771 · тейк 100.351 · EMA 8/13",
-    "[2026-10-23 16:09:55] вход по сигналу бара i=159 · PTBUSDT · режим fast",
-    "[2026-10-23 16:11:20] очередь загружена · 13 монет из whitelist",
-    "[2026-10-23 16:11:20] В ЭФИРЕ · старт · 13 монет в работе",
-    "[2026-10-23 16:11:20] СТОП ЛОНГ AEROUSDT @ 101.222 результат -3.02 USDT",
-    "[2026-10-23 16:11:20] ТЕЙК ЛОНГ BIRBUSDT @ 98.2567 результат +3.05 USDT",
     "[2026-10-23 16:11:20] ТЕЙК ШОРТ DASHUSDT @ 106.712 результат +3.32 USDT",
     "[2026-10-23 16:11:20] СТОП ШОРТ DOODUSDT @ 96.8141 результат -3.36 USDT",
     "[2026-10-23 16:11:20] ТЕЙК ЛОНГ LITUSDT @ 91.6885 результат +2.99 USDT",
@@ -384,7 +386,22 @@
     "[2026-10-23 16:22:06] вход по сигналу бара i=157 · LITUSDT · режим fast · okx",
     "[2026-10-23 16:22:09] ОТКРЫТИЕ ШОРТ USELESSUSDT @ 0.16561 · маржа 100$ ×3 = 300$ в позиции · стоп 0.168935 · тейк 0.162285 · EMA 9/13",
     "[2026-10-23 16:22:09] вход по сигналу бара i=159 · USELESSUSDT · режим fast · okx",
-    "[2026-10-23 16:22:09] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 16:22:09] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 16:23:40] очередь загружена · 13 монет из whitelist",
+    "[2026-10-23 16:23:40] В ЭФИРЕ · старт · 13 монет в работе",
+    "[2026-10-23 16:23:41] ТЕЙК ШОРТ AEROUSDT @ 0.729726 результат +5.51 USDT",
+    "[2026-10-23 16:23:41] СТОП ШОРТ DOODUSDT @ 0.0018645 результат -4.82 USDT",
+    "[2026-10-23 16:23:42] СТОП ШОРТ LITUSDT @ 3.35528 результат -3.99 USDT",
+    "[2026-10-23 16:23:42] СТОП ШОРТ USELESSUSDT @ 0.168935 результат -6.19 USDT",
+    "[2026-10-23 16:23:43] ОТКРЫТИЕ ШОРТ AEROUSDT @ 0.7433 · маржа 100$ ×3 = 300$ в позиции · стоп 0.757374 · тейк 0.729226 · EMA 5/26",
+    "[2026-10-23 16:23:43] вход по сигналу бара i=159 · AEROUSDT · режим fast · okx",
+    "[2026-10-23 16:23:43] нет живых баров ALTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ALTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:23:44] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:23:45] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001821 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00184771 · тейк 0.00178894 · EMA 5/13",
+    "[2026-10-23 16:23:45] вход по сигналу бара i=158 · DOODUSDT · режим fast · okx",
+    "[2026-10-23 16:23:49] ОТКРЫТИЕ ШОРТ USELESSUSDT @ 0.16501 · маржа 100$ ×3 = 300$ в позиции · стоп 0.168339 · тейк 0.161681 · EMA 9/13",
+    "[2026-10-23 16:23:49] вход по сигналу бара i=159 · USELESSUSDT · режим fast · okx",
+    "[2026-10-23 16:23:49] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
   ],
   "bars_source": "mixed:demo+okx",
   "note_ru": "Живой эфир по whitelist: старт 1000 USDT, ордер 300 USDT (×3). Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. Входы только по живым свечам Bybit; при 403/demo — пропуск. Сейчас бары: mixed:demo+okx."
