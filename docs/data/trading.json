@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T23:44:36Z",
+  "updated_at": "2026-10-23T23:46:17Z",
   "status": "ok",
   "balance_start_usdt": 1000.0,
   "equity_usdt": 692.91,
@@ -355,12 +355,6 @@
     }
   ],
   "logs": [
-    "[2026-10-23 20:45:35] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
-    "[2026-10-23 20:47:14] очередь загружена · 7 монет из whitelist",
-    "[2026-10-23 20:47:14] В ЭФИРЕ · старт · 7 монет в работе",
-    "[2026-10-23 20:47:16] нет марки BTRUSDT — PnL не обновлён в этом тике",
-    "[2026-10-23 20:47:16] СТОП ШОРТ DOODUSDT @ 0.00166391 результат -6.79 USDT",
-    "[2026-10-23 20:47:19] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001629 · маржа 100$ ×3 = 300$ в позиции · стоп 0.001665 · тейк 0.0015858 · EMA 5/34",
     "[2026-10-23 20:47:19] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
     "[2026-10-23 20:48:57] очередь загружена · 7 монет из whitelist",
     "[2026-10-23 20:48:57] В ЭФИРЕ · старт · 7 монет в работе",
@@ -434,7 +428,13 @@
     "[2026-10-23 23:44:31] нет марки BTRUSDT — PnL не обновлён в этом тике",
     "[2026-10-23 23:44:31] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 23:44:32] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-23 23:44:36] пропуск входов · demo-бары · 12 монет · источник тика: demo"
+    "[2026-10-23 23:44:36] пропуск входов · demo-бары · 12 монет · источник тика: demo",
+    "[2026-10-23 23:46:08] очередь загружена · 12 монет из whitelist",
+    "[2026-10-23 23:46:08] В ЭФИРЕ · старт · 12 монет в работе",
+    "[2026-10-23 23:46:10] нет марки BTRUSDT — PnL не обновлён в этом тике",
+    "[2026-10-23 23:46:10] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 23:46:11] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 23:46:17] пропуск входов · demo-бары · 12 монет · источник тика: demo"
   ],
   "bars_source": "demo",
   "note_ru": "Живой эфир по whitelist: старт 1000 USDT, ордер 300 USDT (×3). Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. Входы только по живым свечам Bybit; при 403/demo — пропуск. Сейчас бары: demo."
