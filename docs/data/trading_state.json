@@ -1,11 +1,11 @@
 {
-  "wallet": 737.7728283275526,
-  "realized_pnl": -158.9271716724481,
-  "ticks": 31,
+  "wallet": 729.2732073762595,
+  "realized_pnl": -167.2617926237413,
+  "ticks": 32,
   "signal_mode_v": 5,
   "settings_rev": 5,
   "last_signal_key": {
-    "DOODUSDT": "159:short:0.001752"
+    "DOODUSDT": "159:short:0.001746"
   },
   "history": [
     {
@@ -235,6 +235,18 @@
       "opened_at": "2026-10-23 18:06:05",
       "closed_at": "2026-10-23 18:07:39",
       "win": false
+    },
+    {
+      "symbol": "DOODUSDT",
+      "side": "short",
+      "entry": 0.001751,
+      "exit": 0.001798657142857143,
+      "size": 171330.66818960593,
+      "pnl": -8.334620951293163,
+      "reason": "stop",
+      "opened_at": "2026-10-23 18:07:42",
+      "closed_at": "2026-10-23 18:09:10",
+      "win": false
     }
   ],
   "positions": {
@@ -242,26 +254,19 @@
       "symbol": "DOODUSDT",
       "category": "linear",
       "side": "short",
-      "size": 171330.66818960593,
-      "entry": 0.001751,
-      "stop": 0.001798657142857143,
-      "take": 0.0016938114285714285,
+      "size": 171821.30584192442,
+      "entry": 0.001746,
+      "stop": 0.001793657142857143,
+      "take": 0.0016888114285714285,
       "leverage": 3.0,
       "margin": 100.0,
       "risk": 4.765714285714299e-05,
-      "opened_at": "2026-10-23 18:07:42",
-      "mark": 0.001751,
+      "opened_at": "2026-10-23 18:09:13",
+      "mark": 0.001746,
       "unrealized": 0.0
     }
   },
   "logs": [
-    "[2026-10-23 17:41:39] очередь загружена · 7 монет из whitelist",
-    "[2026-10-23 17:41:39] В ЭФИРЕ · старт · 7 монет в работе",
-    "[2026-10-23 17:41:39] СТОП ШОРТ DOODUSDT @ 0.001771 результат -8.53 USDT",
-    "[2026-10-23 17:41:42] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-23 17:41:42] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001736 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178434 · тейк 0.00167799 · EMA 5/34",
-    "[2026-10-23 17:41:42] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
-    "[2026-10-23 17:41:43] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
     "[2026-10-23 17:43:15] очередь загружена · 7 монет из whitelist",
     "[2026-10-23 17:43:15] В ЭФИРЕ · старт · 7 монет в работе",
     "[2026-10-23 17:43:15] СТОП ШОРТ DOODUSDT @ 0.00178434 результат -8.52 USDT",
@@ -374,6 +379,13 @@
     "[2026-10-23 18:07:42] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001751 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00179866 · тейк 0.00169381 · EMA 5/34",
     "[2026-10-23 18:07:42] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
     "[2026-10-23 18:07:43] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
-    "[2026-10-23 18:07:43] пульс · капитал 837.77 USDT · открыто 1 · очередь 7"
+    "[2026-10-23 18:07:43] пульс · капитал 837.77 USDT · открыто 1 · очередь 7",
+    "[2026-10-23 18:09:09] очередь загружена · 7 монет из whitelist",
+    "[2026-10-23 18:09:09] В ЭФИРЕ · старт · 7 монет в работе",
+    "[2026-10-23 18:09:10] СТОП ШОРТ DOODUSDT @ 0.00179866 результат -8.33 USDT",
+    "[2026-10-23 18:09:12] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 18:09:13] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001746 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00179366 · тейк 0.00168881 · EMA 5/34",
+    "[2026-10-23 18:09:13] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
+    "[2026-10-23 18:09:13] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
   ]
 }
