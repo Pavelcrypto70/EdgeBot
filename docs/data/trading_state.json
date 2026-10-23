@@ -1,7 +1,7 @@
 {
   "wallet": 664.5776072907937,
   "realized_pnl": -33.77239270920655,
-  "ticks": 5,
+  "ticks": 6,
   "signal_mode_v": 4,
   "last_signal_key": {
     "AEROUSDT": "159:short:0.7465",
@@ -109,8 +109,8 @@
       "margin": 100.0,
       "risk": 0.014365714285714315,
       "opened_at": "2026-10-23 16:42:09",
-      "mark": 0.7496,
-      "unrealized": -1.2458137977227026
+      "mark": 0.7504,
+      "unrealized": -1.5673141326188493
     },
     "LITUSDT": {
       "symbol": "LITUSDT",
@@ -124,8 +124,8 @@
       "margin": 100.0,
       "risk": 0.04012714285714303,
       "opened_at": "2026-10-23 16:45:48",
-      "mark": 3.3134,
-      "unrealized": 0.7946541448437708
+      "mark": 3.3226,
+      "unrealized": -0.03612064294744049
     },
     "USELESSUSDT": {
       "symbol": "USELESSUSDT",
@@ -139,8 +139,8 @@
       "margin": 100.0,
       "risk": 0.003320714285714288,
       "opened_at": "2026-10-23 16:47:33",
-      "mark": 0.16694,
-      "unrealized": -1.359570661896213
+      "mark": 0.16689,
+      "unrealized": -1.4490161001788506
     }
   },
   "logs": [
@@ -197,6 +197,12 @@
     "[2026-10-23 16:48:56] В ЭФИРЕ · старт · 13 монет в работе",
     "[2026-10-23 16:49:00] нет живых баров ALTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ALTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 16:49:01] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-23 16:49:06] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 16:49:06] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 16:50:32] очередь загружена · 13 монет из whitelist",
+    "[2026-10-23 16:50:32] В ЭФИРЕ · старт · 13 монет в работе",
+    "[2026-10-23 16:50:36] нет живых баров ALTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ALTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:50:36] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:50:42] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 16:50:42] пульс · капитал 961.53 USDT · открыто 3 · очередь 13"
   ]
 }
