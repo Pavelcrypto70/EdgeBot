@@ -1,7 +1,7 @@
 {
   "wallet": 563.7973682738849,
   "realized_pnl": -34.0576317261154,
-  "ticks": 16,
+  "ticks": 17,
   "signal_mode_v": 4,
   "last_signal_key": {
     "AEROUSDT": "159:short:0.7465",
@@ -133,8 +133,8 @@
       "margin": 100.0,
       "risk": 0.014365714285714315,
       "opened_at": "2026-10-23 16:42:09",
-      "mark": 0.754,
-      "unrealized": -3.014065639651688
+      "mark": 0.7527,
+      "unrealized": -2.4916275954454052
     },
     "LITUSDT": {
       "symbol": "LITUSDT",
@@ -148,8 +148,8 @@
       "margin": 100.0,
       "risk": 0.04012714285714303,
       "opened_at": "2026-10-23 16:45:48",
-      "mark": 3.3048,
-      "unrealized": 1.5712479682138216
+      "mark": 3.3014,
+      "unrealized": 1.8782734332671058
     },
     "USELESSUSDT": {
       "symbol": "USELESSUSDT",
@@ -163,8 +163,8 @@
       "margin": 100.0,
       "risk": 0.003320714285714288,
       "opened_at": "2026-10-23 16:47:33",
-      "mark": 0.16565,
-      "unrealized": -3.6672629695885446
+      "mark": 0.16546,
+      "unrealized": -4.007155635062598
     },
     "DASHUSDT": {
       "symbol": "DASHUSDT",
@@ -178,8 +178,8 @@
       "margin": 100.0,
       "risk": 0.7131428571428557,
       "opened_at": "2026-10-23 16:55:44",
-      "mark": 53.63,
-      "unrealized": -1.502782931354338
+      "mark": 53.5,
+      "unrealized": -2.226345083487933
     }
   },
   "logs": [
@@ -296,6 +296,10 @@
     "[2026-10-23 17:07:29] В ЭФИРЕ · старт · 7 монет в работе",
     "[2026-10-23 17:07:36] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 17:07:37] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
-    "[2026-10-23 17:07:37] пульс · капитал 957.18 USDT · открыто 4 · очередь 7"
+    "[2026-10-23 17:07:37] пульс · капитал 957.18 USDT · открыто 4 · очередь 7",
+    "[2026-10-23 17:09:09] очередь загружена · 7 монет из whitelist",
+    "[2026-10-23 17:09:09] В ЭФИРЕ · старт · 7 монет в работе",
+    "[2026-10-23 17:09:15] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 17:09:17] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
   ]
 }
