@@ -24,6 +24,11 @@ def klines_to_df(rows: list[list[str]]) -> pd.DataFrame:
     return frame.dropna(subset=["close"]).reset_index(drop=True)
 
 
+def _tag_demo(frame: pd.DataFrame, *, demo: bool) -> pd.DataFrame:
+    frame.attrs["edgebot_demo"] = bool(demo)
+    return frame
+
+
 def fetch_bars(
     client: BybitClient,
     category: str,
@@ -35,17 +40,17 @@ def fetch_bars(
 ) -> pd.DataFrame:
     settings = get_settings()
     if settings.edgebot_demo == "always":
-        return demo_klines(limit, seed=demo_seed)
+        return _tag_demo(demo_klines(limit, seed=demo_seed), demo=True)
     try:
         rows = client.klines(category, symbol, interval, limit=limit)
         frame = klines_to_df(rows)
         if frame.empty:
             raise RuntimeError("empty klines")
-        return frame
+        return _tag_demo(frame, demo=False)
     except Exception:
         if settings.edgebot_demo == "never":
             raise
-        return demo_klines(limit, seed=demo_seed)
+        return _tag_demo(demo_klines(limit, seed=demo_seed), demo=True)
 
 
 @dataclass(slots=True)

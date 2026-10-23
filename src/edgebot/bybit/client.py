@@ -11,6 +11,11 @@ class BybitClient:
     """Minimal Bybit v5 public client (tickers / klines / funding)."""
 
     MAINNET = "https://api.bybit.com"
+    # зеркало: с части IP (в т.ч. GitHub Actions) основной хост отдаёт 403
+    MAINNET_MIRRORS = (
+        "https://api.bybit.com",
+        "https://api.bytick.com",
+    )
     TESTNET = "https://api-testnet.bybit.com"
 
     def __init__(self, *, timeout: float = 30.0) -> None:
@@ -18,15 +23,22 @@ class BybitClient:
         base = self.TESTNET if settings.bybit_testnet else self.MAINNET
         # Market data is richer on mainnet public even if trading later uses testnet
         self.public_url = self.MAINNET if settings.bybit_data_host == "public" else base
+        self._public_hosts = (
+            list(self.MAINNET_MIRRORS)
+            if settings.bybit_data_host == "public" and not settings.bybit_testnet
+            else [self.public_url]
+        )
         # connect/read timeouts — скринер не должен висеть минутами
         # User-Agent нужен: с IP GitHub Actions Bybit часто режет «голый» httpx (403)
         self._client = httpx.Client(
             timeout=httpx.Timeout(timeout, connect=8.0, read=timeout, write=8.0, pool=8.0),
             headers={
                 "User-Agent": (
-                    "Mozilla/5.0 (compatible; EdgeBot/0.1; +https://github.com/Pavelcrypto70/EdgeBot)"
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                    "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
                 ),
                 "Accept": "application/json",
+                "Accept-Language": "en-US,en;q=0.9",
             },
             follow_redirects=True,
         )
@@ -41,12 +53,28 @@ class BybitClient:
         self.close()
 
     def _get_public(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
-        r = self._client.get(f"{self.public_url}{path}", params=params or {})
-        r.raise_for_status()
-        payload = r.json()
-        if payload.get("retCode") != 0:
-            raise RuntimeError(f"Bybit error {payload.get('retCode')}: {payload.get('retMsg')}")
-        return payload["result"]
+        last_exc: Exception | None = None
+        for host in self._public_hosts:
+            try:
+                r = self._client.get(f"{host}{path}", params=params or {})
+                if r.status_code == 403:
+                    last_exc = httpx.HTTPStatusError(
+                        "403", request=r.request, response=r
+                    )
+                    continue
+                r.raise_for_status()
+                payload = r.json()
+                if payload.get("retCode") != 0:
+                    raise RuntimeError(
+                        f"Bybit error {payload.get('retCode')}: {payload.get('retMsg')}"
+                    )
+                self.public_url = host
+                return payload["result"]
+            except Exception as exc:  # noqa: BLE001
+                last_exc = exc
+                continue
+        assert last_exc is not None
+        raise last_exc
 
     def tickers(self, category: str) -> list[dict[str, Any]]:
         result = self._get_public("/v5/market/tickers", {"category": category})

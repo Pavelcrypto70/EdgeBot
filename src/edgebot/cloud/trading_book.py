@@ -14,7 +14,7 @@ LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
 # bump: сброс last_signal_key после смены режима fast (иначе старые demo-ключи глушат входы)
-SIGNAL_MODE_V = 2
+SIGNAL_MODE_V = 3
 
 
 def _now_iso() -> str:
@@ -236,11 +236,17 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
         "closed_trades": closed,
         "by_symbol": by_symbol,
         "logs": snap.get("logs") or [],
+        "bars_source": getattr(emu, "last_bars_source", "unknown"),
         "note_ru": (
             f"Живой эфир по whitelist: старт {START_BALANCE:.0f} USDT, "
             f"ордер {ORDER_NOTIONAL:.0f} USDT (×{int(LEVERAGE)}). "
-            "Прогон входов ≈ каждую ~1 мин (цепочка Actions + cron каждые 5 мин). "
-            "Сигнал — с последних 1–2 свечей."
+            "Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. "
+            "Входы только по живым свечам Bybit; при 403/demo — пропуск."
+            + (
+                f" Сейчас бары: {getattr(emu, 'last_bars_source', '?')}."
+                if getattr(emu, "last_bars_source", None)
+                else ""
+            )
         ),
     }
 
@@ -274,9 +280,15 @@ def update_trading_book(
     prev_mode = int((state or {}).get("signal_mode_v") or 0) if isinstance(state, dict) else 0
     if prev_mode < SIGNAL_MODE_V:
         emu._last_signal_key.clear()
+        # снять demo-открытия (~$90–110), чтобы не засорять книгу
+        dropped = 0
+        for sym, pos in list(emu.positions.items()):
+            emu.wallet += float(pos.margin)
+            del emu.positions[sym]
+            dropped += 1
         emu.log(
-            f"сброс меток сигналов · mode v{SIGNAL_MODE_V} "
-            f"(fast = крест+откат, не чистый cross)"
+            f"mode v{SIGNAL_MODE_V}: сброс меток + снято открытых {dropped} "
+            f"(fast=крест+откат; входы только с живого Bybit, не demo)"
         )
 
     if not emu.running:

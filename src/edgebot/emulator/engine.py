@@ -128,6 +128,8 @@ class PaperEmulator:
     ticks: int = 0
     _last_signal_key: dict[str, str] = field(default_factory=dict)
     _started_at: str | None = None
+    last_bars_source: str = "unknown"  # bybit | demo | mixed
+    _demo_entries_skipped: int = 0
 
     def __post_init__(self) -> None:
         self.wallet = float(self.starting_balance)
@@ -457,6 +459,9 @@ class PaperEmulator:
 
             # 2) входы: свежий сигнал.
             # fast — шире окно (откаты чаще), heavy/cross — узкое (чистый крест).
+            saw_demo = False
+            saw_live = False
+            self._demo_entries_skipped = 0
             for bot in list(self.bots.values()):
                 if bot.symbol in self.positions:
                     continue
@@ -486,6 +491,12 @@ class PaperEmulator:
                 except Exception as exc:  # noqa: BLE001
                     self.log(f"нет данных {bot.symbol}: {exc}")
                     continue
+                if bool(entry.attrs.get("edgebot_demo")):
+                    saw_demo = True
+                    # на GitHub Actions Bybit часто 403 → demo ~$100; не открываем фейк
+                    self._demo_entries_skipped += 1
+                    continue
+                saw_live = True
                 if len(entry) < 60:
                     continue
                 sigs = generate_signals(entry, htf, bot.params())
@@ -519,6 +530,18 @@ class PaperEmulator:
                         f"вход по сигналу бара i={int(pick['i'])} · {bot.symbol} · "
                         f"режим {mode}"
                     )
+
+            if saw_demo and saw_live:
+                self.last_bars_source = "mixed"
+            elif saw_demo:
+                self.last_bars_source = "demo"
+            elif saw_live:
+                self.last_bars_source = "bybit"
+            if self._demo_entries_skipped:
+                self.log(
+                    f"пропуск входов · demo-бары (Bybit недоступен) · "
+                    f"{self._demo_entries_skipped} монет"
+                )
 
             if self.ticks % 5 == 1:
                 self.log(
