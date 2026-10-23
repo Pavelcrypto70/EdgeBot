@@ -4,7 +4,8 @@ name: EdgeBot live entries (whitelist)
 # Полный ресёрч whitelist — autonomous.yml раз в ~4 часа.
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    # каждую минуту UTC (GitHub иногда чуть задерживает очередь)
+    - cron: "* * * * *"
   workflow_dispatch:
 
 permissions:

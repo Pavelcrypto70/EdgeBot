@@ -442,9 +442,9 @@ class PaperEmulator:
                     elif mark <= pos.take:
                         self._close(pos, pos.take, "take")
 
-            # 2) входы: любые новые сигналы на последних lookback барах (не только «прямо сейчас»)
-            # lookback=10 на 15m ≈ 2.5ч — перекрывает задержки Actions
-            lookback = 10
+            # 2) входы: только свежий сигнал (1–2 последние свечи).
+            # Частота тика — каждую минуту; широкий lookback давал бы поздний вход.
+            lookback = 2
             for bot in list(self.bots.values()):
                 if bot.symbol in self.positions:
                     continue
