@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-10-23T17:59:28Z",
+  "updated_at": "2026-10-23T18:01:10Z",
   "status": "ok",
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 879.94,
-  "realized_pnl": -117.59,
+  "equity_usdt": 871.44,
+  "realized_pnl": -125.92,
   "unrealized_pnl": 0.0,
   "winrate_pct": 0.0,
-  "closed_n": 14,
+  "closed_n": 15,
   "open_n": 1,
   "order": {
     "notional_usdt": 300.0,
@@ -18,19 +18,27 @@
       "symbol": "DOODUSDT",
       "side": "ШОРТ",
       "side_raw": "short",
-      "size": 172512.93847,
+      "size": 173812.282735,
       "value": 300.0,
-      "entry": 0.001739,
-      "mark": 0.001739,
+      "entry": 0.001726,
+      "mark": 0.001726,
       "pnl": 0.0,
       "pnl_pct": 0.0,
       "lev": "x3",
       "margin": 100.0,
-      "stop": 0.0017863142857142858,
-      "take": 0.0016822228571428573
+      "stop": 0.0017723714285714288,
+      "take": 0.0016703542857142858
     }
   ],
   "closed_trades": [
+    {
+      "symbol": "DOODUSDT",
+      "side": "ШОРТ",
+      "pnl": -8.33,
+      "reason": "стоп",
+      "when": "2026-10-23 18:01:04",
+      "win": false
+    },
     {
       "symbol": "DOODUSDT",
       "side": "ШОРТ",
@@ -147,22 +155,15 @@
   "by_symbol": [
     {
       "symbol": "DOODUSDT",
-      "trades": 14,
+      "trades": 15,
       "winrate_pct": 0.0,
-      "pnl": -117.59,
+      "pnl": -125.92,
       "ema": "5/34",
       "strategy": "fast",
       "bucket": "fast"
     }
   ],
   "logs": [
-    "[2026-10-23 17:41:42] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001736 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178434 · тейк 0.00167799 · EMA 5/34",
-    "[2026-10-23 17:41:42] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
-    "[2026-10-23 17:41:43] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
-    "[2026-10-23 17:43:15] очередь загружена · 7 монет из whitelist",
-    "[2026-10-23 17:43:15] В ЭФИРЕ · старт · 7 монет в работе",
-    "[2026-10-23 17:43:15] СТОП ШОРТ DOODUSDT @ 0.00178434 результат -8.52 USDT",
-    "[2026-10-23 17:43:18] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 17:43:18] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001734 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178251 · тейк 0.00167578 · EMA 5/34",
     "[2026-10-23 17:43:18] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
     "[2026-10-23 17:43:19] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
@@ -235,7 +236,14 @@
     "[2026-10-23 17:59:27] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001739 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178631 · тейк 0.00168222 · EMA 5/34",
     "[2026-10-23 17:59:27] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
     "[2026-10-23 17:59:28] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
-    "[2026-10-23 17:59:28] пульс · капитал 879.94 USDT · открыто 1 · очередь 7"
+    "[2026-10-23 17:59:28] пульс · капитал 879.94 USDT · открыто 1 · очередь 7",
+    "[2026-10-23 18:01:03] очередь загружена · 7 монет из whitelist",
+    "[2026-10-23 18:01:03] В ЭФИРЕ · старт · 7 монет в работе",
+    "[2026-10-23 18:01:04] СТОП ШОРТ DOODUSDT @ 0.00178631 результат -8.33 USDT",
+    "[2026-10-23 18:01:08] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 18:01:09] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001726 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00177237 · тейк 0.00167035 · EMA 5/34",
+    "[2026-10-23 18:01:09] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
+    "[2026-10-23 18:01:10] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
   ],
   "bars_source": "mixed:demo+okx",
   "note_ru": "Живой эфир по whitelist: старт 1000 USDT, ордер 300 USDT (×3). Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. Входы только по живым свечам Bybit; при 403/demo — пропуск. Сейчас бары: mixed:demo+okx."
