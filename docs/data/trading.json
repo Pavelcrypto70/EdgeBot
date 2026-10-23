@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-10-23T18:02:47Z",
+  "updated_at": "2026-10-23T18:04:24Z",
   "status": "ok",
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 863.05,
-  "realized_pnl": -134.15,
+  "equity_usdt": 854.67,
+  "realized_pnl": -142.36,
   "unrealized_pnl": 0.0,
   "winrate_pct": 0.0,
-  "closed_n": 16,
+  "closed_n": 17,
   "open_n": 1,
   "order": {
     "notional_usdt": 300.0,
@@ -18,19 +18,27 @@
       "symbol": "DOODUSDT",
       "side": "ШОРТ",
       "side_raw": "short",
-      "size": 172413.793103,
+      "size": 171919.770774,
       "value": 300.0,
-      "entry": 0.00174,
-      "mark": 0.00174,
+      "entry": 0.001745,
+      "mark": 0.001745,
       "pnl": 0.0,
       "pnl_pct": 0.0,
       "lev": "x3",
       "margin": 100.0,
-      "stop": 0.0017866285714285715,
-      "take": 0.0016840457142857142
+      "stop": 0.0017922285714285714,
+      "take": 0.0016883257142857142
     }
   ],
   "closed_trades": [
+    {
+      "symbol": "DOODUSDT",
+      "side": "ШОРТ",
+      "pnl": -8.21,
+      "reason": "стоп",
+      "when": "2026-10-23 18:04:20",
+      "win": false
+    },
     {
       "symbol": "DOODUSDT",
       "side": "ШОРТ",
@@ -163,22 +171,15 @@
   "by_symbol": [
     {
       "symbol": "DOODUSDT",
-      "trades": 16,
+      "trades": 17,
       "winrate_pct": 0.0,
-      "pnl": -134.15,
+      "pnl": -142.36,
       "ema": "5/34",
       "strategy": "fast",
       "bucket": "fast"
     }
   ],
   "logs": [
-    "[2026-10-23 17:44:56] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-23 17:44:57] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001733 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178151 · тейк 0.00167478 · EMA 5/34",
-    "[2026-10-23 17:44:57] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
-    "[2026-10-23 17:44:57] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
-    "[2026-10-23 17:46:22] очередь загружена · 7 монет из whitelist",
-    "[2026-10-23 17:46:22] В ЭФИРЕ · старт · 7 монет в работе",
-    "[2026-10-23 17:46:23] СТОП ШОРТ DOODUSDT @ 0.00178151 результат -8.57 USDT",
     "[2026-10-23 17:46:26] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 17:46:27] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001737 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178303 · тейк 0.00168177 · EMA 5/34",
     "[2026-10-23 17:46:27] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
@@ -251,7 +252,14 @@
     "[2026-10-23 18:02:46] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 18:02:46] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.00174 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178663 · тейк 0.00168405 · EMA 5/34",
     "[2026-10-23 18:02:46] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
-    "[2026-10-23 18:02:47] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 18:02:47] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 18:04:19] очередь загружена · 7 монет из whitelist",
+    "[2026-10-23 18:04:19] В ЭФИРЕ · старт · 7 монет в работе",
+    "[2026-10-23 18:04:20] СТОП ШОРТ DOODUSDT @ 0.00178663 результат -8.21 USDT",
+    "[2026-10-23 18:04:23] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 18:04:24] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001745 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00179223 · тейк 0.00168833 · EMA 5/34",
+    "[2026-10-23 18:04:24] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
+    "[2026-10-23 18:04:24] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
   ],
   "bars_source": "mixed:demo+okx",
   "note_ru": "Живой эфир по whitelist: старт 1000 USDT, ордер 300 USDT (×3). Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. Входы только по живым свечам Bybit; при 403/demo — пропуск. Сейчас бары: mixed:demo+okx."
