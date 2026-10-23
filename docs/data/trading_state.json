@@ -1,11 +1,11 @@
 {
-  "wallet": 560.1551373882927,
-  "realized_pnl": -37.8648626117076,
-  "ticks": 8,
+  "wallet": 563.7973682738849,
+  "realized_pnl": -34.0576317261154,
+  "ticks": 9,
   "signal_mode_v": 4,
   "last_signal_key": {
     "AEROUSDT": "159:short:0.7465",
-    "DASHUSDT": "159:long:53.84",
+    "DASHUSDT": "159:long:53.9",
     "DOODUSDT": "156:short:0.001855",
     "LITUSDT": "159:short:3.3216",
     "USELESSUSDT": "159:long:0.1677"
@@ -106,6 +106,18 @@
       "opened_at": "2026-10-23 16:52:20",
       "closed_at": "2026-10-23 16:53:58",
       "win": false
+    },
+    {
+      "symbol": "DASHUSDT",
+      "side": "long",
+      "entry": 53.83,
+      "exit": 54.543142857142854,
+      "size": 5.573100501579045,
+      "pnl": 3.8072308855922,
+      "reason": "take",
+      "opened_at": "2026-10-23 16:54:01",
+      "closed_at": "2026-10-23 16:55:41",
+      "win": true
     }
   ],
   "positions": {
@@ -121,8 +133,8 @@
       "margin": 100.0,
       "risk": 0.014365714285714315,
       "opened_at": "2026-10-23 16:42:09",
-      "mark": 0.7492,
-      "unrealized": -1.0850636302745846
+      "mark": 0.7509,
+      "unrealized": -1.7682518419289857
     },
     "LITUSDT": {
       "symbol": "LITUSDT",
@@ -136,8 +148,8 @@
       "margin": 100.0,
       "risk": 0.04012714285714303,
       "opened_at": "2026-10-23 16:45:48",
-      "mark": 3.3076,
-      "unrealized": 1.3184034675817382
+      "mark": 3.3132,
+      "unrealized": 0.8127144663174911
     },
     "USELESSUSDT": {
       "symbol": "USELESSUSDT",
@@ -151,22 +163,22 @@
       "margin": 100.0,
       "risk": 0.003320714285714288,
       "opened_at": "2026-10-23 16:47:33",
-      "mark": 0.16607,
-      "unrealized": -2.915921288014298
+      "mark": 0.1666,
+      "unrealized": -1.967799642218229
     },
     "DASHUSDT": {
       "symbol": "DASHUSDT",
       "category": "linear",
       "side": "long",
-      "size": 5.573100501579045,
-      "entry": 53.83,
-      "stop": 53.11685714285714,
-      "take": 54.543142857142854,
+      "size": 5.565862708719852,
+      "entry": 53.9,
+      "stop": 53.18685714285714,
+      "take": 54.613142857142854,
       "leverage": 3.0,
       "margin": 100.0,
       "risk": 0.7131428571428557,
-      "opened_at": "2026-10-23 16:54:01",
-      "mark": 53.83,
+      "opened_at": "2026-10-23 16:55:44",
+      "mark": 53.9,
       "unrealized": 0.0
     }
   },
@@ -245,6 +257,14 @@
     "[2026-10-23 16:53:59] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 16:54:01] ОТКРЫТИЕ ЛОНГ DASHUSDT @ 53.83 · маржа 100$ ×3 = 300$ в позиции · стоп 53.1169 · тейк 54.5431 · EMA 9/34",
     "[2026-10-23 16:54:01] вход по сигналу бара i=159 · DASHUSDT · режим fast · okx",
-    "[2026-10-23 16:54:04] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 16:54:04] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 16:55:39] очередь загружена · 13 монет из whitelist",
+    "[2026-10-23 16:55:39] В ЭФИРЕ · старт · 13 монет в работе",
+    "[2026-10-23 16:55:41] ТЕЙК ЛОНГ DASHUSDT @ 54.5431 результат +3.81 USDT",
+    "[2026-10-23 16:55:42] нет живых баров ALTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ALTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:55:42] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:55:44] ОТКРЫТИЕ ЛОНГ DASHUSDT @ 53.9 · маржа 100$ ×3 = 300$ в позиции · стоп 53.1869 · тейк 54.6131 · EMA 9/34",
+    "[2026-10-23 16:55:44] вход по сигналу бара i=159 · DASHUSDT · режим fast · okx",
+    "[2026-10-23 16:55:47] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
   ]
 }
