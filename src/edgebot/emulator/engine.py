@@ -28,10 +28,19 @@ class BotSpec:
     min_htf_slope: float = 0.0
     leverage: float = 3.0
     proof_wr: float = 0.0
+    bucket: str = ""
 
     def params(self) -> StrategyParams:
+        # Режим сигналов: bucket важнее strategy из бэктеста.
+        # Быстрые всегда в режиме fast (крест + откат), иначе live почти молчит.
+        bucket = (self.bucket or "").lower()
+        name = (self.strategy or "").lower()
+        if bucket == "fast":
+            name = "fast"
+        elif name not in {"heavy", "fast", "cross"}:
+            name = "heavy" if bucket == "heavy" else "cross"
         return StrategyParams(
-            name=self.strategy if self.strategy in {"heavy", "fast", "cross"} else "cross",
+            name=name,
             ema_fast=int(self.ema_fast),
             ema_slow=int(self.ema_slow),
             atr_mult=float(self.atr_mult),
@@ -153,9 +162,12 @@ class PaperEmulator:
                 slow = int(r.get("ema_slow") or 50)
                 if fast >= slow:
                     continue
-                strat = str(r.get("strategy") or r.get("bucket") or "cross")
-                if strat not in {"heavy", "fast", "cross"}:
-                    strat = "cross"
+                bucket = str(r.get("bucket") or "").lower()
+                strat = str(r.get("strategy") or "").lower()
+                if bucket == "fast":
+                    strat = "fast"
+                elif strat not in {"heavy", "fast", "cross"}:
+                    strat = "heavy" if bucket == "heavy" else "cross"
                 self.bots[sym] = BotSpec(
                     symbol=sym,
                     category=str(r.get("category") or "linear"),
@@ -167,6 +179,7 @@ class PaperEmulator:
                     min_htf_slope=float(r.get("htf_slope_min") or r.get("min_htf_slope") or 0.0),
                     leverage=float(self.default_leverage),
                     proof_wr=float(r.get("winrate_pct") or 0.0),
+                    bucket=bucket or strat,
                 )
                 n += 1
             except (TypeError, ValueError):
@@ -442,19 +455,34 @@ class PaperEmulator:
                     elif mark <= pos.take:
                         self._close(pos, pos.take, "take")
 
-            # 2) входы: только свежий сигнал (1–2 последние свечи).
-            # Частота тика — каждую минуту; широкий lookback давал бы поздний вход.
-            lookback = 2
+            # 2) входы: свежий сигнал.
+            # fast — шире окно (откаты чаще), heavy/cross — узкое (чистый крест).
             for bot in list(self.bots.values()):
                 if bot.symbol in self.positions:
                     continue
                 if len(self.positions) >= self.max_positions:
                     break
+                mode = bot.params().name
+                lookback = 4 if mode == "fast" else 2
+                # уникальный seed на монету: при 403 Bybit demo-бары не будут одинаковыми
+                demo_seed = (abs(hash(bot.symbol)) % 9000) + 1
                 try:
                     entry = fetch_bars(
-                        client, bot.category, bot.symbol, self.entry_tf, self.bars_entry
+                        client,
+                        bot.category,
+                        bot.symbol,
+                        self.entry_tf,
+                        self.bars_entry,
+                        demo_seed=demo_seed,
                     )
-                    htf = fetch_bars(client, bot.category, bot.symbol, self.htf, self.bars_htf)
+                    htf = fetch_bars(
+                        client,
+                        bot.category,
+                        bot.symbol,
+                        self.htf,
+                        self.bars_htf,
+                        demo_seed=demo_seed + 77,
+                    )
                 except Exception as exc:  # noqa: BLE001
                     self.log(f"нет данных {bot.symbol}: {exc}")
                     continue
@@ -487,7 +515,10 @@ class PaperEmulator:
                 # даже если не хватило маржи — помечаем сигнал, чтобы не долбить его вечно
                 self._last_signal_key[bot.symbol] = pick_key
                 if opened:
-                    self.log(f"вход по сигналу бара i={int(pick['i'])} · {bot.symbol}")
+                    self.log(
+                        f"вход по сигналу бара i={int(pick['i'])} · {bot.symbol} · "
+                        f"режим {mode}"
+                    )
 
             if self.ticks % 5 == 1:
                 self.log(

@@ -57,6 +57,9 @@ def _slim(row: dict[str, Any]) -> dict[str, Any]:
     out = {k: row.get(k) for k in keys if k in row}
     out["symbol"] = str(row.get("symbol") or "")
     out["whitelist"] = bool(row.get("whitelist"))
+    # live: быстрые всегда в режиме fast (крест+откат), не чистый cross из бэктеста
+    if str(out.get("bucket") or "") == "fast":
+        out["strategy"] = "fast"
     return out
 
 

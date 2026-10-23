@@ -13,6 +13,8 @@ ORDER_NOTIONAL = 300.0
 LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
+# bump: сброс last_signal_key после смены режима fast (иначе старые demo-ключи глушат входы)
+SIGNAL_MODE_V = 2
 
 
 def _now_iso() -> str:
@@ -62,6 +64,7 @@ def reset_trading_book(*, quiet: bool = False) -> dict[str, Any]:
         ],
         "last_signal_key": {},
         "ticks": 0,
+        "signal_mode_v": SIGNAL_MODE_V,
     }
     _write_json(PUBLIC_DIR / "trading.json", book)
     _write_json(PUBLIC_DIR / "trading_state.json", state)
@@ -131,6 +134,7 @@ def _dump_state(emu: PaperEmulator) -> dict[str, Any]:
         "wallet": emu.wallet,
         "realized_pnl": emu.realized_pnl,
         "ticks": emu.ticks,
+        "signal_mode_v": SIGNAL_MODE_V,
         "last_signal_key": dict(emu._last_signal_key),
         "history": [
             {
@@ -202,7 +206,9 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
         if bot:
             row["ema"] = f"{bot.ema_fast}/{bot.ema_slow}"
             row["strategy"] = bot.strategy
-            row["bucket"] = bot.strategy if bot.strategy in {"heavy", "fast"} else row.get("bucket")
+            row["bucket"] = bot.bucket or (
+                bot.strategy if bot.strategy in {"heavy", "fast"} else row.get("bucket")
+            )
 
     by_symbol.sort(
         key=lambda x: (
@@ -264,6 +270,14 @@ def update_trading_book(
 
     n = emu.load_whitelist(whitelist, replace=True)
     # BotSpec.leverage берётся из default_leverage эмулятора при load_whitelist
+
+    prev_mode = int((state or {}).get("signal_mode_v") or 0) if isinstance(state, dict) else 0
+    if prev_mode < SIGNAL_MODE_V:
+        emu._last_signal_key.clear()
+        emu.log(
+            f"сброс меток сигналов · mode v{SIGNAL_MODE_V} "
+            f"(fast = крест+откат, не чистый cross)"
+        )
 
     if not emu.running:
         emu.start()

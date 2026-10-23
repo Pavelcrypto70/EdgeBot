@@ -31,7 +31,9 @@ FAST_GRID = {
 def _param_grid(bucket: str = "heavy") -> list[StrategyParams]:
     if bucket == "fast":
         grid = FAST_GRID
-        styles = ("fast", "cross")
+        # только fast-режим (крест + откат к EMA) — иначе оптимизатор
+        # выбирает чистый cross и в live почти нет входов
+        styles = ("fast",)
     else:
         grid = HEAVY_GRID
         styles = ("heavy", "cross")
