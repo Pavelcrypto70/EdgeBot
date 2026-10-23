@@ -104,5 +104,69 @@
       "cross",
       "proof"
     ]
+  },
+  {
+    "run_id": "20261023_231814",
+    "ts": "2026-10-23T23:18:14Z",
+    "whitelist_n": 12,
+    "whitelist_heavy_n": 6,
+    "whitelist_fast_n": 6,
+    "added": [
+      "COIN06USDT",
+      "COIN09USDT",
+      "COIN10USDT",
+      "COIN15USDT",
+      "COIN23USDT",
+      "COIN24USDT",
+      "COIN32USDT",
+      "COIN41USDT",
+      "COIN42USDT",
+      "COIN67USDT",
+      "COIN68USDT",
+      "COIN73USDT"
+    ],
+    "removed": [
+      "BTRUSDT",
+      "DOODUSDT",
+      "NEARUSDT",
+      "SOPHUSDT",
+      "SOXLUSDT",
+      "XRPUSDT",
+      "ZECUSDT"
+    ],
+    "symbols_heavy": [
+      "COIN06USDT",
+      "COIN23USDT",
+      "COIN24USDT",
+      "COIN32USDT",
+      "COIN42USDT",
+      "COIN73USDT"
+    ],
+    "symbols_fast": [
+      "COIN09USDT",
+      "COIN10USDT",
+      "COIN15USDT",
+      "COIN41USDT",
+      "COIN67USDT",
+      "COIN68USDT"
+    ],
+    "symbols": [
+      "COIN06USDT",
+      "COIN23USDT",
+      "COIN24USDT",
+      "COIN32USDT",
+      "COIN42USDT",
+      "COIN73USDT",
+      "COIN09USDT",
+      "COIN10USDT",
+      "COIN15USDT",
+      "COIN41USDT",
+      "COIN67USDT",
+      "COIN68USDT"
+    ],
+    "sources": [
+      "cross",
+      "proof"
+    ]
   }
 ]

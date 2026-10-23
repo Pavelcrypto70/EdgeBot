@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T20:59:00Z",
+  "updated_at": "2026-10-23T23:18:23Z",
   "status": "ok",
   "balance_start_usdt": 1000.0,
   "equity_usdt": 692.91,
@@ -350,18 +350,11 @@
       "trades": 39,
       "winrate_pct": 5.1,
       "pnl": -286.37,
-      "ema": "5/34",
-      "strategy": "fast",
-      "bucket": "fast"
+      "ema": "—",
+      "strategy": "live"
     }
   ],
   "logs": [
-    "[2026-10-23 20:22:35] нет марки BTRUSDT — PnL не обновлён в этом тике",
-    "[2026-10-23 20:24:13] очередь загружена · 7 монет из whitelist",
-    "[2026-10-23 20:24:13] В ЭФИРЕ · старт · 7 монет в работе",
-    "[2026-10-23 20:24:15] нет марки BTRUSDT — PnL не обновлён в этом тике",
-    "[2026-10-23 20:25:53] очередь загружена · 7 монет из whitelist",
-    "[2026-10-23 20:25:53] В ЭФИРЕ · старт · 7 монет в работе",
     "[2026-10-23 20:25:55] нет марки BTRUSDT — PnL не обновлён в этом тике",
     "[2026-10-23 20:25:58] пульс · капитал 728.12 USDT · открыто 1 · очередь 7",
     "[2026-10-23 20:27:25] очередь загружена · 7 монет из whitelist",
@@ -435,8 +428,14 @@
     "[2026-10-23 20:58:55] очередь загружена · 7 монет из whitelist",
     "[2026-10-23 20:58:55] В ЭФИРЕ · старт · 7 монет в работе",
     "[2026-10-23 20:58:57] нет марки BTRUSDT — PnL не обновлён в этом тике",
-    "[2026-10-23 20:59:00] пульс · капитал 692.91 USDT · открыто 1 · очередь 7"
+    "[2026-10-23 20:59:00] пульс · капитал 692.91 USDT · открыто 1 · очередь 7",
+    "[2026-10-23 23:18:14] очередь загружена · 12 монет из whitelist",
+    "[2026-10-23 23:18:14] В ЭФИРЕ · старт · 12 монет в работе",
+    "[2026-10-23 23:18:15] нет марки BTRUSDT — PnL не обновлён в этом тике",
+    "[2026-10-23 23:18:16] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 23:18:17] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 23:18:23] пропуск входов · demo-бары · 12 монет · источник тика: demo"
   ],
-  "bars_source": "okx",
-  "note_ru": "Живой эфир по whitelist: старт 1000 USDT, ордер 300 USDT (×3). Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. Входы только по живым свечам Bybit; при 403/demo — пропуск. Сейчас бары: okx."
+  "bars_source": "demo",
+  "note_ru": "Живой эфир по whitelist: старт 1000 USDT, ордер 300 USDT (×3). Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. Входы только по живым свечам Bybit; при 403/demo — пропуск. Сейчас бары: demo."
 }
