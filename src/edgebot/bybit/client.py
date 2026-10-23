@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import hashlib
+import hmac
+import time
 from typing import Any
+from urllib.parse import urlencode
 
 import httpx
 
@@ -8,7 +12,7 @@ from edgebot.config import get_settings
 
 
 class BybitClient:
-    """Minimal Bybit v5 public client (tickers / klines / funding)."""
+    """Bybit v5 client: public market data + optional HMAC keys for signed GETs."""
 
     MAINNET = "https://api.bybit.com"
     # зеркало: с части IP (в т.ч. GitHub Actions) основной хост отдаёт 403
@@ -20,6 +24,9 @@ class BybitClient:
 
     def __init__(self, *, timeout: float = 30.0) -> None:
         settings = get_settings()
+        self._api_key = (settings.bybit_api_key or "").strip()
+        self._api_secret = (settings.bybit_api_secret or "").strip()
+        self._recv_window = "5000"
         base = self.TESTNET if settings.bybit_testnet else self.MAINNET
         # Market data is richer on mainnet public even if trading later uses testnet
         self.public_url = self.MAINNET if settings.bybit_data_host == "public" else base
@@ -28,8 +35,6 @@ class BybitClient:
             if settings.bybit_data_host == "public" and not settings.bybit_testnet
             else [self.public_url]
         )
-        # connect/read timeouts — скринер не должен висеть минутами
-        # User-Agent нужен: с IP GitHub Actions Bybit часто режет «голый» httpx (403)
         self._client = httpx.Client(
             timeout=httpx.Timeout(timeout, connect=8.0, read=timeout, write=8.0, pool=8.0),
             headers={
@@ -43,6 +48,10 @@ class BybitClient:
             follow_redirects=True,
         )
 
+    @property
+    def has_keys(self) -> bool:
+        return bool(self._api_key and self._api_secret)
+
     def close(self) -> None:
         self._client.close()
 
@@ -52,11 +61,36 @@ class BybitClient:
     def __exit__(self, *args: object) -> None:
         self.close()
 
+    def _sign_headers(self, query: str) -> dict[str, str]:
+        ts = str(int(time.time() * 1000))
+        payload = f"{ts}{self._api_key}{self._recv_window}{query}"
+        sign = hmac.new(
+            self._api_secret.encode("utf-8"),
+            payload.encode("utf-8"),
+            hashlib.sha256,
+        ).hexdigest()
+        return {
+            "X-BAPI-API-KEY": self._api_key,
+            "X-BAPI-SIGN": sign,
+            "X-BAPI-TIMESTAMP": ts,
+            "X-BAPI-RECV-WINDOW": self._recv_window,
+            "X-BAPI-SIGN-TYPE": "2",
+        }
+
     def _get_public(self, path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
+        params = dict(params or {})
+        # стабильный query для подписи (как ждёт Bybit)
+        query = urlencode(sorted((k, str(v)) for k, v in params.items()))
         last_exc: Exception | None = None
         for host in self._public_hosts:
             try:
-                r = self._client.get(f"{host}{path}", params=params or {})
+                headers: dict[str, str] = {}
+                if self.has_keys:
+                    headers.update(self._sign_headers(query))
+                url = f"{host}{path}"
+                if query:
+                    url = f"{url}?{query}"
+                r = self._client.get(url, headers=headers)
                 if r.status_code == 403:
                     last_exc = httpx.HTTPStatusError(
                         "403", request=r.request, response=r

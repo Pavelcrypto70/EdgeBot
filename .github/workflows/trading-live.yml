@@ -37,6 +37,8 @@ jobs:
           EDGEBOT_DEMO: "auto"
           BYBIT_DATA_HOST: "public"
           BYBIT_TESTNET: "false"
+          BYBIT_API_KEY: ${{ secrets.BYBIT_API_KEY }}
+          BYBIT_API_SECRET: ${{ secrets.BYBIT_API_SECRET }}
         run: python -m edgebot.cli trading-book
 
       - name: Commit trading state

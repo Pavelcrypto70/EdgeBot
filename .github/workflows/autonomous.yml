@@ -41,11 +41,13 @@ jobs:
         id: scan
         continue-on-error: true
         env:
-          # auto: при 403 Bybit с IP Actions уйдём в demo-бары, сайт всё равно обновится
+          # auto: Bybit → OKX → demo. Secrets: BYBIT_API_KEY / BYBIT_API_SECRET
           EDGEBOT_DEMO: "auto"
           BYBIT_DATA_HOST: "public"
           BYBIT_TESTNET: "false"
-        # heavy = медленные, fast = быстрые — оба в одном whitelist
+          BYBIT_API_KEY: ${{ secrets.BYBIT_API_KEY }}
+          BYBIT_API_SECRET: ${{ secrets.BYBIT_API_SECRET }}
+        # proof + кресты heavy; heavy=медленные, fast=быстрые
         run: python -m edgebot.cli autonomous --heavy 8 --fast 14
 
       - name: Commit public data

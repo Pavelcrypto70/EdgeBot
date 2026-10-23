@@ -14,7 +14,7 @@ LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
 # bump: сброс last_signal_key после смены режима fast (иначе старые demo-ключи глушат входы)
-SIGNAL_MODE_V = 3
+SIGNAL_MODE_V = 4
 
 
 def _now_iso() -> str:
@@ -288,7 +288,7 @@ def update_trading_book(
             dropped += 1
         emu.log(
             f"mode v{SIGNAL_MODE_V}: сброс меток + снято открытых {dropped} "
-            f"(fast=крест+откат; входы только с живого Bybit, не demo)"
+            f"(fast=крест+откат; heavy=кресты; ключи Bybit из env/secrets)"
         )
 
     if not emu.running:

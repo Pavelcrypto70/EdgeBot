@@ -169,8 +169,11 @@ class PaperEmulator:
                 strat = str(r.get("strategy") or "").lower()
                 if bucket == "fast":
                     strat = "fast"
+                elif bucket == "heavy":
+                    # тяжёлые в live — через кресты (чистый cross), если не явно heavy
+                    strat = strat if strat in {"heavy", "cross"} else "cross"
                 elif strat not in {"heavy", "fast", "cross"}:
-                    strat = "heavy" if bucket == "heavy" else "cross"
+                    strat = "cross"
                 self.bots[sym] = BotSpec(
                     symbol=sym,
                     category=str(r.get("category") or "linear"),

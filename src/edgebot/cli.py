@@ -163,7 +163,17 @@ def main(argv: list[str] | None = None) -> None:
         from edgebot.cloud.trading_book import reset_trading_book, update_trading_book
 
         if args.reset:
-            reset_trading_book(quiet=False)
+            book = reset_trading_book(quiet=False)
+            rprint(
+                {
+                    "reset": True,
+                    "equity": book.get("equity_usdt"),
+                    "closed_n": book.get("closed_n"),
+                    "open_n": book.get("open_n"),
+                    "order": book.get("order"),
+                }
+            )
+            return
         wl_path = PUBLIC_DIR / "whitelist.json"
         wl = json.loads(wl_path.read_text(encoding="utf-8")) if wl_path.exists() else []
         book = update_trading_book(wl, quiet=False, reset=False)
