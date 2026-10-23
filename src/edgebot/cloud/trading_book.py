@@ -13,8 +13,10 @@ ORDER_NOTIONAL = 300.0
 LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
-# bump: сброс last_signal_key после смены режима fast (иначе старые demo-ключи глушат входы)
-SIGNAL_MODE_V = 4
+# bump при смене гейтов/стратегии/ордера → полная стату в ноль (1000$, 0 сделок)
+SETTINGS_REV = 5
+# совместимость со старым полем в state
+SIGNAL_MODE_V = SETTINGS_REV
 
 
 def _now_iso() -> str:
@@ -65,11 +67,18 @@ def reset_trading_book(*, quiet: bool = False) -> dict[str, Any]:
         "last_signal_key": {},
         "ticks": 0,
         "signal_mode_v": SIGNAL_MODE_V,
+        "settings_rev": SETTINGS_REV,
     }
+    book["settings_rev"] = SETTINGS_REV
+    book["note_ru"] = (
+        f"Чистый старт после настроек v{SETTINGS_REV}: "
+        f"{START_BALANCE:.0f} USDT, ордер {ORDER_NOTIONAL:.0f}$ ×{int(LEVERAGE)}. "
+        "При каждой смене настроек стата обнуляется."
+    )
     _write_json(PUBLIC_DIR / "trading.json", book)
     _write_json(PUBLIC_DIR / "trading_state.json", state)
     if not quiet:
-        print("торговая книга обнулена", flush=True)
+        print(f"торговая книга обнулена · settings v{SETTINGS_REV}", flush=True)
     return book
 
 
@@ -135,6 +144,7 @@ def _dump_state(emu: PaperEmulator) -> dict[str, Any]:
         "realized_pnl": emu.realized_pnl,
         "ticks": emu.ticks,
         "signal_mode_v": SIGNAL_MODE_V,
+        "settings_rev": SETTINGS_REV,
         "last_signal_key": dict(emu._last_signal_key),
         "history": [
             {
@@ -259,11 +269,17 @@ def update_trading_book(
 ) -> dict[str, Any]:
     """Живая книга: только эмулятор + сохранение состояния между сканами."""
     PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
-    if reset:
-        reset_trading_book(quiet=quiet)
-
     state_path = PUBLIC_DIR / "trading_state.json"
     state = _read_json(state_path, None)
+    if not isinstance(state, dict):
+        state = {}
+
+    prev_rev = int(state.get("settings_rev") or state.get("signal_mode_v") or 0)
+    # новые настройки (гейты/стратегия/ордер) → стата с нуля
+    if reset or prev_rev < SETTINGS_REV:
+        reset_trading_book(quiet=quiet)
+        state = _read_json(state_path, {})
+
     if not isinstance(state, dict):
         reset_trading_book(quiet=quiet)
         state = _read_json(state_path, {})
@@ -277,22 +293,10 @@ def update_trading_book(
     n = emu.load_whitelist(whitelist, replace=True)
     # BotSpec.leverage берётся из default_leverage эмулятора при load_whitelist
 
-    prev_mode = int((state or {}).get("signal_mode_v") or 0) if isinstance(state, dict) else 0
-    if prev_mode < SIGNAL_MODE_V:
-        emu._last_signal_key.clear()
-        # снять demo-открытия (~$90–110), чтобы не засорять книгу
-        dropped = 0
-        for sym, pos in list(emu.positions.items()):
-            emu.wallet += float(pos.margin)
-            del emu.positions[sym]
-            dropped += 1
-        emu.log(
-            f"mode v{SIGNAL_MODE_V}: сброс меток + снято открытых {dropped} "
-            f"(fast=крест+откат; heavy=кресты; ключи Bybit из env/secrets)"
-        )
-
     if not emu.running:
         emu.start()
+    if prev_rev < SETTINGS_REV:
+        emu.log(f"стата обнулена · новые настройки v{SETTINGS_REV}")
 
     cfg = load_config()
 
