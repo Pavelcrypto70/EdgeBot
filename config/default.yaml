@@ -1,0 +1,41 @@
+universe:
+  quote: USDT
+  categories: [linear, spot]
+  top_n_raw: 80
+  min_turnover_usdt: 2_000_000
+  max_spread_bps: 12
+  blacklist: []
+  prefer_linear: true
+
+analytics:
+  # How many symbols get kline deep-scan after ticker prefilter
+  deep_scan_n: 40
+  # Final shortlist size
+  shortlist_n: 15
+  entry_tf: 15
+  htf: 60
+  bars_entry: 700
+  bars_htf: 350
+  # Relative strength benchmark
+  benchmark_symbol: BTCUSDT
+  benchmark_category: linear
+
+  weights:
+    liquidity: 0.22
+    microstructure: 0.12
+    volatility: 0.16
+    trend: 0.20
+    momentum: 0.12
+    relative_strength: 0.10
+    volume_quality: 0.08
+
+  gates:
+    min_atr_pct: 0.004
+    max_atr_pct: 0.045
+    min_htf_slope_abs: 0.0008
+    min_composite: 55
+    max_abs_funding: 0.0015
+    min_rvol: 0.7
+
+output:
+  save_csv: true

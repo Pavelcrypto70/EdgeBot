@@ -1,0 +1,25 @@
+[
+  {
+    "run_id": "seed_local",
+    "ts": "2026-10-23T11:43:02Z",
+    "whitelist_n": 5,
+    "added": [
+      "ZECUSDT",
+      "SOLUSDT",
+      "ETHUSDT",
+      "NEARUSDT",
+      "SOXLUSDT"
+    ],
+    "removed": [],
+    "symbols": [
+      "ZECUSDT",
+      "SOLUSDT",
+      "ETHUSDT",
+      "NEARUSDT",
+      "SOXLUSDT"
+    ],
+    "sources": [
+      "seed"
+    ]
+  }
+]

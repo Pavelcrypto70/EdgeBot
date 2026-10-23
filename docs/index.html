@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EdgeBot · публичный whitelist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <header class="top">
+    <div>
+      <div class="brand">EDGE<span>BOT</span></div>
+      <p class="lede">Автономный скан Bybit. Сайт живёт на GitHub — ПК владельца может быть выключен.</p>
+    </div>
+    <div class="meta">
+      <div class="pill" id="statusPill">загрузка…</div>
+      <div class="clock" id="updatedAt">—</div>
+    </div>
+  </header>
+
+  <section class="kpis">
+    <article>
+      <div class="k">В whitelist</div>
+      <div class="n" id="kpiWl">—</div>
+    </article>
+    <article>
+      <div class="k">Добавили</div>
+      <div class="n good" id="kpiAdd">—</div>
+    </article>
+    <article>
+      <div class="k">Убрали</div>
+      <div class="n bad" id="kpiRem">—</div>
+    </article>
+    <article>
+      <div class="k">Ордер</div>
+      <div class="n teal" id="kpiOrder">100$×3</div>
+    </article>
+  </section>
+
+  <main class="layout">
+    <section class="panel">
+      <div class="ph">
+        <h2>Текущий whitelist</h2>
+        <span class="hint" id="wlHint">данные из docs/data/live.json</span>
+      </div>
+      <div class="body" id="wlTable">
+        <div class="empty">Загрузка…</div>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="panel">
+        <div class="ph"><h2>Последний diff</h2></div>
+        <div class="body">
+          <div class="diff-block">
+            <div class="diff-title">Добавлено</div>
+            <div id="diffAdd" class="chips">—</div>
+          </div>
+          <div class="diff-block">
+            <div class="diff-title">Убрано</div>
+            <div id="diffRem" class="chips">—</div>
+          </div>
+          <p class="note" id="scanHint"></p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="ph"><h2>История сканов</h2></div>
+        <div class="body hist" id="histList">
+          <div class="empty">Пока пусто</div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot">
+    <span>Скан на GitHub Actions ≈ каждые 4 часа</span>
+    <a id="rawLive" href="data/live.json">live.json</a>
+    <a href="data/history.json">history.json</a>
+    <a href="data/whitelist.json">whitelist.json</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

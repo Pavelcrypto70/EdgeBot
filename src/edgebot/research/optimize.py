@@ -1,0 +1,103 @@
+from __future__ import annotations
+
+from dataclasses import asdict
+from itertools import product
+from typing import Any
+
+import pandas as pd
+
+from edgebot.backtest.engine import simulate_signals, split_train_oos, summarize_trades
+from edgebot.strategies.ema_ma import StrategyParams, generate_signals
+
+# Шире сетка — ищем рабочий винрейт, не «красивую теорию»
+SEARCH_GRID = {
+    "ema_fast": [8, 12, 15, 20, 25],
+    "ema_slow": [21, 34, 50, 80],
+    "atr_mult": [1.0, 1.2, 1.5],
+    "take_profit_r": [1.0, 1.5, 2.0],
+    "min_htf_slope": [0.0, 0.0005],
+}
+
+STYLES = ("heavy", "fast")  # оба стиля сигналов на каждую монету
+
+
+def _param_grid() -> list[StrategyParams]:
+    keys = list(SEARCH_GRID.keys())
+    out: list[StrategyParams] = []
+    for style in STYLES:
+        for vals in product(*(SEARCH_GRID[k] for k in keys)):
+            kw = dict(zip(keys, vals, strict=True))
+            if kw["ema_fast"] >= kw["ema_slow"]:
+                continue
+            # skip absurdly wide spreads
+            if kw["ema_slow"] / max(kw["ema_fast"], 1) > 8:
+                continue
+            out.append(StrategyParams(name=style, allow_short=True, **kw))
+    return out
+
+
+def _score(metrics: dict[str, Any]) -> float:
+    """Главное — винрейт при достаточном числе сделок."""
+    n = int(metrics.get("trades", 0) or 0)
+    wr = float(metrics.get("winrate", 0) or 0)
+    exp = float(metrics.get("expectancy_r", 0) or 0)
+    if n < 8:
+        return -999.0
+    # winrate в приоритете; чуть бонуса за плюсовое мат.ожидание и объём сделок
+    return wr * 100.0 + min(exp, 1.0) * 4.0 + min(n, 50) * 0.04
+
+
+def optimize_symbol(
+    entry: pd.DataFrame,
+    htf: pd.DataFrame,
+    bucket: str,
+    *,
+    allow_short: bool = True,
+    oos_frac: float = 0.3,
+    fee_rate: float = 0.00055,
+) -> dict[str, Any]:
+    cut, _n = split_train_oos(len(entry), oos_frac)
+    best: dict[str, Any] | None = None
+
+    for params in _param_grid():
+        p = StrategyParams(**{**asdict(params), "allow_short": allow_short})
+        sigs = generate_signals(entry, htf, p, allow_short=allow_short)
+        if sigs.empty:
+            continue
+        trades = simulate_signals(entry, sigs, fee_rate=fee_rate)
+        if trades.empty:
+            continue
+        all_m = summarize_trades(trades)
+        train_m = summarize_trades(trades[trades["entry_i"] < cut])
+        oos_m = summarize_trades(trades[trades["entry_i"] >= cut])
+        sc = _score(all_m)
+        # если OOS тоже нормальный — чуть подтягиваем
+        if oos_m["trades"] >= 5:
+            sc += float(oos_m["winrate"]) * 8.0
+        cand = {
+            "params": asdict(p),
+            "all": all_m,
+            "train": train_m,
+            "oos": oos_m,
+            "score": sc,
+            "all_trades": trades,
+            "winrate": float(all_m["winrate"]),
+            "winrate_pct": round(float(all_m["winrate"]) * 100, 1),
+        }
+        if best is None or sc > best["score"]:
+            best = cand
+
+    if best is None:
+        empty = summarize_trades(pd.DataFrame())
+        return {
+            "ok": False,
+            "reason": "no_signals",
+            "params": None,
+            "all": empty,
+            "train": empty,
+            "oos": empty,
+            "score": -999.0,
+            "winrate": 0.0,
+            "winrate_pct": 0.0,
+        }
+    return {"ok": True, "reason": "optimized", **best}
