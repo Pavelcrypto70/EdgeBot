@@ -1,11 +1,11 @@
 {
-  "wallet": 712.4112276639925,
-  "realized_pnl": -183.7937723360085,
-  "ticks": 34,
+  "wallet": 703.7883514843635,
+  "realized_pnl": -192.25164851563753,
+  "ticks": 35,
   "signal_mode_v": 5,
   "settings_rev": 5,
   "last_signal_key": {
-    "DOODUSDT": "159:short:0.001756"
+    "DOODUSDT": "159:short:0.001753"
   },
   "history": [
     {
@@ -271,6 +271,18 @@
       "opened_at": "2026-10-23 18:10:50",
       "closed_at": "2026-10-23 18:12:23",
       "win": false
+    },
+    {
+      "symbol": "DOODUSDT",
+      "side": "short",
+      "entry": 0.001756,
+      "exit": 0.0018045142857142857,
+      "size": 170842.82460136674,
+      "pnl": -8.457876179629029,
+      "reason": "stop",
+      "opened_at": "2026-10-23 18:12:26",
+      "closed_at": "2026-10-23 18:13:55",
+      "win": false
     }
   ],
   "positions": {
@@ -278,26 +290,19 @@
       "symbol": "DOODUSDT",
       "category": "linear",
       "side": "short",
-      "size": 170842.82460136674,
-      "entry": 0.001756,
-      "stop": 0.0018045142857142857,
-      "take": 0.001697782857142857,
+      "size": 171135.19680547633,
+      "entry": 0.001753,
+      "stop": 0.0018015142857142857,
+      "take": 0.001694782857142857,
       "leverage": 3.0,
       "margin": 100.0,
       "risk": 4.8514285714285716e-05,
-      "opened_at": "2026-10-23 18:12:26",
-      "mark": 0.001756,
+      "opened_at": "2026-10-23 18:13:59",
+      "mark": 0.001753,
       "unrealized": 0.0
     }
   },
   "logs": [
-    "[2026-10-23 17:44:57] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001733 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178151 · тейк 0.00167478 · EMA 5/34",
-    "[2026-10-23 17:44:57] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
-    "[2026-10-23 17:44:57] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
-    "[2026-10-23 17:46:22] очередь загружена · 7 монет из whitelist",
-    "[2026-10-23 17:46:22] В ЭФИРЕ · старт · 7 монет в работе",
-    "[2026-10-23 17:46:23] СТОП ШОРТ DOODUSDT @ 0.00178151 результат -8.57 USDT",
-    "[2026-10-23 17:46:26] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 17:46:27] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001737 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00178303 · тейк 0.00168177 · EMA 5/34",
     "[2026-10-23 17:46:27] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
     "[2026-10-23 17:46:28] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
@@ -410,6 +415,13 @@
     "[2026-10-23 18:12:26] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 18:12:26] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001756 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00180451 · тейк 0.00169778 · EMA 5/34",
     "[2026-10-23 18:12:26] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
-    "[2026-10-23 18:12:27] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 18:12:27] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 18:13:54] очередь загружена · 7 монет из whitelist",
+    "[2026-10-23 18:13:54] В ЭФИРЕ · старт · 7 монет в работе",
+    "[2026-10-23 18:13:55] СТОП ШОРТ DOODUSDT @ 0.00180451 результат -8.46 USDT",
+    "[2026-10-23 18:13:58] нет живых баров BTRUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTRUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 18:13:59] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001753 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00180151 · тейк 0.00169478 · EMA 5/34",
+    "[2026-10-23 18:13:59] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
+    "[2026-10-23 18:13:59] пропуск входов · demo-бары · 1 монет · источник тика: mixed:demo+okx"
   ]
 }
