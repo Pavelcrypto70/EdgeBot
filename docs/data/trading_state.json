@@ -1,14 +1,14 @@
 {
-  "wallet": 704.7609310357914,
-  "realized_pnl": 9.710931035790692,
-  "ticks": 139,
+  "wallet": 598.1438347653284,
+  "realized_pnl": 3.4238347653276797,
+  "ticks": 140,
   "signal_mode_v": 3,
   "last_signal_key": {
     "AEROUSDT": "159:short:0.7418",
     "DASHUSDT": "159:long:53.56",
-    "DOODUSDT": "158:short:0.001855",
+    "DOODUSDT": "159:short:0.001825",
     "LITUSDT": "157:short:3.3265",
-    "USELESSUSDT": "159:short:0.16467"
+    "USELESSUSDT": "159:short:0.16514"
   },
   "history": [
     {
@@ -274,6 +274,18 @@
       "opened_at": "2026-10-23 16:23:49",
       "closed_at": "2026-10-23 16:25:28",
       "win": false
+    },
+    {
+      "symbol": "USELESSUSDT",
+      "side": "short",
+      "entry": 0.16467,
+      "exit": 0.16802857142857144,
+      "size": 1821.8254691200582,
+      "pnl": -6.287096270463012,
+      "reason": "stop",
+      "opened_at": "2026-10-23 16:25:34",
+      "closed_at": "2026-10-23 16:27:09",
+      "win": false
     }
   ],
   "positions": {
@@ -289,8 +301,8 @@
       "margin": 100.0,
       "risk": 0.6839999999999975,
       "opened_at": "2026-10-23 16:22:04",
-      "mark": 53.56,
-      "unrealized": 0.0
+      "mark": 53.71,
+      "unrealized": 0.8401792382374826
     },
     "AEROUSDT": {
       "symbol": "AEROUSDT",
@@ -304,36 +316,41 @@
       "margin": 100.0,
       "risk": 0.014194285714285715,
       "opened_at": "2026-10-23 16:25:28",
-      "mark": 0.7418,
+      "mark": 0.7424,
+      "unrealized": -0.24265300620110566
+    },
+    "DOODUSDT": {
+      "symbol": "DOODUSDT",
+      "category": "linear",
+      "side": "short",
+      "size": 164383.56164383562,
+      "entry": 0.001825,
+      "stop": 0.001854857142857143,
+      "take": 0.0017891714285714286,
+      "leverage": 3.0,
+      "margin": 100.0,
+      "risk": 2.9857142857142886e-05,
+      "opened_at": "2026-10-23 16:27:13",
+      "mark": 0.001825,
       "unrealized": 0.0
     },
     "USELESSUSDT": {
       "symbol": "USELESSUSDT",
       "category": "linear",
       "side": "short",
-      "size": 1821.8254691200582,
-      "entry": 0.16467,
-      "stop": 0.16802857142857144,
-      "take": 0.16131142857142858,
+      "size": 1816.6404263049533,
+      "entry": 0.16514,
+      "stop": 0.16850285714285715,
+      "take": 0.16177714285714287,
       "leverage": 3.0,
       "margin": 100.0,
-      "risk": 0.003358571428571433,
-      "opened_at": "2026-10-23 16:25:34",
-      "mark": 0.16467,
+      "risk": 0.0033628571428571397,
+      "opened_at": "2026-10-23 16:27:16",
+      "mark": 0.16514,
       "unrealized": 0.0
     }
   },
   "logs": [
-    "[2026-10-23 16:05:18] очередь загружена · 13 монет из whitelist",
-    "[2026-10-23 16:05:18] В ЭФИРЕ · старт · 13 монет в работе",
-    "[2026-10-23 16:05:18] пульс · капитал 1013.46 USDT · открыто 0 · очередь 13",
-    "[2026-10-23 16:06:42] очередь загружена · 13 монет из whitelist",
-    "[2026-10-23 16:06:42] В ЭФИРЕ · старт · 13 монет в работе",
-    "[2026-10-23 16:08:19] очередь загружена · 13 монет из whitelist",
-    "[2026-10-23 16:08:19] В ЭФИРЕ · старт · 13 монет в работе",
-    "[2026-10-23 16:09:55] очередь загружена · 13 монет из whitelist",
-    "[2026-10-23 16:09:55] сброс меток сигналов · mode v2 (fast = крест+откат, не чистый cross)",
-    "[2026-10-23 16:09:55] В ЭФИРЕ · старт · 13 монет в работе",
     "[2026-10-23 16:09:55] ОТКРЫТИЕ ЛОНГ AEROUSDT @ 102.197 · маржа 100$ ×3 = 300$ в позиции · стоп 101.222 · тейк 103.172 · EMA 5/26",
     "[2026-10-23 16:09:55] вход по сигналу бара i=159 · AEROUSDT · режим fast",
     "[2026-10-23 16:09:55] ОТКРЫТИЕ ЛОНГ BIRBUSDT @ 97.214 · маржа 100$ ×3 = 300$ в позиции · стоп 96.345 · тейк 98.2567 · EMA 5/34",
@@ -443,6 +460,16 @@
     "[2026-10-23 16:25:29] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-23 16:25:34] ОТКРЫТИЕ ШОРТ USELESSUSDT @ 0.16467 · маржа 100$ ×3 = 300$ в позиции · стоп 0.168029 · тейк 0.161311 · EMA 9/13",
     "[2026-10-23 16:25:34] вход по сигналу бара i=159 · USELESSUSDT · режим fast · okx",
-    "[2026-10-23 16:25:34] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
+    "[2026-10-23 16:25:34] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx",
+    "[2026-10-23 16:27:07] очередь загружена · 13 монет из whitelist",
+    "[2026-10-23 16:27:07] В ЭФИРЕ · старт · 13 монет в работе",
+    "[2026-10-23 16:27:09] СТОП ШОРТ USELESSUSDT @ 0.168029 результат -6.29 USDT",
+    "[2026-10-23 16:27:10] нет живых баров ALTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ALTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:27:10] нет живых баров BIRBUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BIRBUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-23 16:27:13] ОТКРЫТИЕ ШОРТ DOODUSDT @ 0.001825 · маржа 100$ ×3 = 300$ в позиции · стоп 0.00185486 · тейк 0.00178917 · EMA 5/13",
+    "[2026-10-23 16:27:13] вход по сигналу бара i=159 · DOODUSDT · режим fast · okx",
+    "[2026-10-23 16:27:16] ОТКРЫТИЕ ШОРТ USELESSUSDT @ 0.16514 · маржа 100$ ×3 = 300$ в позиции · стоп 0.168503 · тейк 0.161777 · EMA 9/13",
+    "[2026-10-23 16:27:16] вход по сигналу бара i=159 · USELESSUSDT · режим fast · okx",
+    "[2026-10-23 16:27:16] пропуск входов · demo-бары · 5 монет · источник тика: mixed:demo+okx"
   ]
 }
