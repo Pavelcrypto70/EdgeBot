@@ -1,7 +1,7 @@
 {
   "wallet": 607.0321235285492,
   "realized_pnl": -286.3678764714526,
-  "ticks": 226,
+  "ticks": 227,
   "signal_mode_v": 5,
   "settings_rev": 5,
   "last_signal_key": {
@@ -496,12 +496,6 @@
     }
   },
   "logs": [
-    "[2026-10-24 01:29:40] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 01:29:46] пропуск входов · demo-бары · 12 монет · источник тика: demo",
-    "[2026-10-24 01:31:12] очередь загружена · 12 монет из whitelist",
-    "[2026-10-24 01:31:12] В ЭФИРЕ · старт · 12 монет в работе",
-    "[2026-10-24 01:31:13] нет марки BTRUSDT — PnL не обновлён в этом тике",
-    "[2026-10-24 01:31:14] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 01:31:15] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 01:31:20] пропуск входов · demo-бары · 12 монет · источник тика: demo",
     "[2026-10-24 01:32:50] очередь загружена · 12 монет из whitelist",
@@ -615,6 +609,12 @@
     "[2026-10-24 02:01:04] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 02:01:04] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 02:01:11] пропуск входов · demo-бары · 12 монет · источник тика: demo",
-    "[2026-10-24 02:01:11] пульс · капитал 692.91 USDT · открыто 1 · очередь 12"
+    "[2026-10-24 02:01:11] пульс · капитал 692.91 USDT · открыто 1 · очередь 12",
+    "[2026-10-24 02:02:32] очередь загружена · 12 монет из whitelist",
+    "[2026-10-24 02:02:32] В ЭФИРЕ · старт · 12 монет в работе",
+    "[2026-10-24 02:02:34] нет марки BTRUSDT — PnL не обновлён в этом тике",
+    "[2026-10-24 02:02:35] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 02:02:35] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 02:02:42] пропуск входов · demo-бары · 12 монет · источник тика: demo"
   ]
 }
