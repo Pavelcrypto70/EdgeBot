@@ -1,7 +1,7 @@
 {
   "wallet": 687.4231818183168,
   "realized_pnl": -305.97681818168496,
-  "ticks": 366,
+  "ticks": 367,
   "signal_mode_v": 5,
   "settings_rev": 5,
   "last_signal_key": {
@@ -492,11 +492,6 @@
   ],
   "positions": {},
   "logs": [
-    "[2026-10-24 05:14:04] очередь загружена · 12 монет из whitelist",
-    "[2026-10-24 05:14:04] В ЭФИРЕ · старт · 12 монет в работе",
-    "[2026-10-24 05:14:05] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 05:14:05] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 05:14:11] пропуск входов · demo-бары · 12 монет · источник тика: demo",
     "[2026-10-24 05:15:43] очередь загружена · 12 монет из whitelist",
     "[2026-10-24 05:15:43] В ЭФИРЕ · старт · 12 монет в работе",
     "[2026-10-24 05:15:44] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
@@ -611,6 +606,11 @@
     "[2026-10-24 05:50:19] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 05:50:19] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 05:50:26] пропуск входов · demo-бары · 12 монет · источник тика: demo",
-    "[2026-10-24 05:50:26] пульс · капитал 687.42 USDT · открыто 0 · очередь 12"
+    "[2026-10-24 05:50:26] пульс · капитал 687.42 USDT · открыто 0 · очередь 12",
+    "[2026-10-24 05:52:03] очередь загружена · 12 монет из whitelist",
+    "[2026-10-24 05:52:03] В ЭФИРЕ · старт · 12 монет в работе",
+    "[2026-10-24 05:52:04] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 05:52:05] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 05:52:15] пропуск входов · demo-бары · 12 монет · источник тика: demo"
   ]
 }
