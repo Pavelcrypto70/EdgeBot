@@ -1,7 +1,7 @@
 {
   "wallet": 1000.0,
   "realized_pnl": 0.0,
-  "ticks": 105,
+  "ticks": 106,
   "signal_mode_v": 8,
   "settings_rev": 8,
   "last_signal_key": {},
@@ -10,12 +10,6 @@
   "history": [],
   "positions": {},
   "logs": [
-    "[2026-10-24 09:12:03] В ЭФИРЕ · старт · 8 монет в работе",
-    "[2026-10-24 09:12:06] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 09:12:06] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 09:12:07] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
-    "[2026-10-24 09:13:41] очередь загружена · 8 монет из whitelist",
-    "[2026-10-24 09:13:41] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 09:13:46] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 09:13:47] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 09:13:47] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
@@ -129,6 +123,12 @@
     "[2026-10-24 09:49:27] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 09:49:32] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 09:49:32] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 09:49:33] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx"
+    "[2026-10-24 09:49:33] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
+    "[2026-10-24 09:51:05] очередь загружена · 8 монет из whitelist",
+    "[2026-10-24 09:51:05] В ЭФИРЕ · старт · 8 монет в работе",
+    "[2026-10-24 09:51:09] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 09:51:09] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 09:51:10] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
+    "[2026-10-24 09:51:10] пульс · капитал 1000.00 USDT · открыто 0 · очередь 8"
   ]
 }
