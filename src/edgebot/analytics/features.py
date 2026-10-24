@@ -155,10 +155,11 @@ def fetch_bars(
     except Exception:
         if settings.edgebot_demo == "never":
             raise
+        # OKX первым: с GitHub Actions (US) Binance часто 451, Bybit — 403 без ключей
         errors: list[str] = []
         for source, loader in (
-            ("binance", lambda: _fetch_binance_bars(symbol, interval, limit)),
             ("okx", lambda: _fetch_okx_bars(symbol, category, interval, limit)),
+            ("binance", lambda: _fetch_binance_bars(symbol, interval, limit)),
         ):
             try:
                 alt = loader()
@@ -166,7 +167,13 @@ def fetch_bars(
                     raise RuntimeError("empty")
                 return _tag_bars(alt, demo=False, source=source)
             except Exception as exc:  # noqa: BLE001
-                errors.append(f"{source}:{exc}")
+                msg = str(exc)
+                if "451" in msg:
+                    errors.append(f"{source}:geo-block")
+                elif "51001" in msg or "doesn't exist" in msg.lower():
+                    errors.append(f"{source}:no-symbol")
+                else:
+                    errors.append(f"{source}:{msg[:80]}")
                 continue
         frame = _tag_bars(demo_klines(limit, seed=demo_seed), demo=True, source="demo")
         frame.attrs["edgebot_fallback_errors"] = errors

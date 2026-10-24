@@ -157,9 +157,13 @@ class PaperEmulator:
     _cooldown_until: dict[str, float] = field(default_factory=dict)
     _stop_streak: dict[str, int] = field(default_factory=dict)
     _started_at: str | None = None
-    last_bars_source: str = "unknown"  # bybit | binance | demo | mixed
+    last_bars_source: str = "unknown"  # bybit | binance | okx | demo | mixed
     _demo_entries_skipped: int = 0
     _sources_seen: set[str] = field(default_factory=set)
+    # символы без живых баров — один раз в лог, дальше тихо
+    _dead_live: set[str] = field(default_factory=set)
+    _live_ok: set[str] = field(default_factory=set)
+    _queue_logged_n: int = -1
 
     def __post_init__(self) -> None:
         self.wallet = float(self.starting_balance)
@@ -223,16 +227,20 @@ class PaperEmulator:
                 n += 1
             except (TypeError, ValueError):
                 continue
-        self.log(f"очередь загружена · {n} монет из whitelist")
+        if n != self._queue_logged_n:
+            self.log(f"очередь загружена · {n} монет из whitelist")
+            self._queue_logged_n = n
         return n
 
     def start(self) -> None:
         if not self.bots:
             self.log("старт отменён · очередь пуста")
             return
+        was = self.running
         self.running = True
-        self._started_at = _now()
-        self.log(f"В ЭФИРЕ · старт · {len(self.bots)} монет в работе")
+        if not was:
+            self._started_at = _now()
+            self.log(f"В ЭФИРЕ · старт · {len(self.bots)} монет в работе")
 
     def stop(self) -> None:
         self.running = False
@@ -586,13 +594,16 @@ class PaperEmulator:
                 bucket = (bot.bucket or mode or "").lower()
                 if bucket == "fast" and self._fast_open_count() >= MAX_FAST_OPEN:
                     continue
-                # lookback: heavy чуть шире, fast — только свежий бар
+                # шире окно: тик раз в ~1–5 мин, крест на 15m легко проскочить
                 if bucket == "fast":
-                    lookback = 1
+                    lookback = 4
                 elif bucket == "medium":
-                    lookback = 2
+                    lookback = 6
                 else:
-                    lookback = 3
+                    lookback = 8
+                if bot.symbol in self._dead_live:
+                    self._demo_entries_skipped += 1
+                    continue
                 demo_seed = (abs(hash(bot.symbol)) % 9000) + 1
                 try:
                     entry = fetch_bars(
@@ -612,16 +623,28 @@ class PaperEmulator:
                         demo_seed=demo_seed + 77,
                     )
                 except Exception as exc:  # noqa: BLE001
-                    self.log(f"нет данных {bot.symbol}: {exc}")
+                    if bot.symbol not in self._dead_live:
+                        self._dead_live.add(bot.symbol)
+                        self.log(f"нет данных {bot.symbol}: {str(exc)[:100]}")
                     continue
-                src = str(entry.attrs.get("edgebot_source") or ("demo" if entry.attrs.get("edgebot_demo") else "?"))
+                src = str(
+                    entry.attrs.get("edgebot_source")
+                    or ("demo" if entry.attrs.get("edgebot_demo") else "?")
+                )
                 self._sources_seen.add(src)
                 if bool(entry.attrs.get("edgebot_demo")):
                     self._demo_entries_skipped += 1
-                    errs = entry.attrs.get("edgebot_fallback_errors")
-                    if errs and self._demo_entries_skipped <= 2:
-                        self.log(f"нет живых баров {bot.symbol}: {errs}")
+                    if bot.symbol not in self._dead_live:
+                        self._dead_live.add(bot.symbol)
+                        errs = entry.attrs.get("edgebot_fallback_errors") or []
+                        why = ", ".join(str(x) for x in errs[:3]) if errs else "fallback"
+                        self.log(
+                            f"пауза {bot.symbol} · нет живых баров ({why}) · "
+                            "нужны BYBIT_API_KEY/SECRET в GitHub Secrets"
+                        )
                     continue
+                self._live_ok.add(bot.symbol)
+                self._dead_live.discard(bot.symbol)
                 if len(entry) < 60:
                     continue
                 sigs = generate_signals(entry, htf, bot.params())
@@ -662,16 +685,20 @@ class PaperEmulator:
                 self.last_bars_source = next(iter(self._sources_seen))
             else:
                 self.last_bars_source = "mixed:" + "+".join(sorted(self._sources_seen))
-            if self._demo_entries_skipped:
+            # сводка по demo — раз в 10 тиков, без простыни ошибок
+            if self._demo_entries_skipped and self.ticks % 10 == 1:
+                dead = sorted(self._dead_live)
                 self.log(
-                    f"пропуск входов · demo-бары · {self._demo_entries_skipped} монет · "
-                    f"источник тика: {self.last_bars_source}"
+                    f"без живых баров · {len(dead)} монет"
+                    + (f" ({', '.join(dead[:5])})" if dead else "")
+                    + f" · живых {len(self._live_ok)} · источник {self.last_bars_source}"
                 )
 
             if self.ticks % 5 == 1:
                 self.log(
                     f"пульс · капитал {self.equity:.2f} USDT · "
-                    f"открыто {len(self.positions)} · очередь {len(self.bots)}"
+                    f"открыто {len(self.positions)} · очередь {len(self.bots)} · "
+                    f"ждём крест EMA · src {self.last_bars_source}"
                 )
         finally:
             if own:

@@ -100,6 +100,10 @@ def _restore_emu(state: dict[str, Any]) -> PaperEmulator:
     emu._stop_streak = {
         str(k): int(v) for k, v in (state.get("stop_streak") or {}).items()
     }
+    emu._dead_live = {str(x) for x in (state.get("dead_live") or [])}
+    emu._live_ok = {str(x) for x in (state.get("live_ok") or [])}
+    emu.running = bool(state.get("running", False))
+    emu._started_at = state.get("started_at") or emu._started_at
     emu.history = []
     for h in state.get("history") or []:
         try:
@@ -155,6 +159,10 @@ def _dump_state(emu: PaperEmulator) -> dict[str, Any]:
         "last_signal_key": dict(emu._last_signal_key),
         "cooldown_until": dict(emu._cooldown_until),
         "stop_streak": dict(emu._stop_streak),
+        "dead_live": sorted(emu._dead_live),
+        "live_ok": sorted(emu._live_ok),
+        "running": bool(emu.running),
+        "started_at": emu._started_at,
         "history": [
             {
                 "symbol": t.symbol,
@@ -316,6 +324,11 @@ def update_trading_book(
 
     _log(f"live книга · очередь {n} · ордер {ORDER_NOTIONAL:.0f}$ ×{int(LEVERAGE)}")
     with BybitClient(timeout=20.0) as client:
+        if not client.has_keys and emu.ticks <= 1:
+            emu.log(
+                "нет BYBIT_API_KEY/SECRET · с облака Bybit часто 403, "
+                "берём OKX; монеты только на Bybit будут в паузе"
+            )
         try:
             emu.tick(client, cfg=cfg)
         except Exception as exc:  # noqa: BLE001
