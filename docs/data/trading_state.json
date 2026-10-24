@@ -1,7 +1,7 @@
 {
   "wallet": 687.4231818183168,
   "realized_pnl": -305.97681818168496,
-  "ticks": 370,
+  "ticks": 371,
   "signal_mode_v": 5,
   "settings_rev": 5,
   "last_signal_key": {
@@ -492,12 +492,6 @@
   ],
   "positions": {},
   "logs": [
-    "[2026-10-24 05:19:11] пропуск входов · demo-бары · 12 монет · источник тика: demo",
-    "[2026-10-24 05:20:36] очередь загружена · 12 монет из whitelist",
-    "[2026-10-24 05:20:36] В ЭФИРЕ · старт · 12 монет в работе",
-    "[2026-10-24 05:20:37] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 05:20:38] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 05:20:44] пропуск входов · demo-бары · 12 монет · источник тика: demo",
     "[2026-10-24 05:22:05] очередь загружена · 12 монет из whitelist",
     "[2026-10-24 05:22:05] В ЭФИРЕ · старт · 12 монет в работе",
     "[2026-10-24 05:22:06] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
@@ -611,6 +605,12 @@
     "[2026-10-24 05:56:59] В ЭФИРЕ · старт · 12 монет в работе",
     "[2026-10-24 05:57:00] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 05:57:00] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 05:57:04] пропуск входов · demo-бары · 12 монет · источник тика: demo"
+    "[2026-10-24 05:57:04] пропуск входов · demo-бары · 12 монет · источник тика: demo",
+    "[2026-10-24 05:58:35] очередь загружена · 12 монет из whitelist",
+    "[2026-10-24 05:58:35] В ЭФИРЕ · старт · 12 монет в работе",
+    "[2026-10-24 05:58:36] нет живых баров COIN06USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN06USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 05:58:37] нет живых баров COIN23USDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=COIN23USDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 05:58:41] пропуск входов · demo-бары · 12 монет · источник тика: demo",
+    "[2026-10-24 05:58:41] пульс · капитал 687.42 USDT · открыто 0 · очередь 12"
   ]
 }
