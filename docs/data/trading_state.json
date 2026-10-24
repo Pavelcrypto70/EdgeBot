@@ -1,7 +1,7 @@
 {
   "wallet": 1000.0,
   "realized_pnl": 0.0,
-  "ticks": 109,
+  "ticks": 110,
   "signal_mode_v": 8,
   "settings_rev": 8,
   "last_signal_key": {},
@@ -24,7 +24,6 @@
   "history": [],
   "positions": {},
   "logs": [
-    "[2026-10-24 09:16:47] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 09:16:47] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
     "[2026-10-24 09:18:19] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 09:18:19] В ЭФИРЕ · старт · 8 монет в работе",
@@ -143,6 +142,7 @@
     "[2026-10-24 09:54:15] пауза BMTUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-24 09:54:16] пауза ERAUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-24 09:54:16] пауза JCTUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
-    "[2026-10-24 09:55:51] очередь загружена · 8 монет из whitelist"
+    "[2026-10-24 09:55:51] очередь загружена · 8 монет из whitelist",
+    "[2026-10-24 09:57:20] очередь загружена · 8 монет из whitelist"
   ]
 }
