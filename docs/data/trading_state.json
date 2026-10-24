@@ -1,7 +1,7 @@
 {
   "wallet": 1000.0,
   "realized_pnl": 0.0,
-  "ticks": 186,
+  "ticks": 187,
   "signal_mode_v": 8,
   "settings_rev": 8,
   "last_signal_key": {},
@@ -24,7 +24,6 @@
   "history": [],
   "positions": {},
   "logs": [
-    "[2026-10-24 09:49:32] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 09:49:33] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
     "[2026-10-24 09:51:05] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 09:51:05] В ЭФИРЕ · старт · 8 монет в работе",
@@ -143,6 +142,7 @@
     "[2026-10-24 11:53:31] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 11:55:08] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 11:56:38] очередь загружена · 8 монет из whitelist",
-    "[2026-10-24 11:56:40] пульс · капитал 1000.00 USDT · открыто 0 · очередь 8 · ждём крест EMA · src okx"
+    "[2026-10-24 11:56:40] пульс · капитал 1000.00 USDT · открыто 0 · очередь 8 · ждём крест EMA · src okx",
+    "[2026-10-24 11:58:09] очередь загружена · 8 монет из whitelist"
   ]
 }
