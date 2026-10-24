@@ -1,7 +1,7 @@
 {
   "wallet": 1000.0,
   "realized_pnl": 0.0,
-  "ticks": 198,
+  "ticks": 199,
   "signal_mode_v": 8,
   "settings_rev": 8,
   "last_signal_key": {},
@@ -24,7 +24,6 @@
   "history": [],
   "positions": {},
   "logs": [
-    "[2026-10-24 09:54:15] пауза BMTUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-24 09:54:16] пауза ERAUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-24 09:54:16] пауза JCTUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-24 09:55:51] очередь загружена · 8 монет из whitelist",
@@ -143,6 +142,7 @@
     "[2026-10-24 12:12:11] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 12:12:14] пульс · капитал 1000.00 USDT · открыто 0 · очередь 8 · ждём крест EMA · src okx",
     "[2026-10-24 12:13:40] очередь загружена · 8 монет из whitelist",
-    "[2026-10-24 12:15:08] очередь загружена · 8 монет из whitelist"
+    "[2026-10-24 12:15:08] очередь загружена · 8 монет из whitelist",
+    "[2026-10-24 12:16:37] очередь загружена · 8 монет из whitelist"
   ]
 }
