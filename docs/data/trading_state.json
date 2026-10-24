@@ -1,7 +1,7 @@
 {
   "wallet": 1000.0,
   "realized_pnl": 0.0,
-  "ticks": 25,
+  "ticks": 26,
   "signal_mode_v": 8,
   "settings_rev": 8,
   "last_signal_key": {},
@@ -10,12 +10,6 @@
   "history": [],
   "positions": {},
   "logs": [
-    "[2026-10-24 06:43:51] В ЭФИРЕ · старт · 8 монет в работе",
-    "[2026-10-24 07:04:20] очередь загружена · 8 монет из whitelist",
-    "[2026-10-24 07:04:20] В ЭФИРЕ · старт · 8 монет в работе",
-    "[2026-10-24 07:04:23] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 07:04:23] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 07:04:24] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
     "[2026-10-24 07:05:55] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 07:05:55] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 07:05:58] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
@@ -129,6 +123,12 @@
     "[2026-10-24 07:39:48] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 07:39:52] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 07:39:53] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 07:39:53] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx"
+    "[2026-10-24 07:39:53] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
+    "[2026-10-24 07:41:26] очередь загружена · 8 монет из whitelist",
+    "[2026-10-24 07:41:26] В ЭФИРЕ · старт · 8 монет в работе",
+    "[2026-10-24 07:41:31] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 07:41:31] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 07:41:32] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
+    "[2026-10-24 07:41:32] пульс · капитал 1000.00 USDT · открыто 0 · очередь 8"
   ]
 }
