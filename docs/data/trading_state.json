@@ -1,7 +1,7 @@
 {
   "wallet": 1000.0,
   "realized_pnl": 0.0,
-  "ticks": 191,
+  "ticks": 192,
   "signal_mode_v": 8,
   "settings_rev": 8,
   "last_signal_key": {},
@@ -24,7 +24,6 @@
   "history": [],
   "positions": {},
   "logs": [
-    "[2026-10-24 09:51:10] пульс · капитал 1000.00 USDT · открыто 0 · очередь 8",
     "[2026-10-24 09:52:42] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 09:52:42] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 09:52:46] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
@@ -143,6 +142,7 @@
     "[2026-10-24 12:02:47] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 12:04:22] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 12:04:25] без живых баров · 3 монет (BMTUSDT, ERAUSDT, JCTUSDT) · живых 5 · источник okx",
-    "[2026-10-24 12:04:25] пульс · капитал 1000.00 USDT · открыто 0 · очередь 8 · ждём крест EMA · src okx"
+    "[2026-10-24 12:04:25] пульс · капитал 1000.00 USDT · открыто 0 · очередь 8 · ждём крест EMA · src okx",
+    "[2026-10-24 12:05:55] очередь загружена · 8 монет из whitelist"
   ]
 }
