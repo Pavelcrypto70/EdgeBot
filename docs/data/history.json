@@ -48,5 +48,43 @@
       "proof"
     ],
     "note_ru": "Чистый старт v8: три режима медл/средн/быстр"
+  },
+  {
+    "run_id": "20261024_064351",
+    "ts": "2026-10-24T06:43:51Z",
+    "whitelist_n": 8,
+    "whitelist_heavy_n": 3,
+    "whitelist_medium_n": 2,
+    "whitelist_fast_n": 3,
+    "added": [],
+    "removed": [],
+    "symbols_heavy": [
+      "ETHUSDT",
+      "NEARUSDT",
+      "ZECUSDT"
+    ],
+    "symbols_medium": [
+      "SNDKUSDT",
+      "WLDUSDT"
+    ],
+    "symbols_fast": [
+      "BMTUSDT",
+      "ERAUSDT",
+      "JCTUSDT"
+    ],
+    "symbols": [
+      "ETHUSDT",
+      "NEARUSDT",
+      "ZECUSDT",
+      "SNDKUSDT",
+      "WLDUSDT",
+      "BMTUSDT",
+      "ERAUSDT",
+      "JCTUSDT"
+    ],
+    "sources": [
+      "cross",
+      "proof"
+    ]
   }
 ]

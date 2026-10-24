@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-24T06:36:29Z",
-  "run_id": "20261024_063629",
+  "updated_at": "2026-10-24T06:43:51Z",
+  "run_id": "20261024_064351",
   "status": "ok",
   "whitelist": [
     {
@@ -160,19 +160,8 @@
   "whitelist_heavy_n": 3,
   "whitelist_medium_n": 2,
   "whitelist_fast_n": 3,
-  "last_added": [
-    "BMTUSDT",
-    "ERAUSDT",
-    "JCTUSDT",
-    "SNDKUSDT",
-    "WLDUSDT"
-  ],
-  "last_removed": [
-    "1000PEPEUSDT",
-    "BIRBUSDT",
-    "ENAUSDT",
-    "SOLUSDT"
-  ],
+  "last_added": [],
+  "last_removed": [],
   "order": {
     "margin_usdt": 100,
     "leverage": 3,
@@ -181,19 +170,8 @@
   "balance_start_usdt": 1000,
   "next_scan_hint_ru": "Скан ≈ каждый час · медленные + средние + быстрые (fast: крест+HTF, тейк≥2R, кулдаун после стопа)",
   "history_preview": {
-    "added": [
-      "BMTUSDT",
-      "ERAUSDT",
-      "JCTUSDT",
-      "SNDKUSDT",
-      "WLDUSDT"
-    ],
-    "removed": [
-      "1000PEPEUSDT",
-      "BIRBUSDT",
-      "ENAUSDT",
-      "SOLUSDT"
-    ]
+    "added": [],
+    "removed": []
   },
   "trading_equity": 1000.0,
   "trading_wr": 0.0

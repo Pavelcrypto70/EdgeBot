@@ -97,6 +97,7 @@ html, body {
   text-transform: uppercase; margin-bottom: 8px;
 }
 .wl-group.heavy .wl-group-title { color: var(--teal); }
+.wl-group.medium .wl-group-title { color: #78a0ff; }
 .wl-group.fast .wl-group-title { color: var(--gold); }
 .wl-group.other .wl-group-title { color: var(--muted); }
 

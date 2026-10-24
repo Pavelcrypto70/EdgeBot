@@ -73,10 +73,14 @@ function renderWl(rows) {
     return;
   }
   const heavy = rows.filter((r) => r.bucket === "heavy");
+  const medium = rows.filter((r) => r.bucket === "medium");
   const fast = rows.filter((r) => r.bucket === "fast");
-  const other = rows.filter((r) => r.bucket !== "heavy" && r.bucket !== "fast");
+  const other = rows.filter(
+    (r) => !["heavy", "medium", "fast"].includes(r.bucket)
+  );
   const html =
     renderWlSection("Медленные", "heavy", heavy) +
+    renderWlSection("Средние", "medium", medium) +
     renderWlSection("Быстрые", "fast", fast) +
     renderWlSection("Прочие", "other", other);
   box.innerHTML = html || "<div class='empty'>Пока пусто</div>";
@@ -94,9 +98,12 @@ function renderHist(items) {
     .map(
       (h) => {
         const hn = h.whitelist_heavy_n;
+        const mn = h.whitelist_medium_n;
         const fn = h.whitelist_fast_n;
         const split =
-          hn != null || fn != null ? ` · медл ${hn ?? 0} / быстр ${fn ?? 0}` : "";
+          hn != null || mn != null || fn != null
+            ? ` · медл ${hn ?? 0} / средн ${mn ?? 0} / быстр ${fn ?? 0}`
+            : "";
         return `<div class="hist-item">
         <div class="t">${fmtTs(h.ts)}</div>
         <div class="s">WL ${h.whitelist_n}${split} · +${(h.added || []).length} · −${(h.removed || []).length}</div>
@@ -161,8 +168,11 @@ function renderTrading(t) {
 
   const symRows = t.by_symbol || [];
   const symHeavy = symRows.filter((s) => s.bucket === "heavy");
+  const symMedium = symRows.filter((s) => s.bucket === "medium");
   const symFast = symRows.filter((s) => s.bucket === "fast");
-  const symOther = symRows.filter((s) => s.bucket !== "heavy" && s.bucket !== "fast");
+  const symOther = symRows.filter(
+    (s) => !["heavy", "medium", "fast"].includes(s.bucket)
+  );
   const symHeads = ["Монета", "Сделок", "WR", "PnL", "EMA"];
   const symMap = (s) => `<tr>
       <td class="sym">${s.symbol}</td>
@@ -174,7 +184,7 @@ function renderTrading(t) {
   const symBox = document.getElementById("symTable");
   if (!symRows.length) {
     symBox.innerHTML = "<div class='empty'>Пока пусто</div>";
-  } else if (symHeavy.length || symFast.length) {
+  } else if (symHeavy.length || symMedium.length || symFast.length) {
     const part = (title, cls, rows) => {
       if (!rows.length) return "";
       return `<div class="wl-group ${cls}">
@@ -185,6 +195,7 @@ function renderTrading(t) {
     };
     symBox.innerHTML =
       part("Медленные", "heavy", symHeavy) +
+      part("Средние", "medium", symMedium) +
       part("Быстрые", "fast", symFast) +
       part("Прочие", "other", symOther);
   } else {
@@ -211,19 +222,23 @@ async function main() {
     const wlAll = live.whitelist || [];
     const heavyN =
       live.whitelist_heavy_n ?? wlAll.filter((r) => r.bucket === "heavy").length;
+    const mediumN =
+      live.whitelist_medium_n ?? wlAll.filter((r) => r.bucket === "medium").length;
     const fastN =
       live.whitelist_fast_n ?? wlAll.filter((r) => r.bucket === "fast").length;
     const wlN = live.whitelist_n ?? wlAll.length;
     document.getElementById("kpiWl").textContent = String(wlN);
     document.getElementById("kpiWlSub").textContent =
-      heavyN || fastN ? `${heavyN} медл · ${fastN} быстр` : "";
+      heavyN || mediumN || fastN
+        ? `${heavyN} медл · ${mediumN} средн · ${fastN} быстр`
+        : "";
     document.getElementById("diffAdd").innerHTML = chips(live.last_added, "add");
     document.getElementById("diffRem").innerHTML = chips(live.last_removed, "rem");
     document.getElementById("scanHint").textContent =
       live.next_scan_hint_ru ||
-      "Whitelist ≈ каждый час · медленные и быстрые вместе · входы ≈ каждую ~1 мин";
+      "Whitelist ≈ каждый час · медленные / средние / быстрые";
     document.getElementById("wlHint").textContent =
-      `медл ${heavyN} · быстр ${fastN} · run ${live.run_id || "—"}`;
+      `медл ${heavyN} · средн ${mediumN} · быстр ${fastN} · run ${live.run_id || "—"}`;
     renderWl(wlAll);
     renderHist(Array.isArray(history) ? history : []);
     if (trading) renderTrading(trading);
