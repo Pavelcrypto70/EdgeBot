@@ -86,5 +86,46 @@
       "cross",
       "proof"
     ]
+  },
+  {
+    "run_id": "20261024_101010",
+    "ts": "2026-10-24T10:10:10Z",
+    "whitelist_n": 5,
+    "whitelist_heavy_n": 1,
+    "whitelist_medium_n": 3,
+    "whitelist_fast_n": 1,
+    "added": [
+      "AKEUSDT",
+      "MSTRUSDT"
+    ],
+    "removed": [
+      "ERAUSDT",
+      "ETHUSDT",
+      "JCTUSDT",
+      "NEARUSDT",
+      "WLDUSDT"
+    ],
+    "symbols_heavy": [
+      "ZECUSDT"
+    ],
+    "symbols_medium": [
+      "AKEUSDT",
+      "MSTRUSDT",
+      "SNDKUSDT"
+    ],
+    "symbols_fast": [
+      "BMTUSDT"
+    ],
+    "symbols": [
+      "ZECUSDT",
+      "AKEUSDT",
+      "MSTRUSDT",
+      "SNDKUSDT",
+      "BMTUSDT"
+    ],
+    "sources": [
+      "cross",
+      "proof"
+    ]
   }
 ]

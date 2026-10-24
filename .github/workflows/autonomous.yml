@@ -47,8 +47,8 @@ jobs:
           BYBIT_TESTNET: "false"
           BYBIT_API_KEY: ${{ secrets.BYBIT_API_KEY }}
           BYBIT_API_SECRET: ${{ secrets.BYBIT_API_SECRET }}
-        # три режима: медленные / средние / быстрые (безопасный fast)
-        run: python -m edgebot.cli autonomous --heavy 8 --medium 6 --fast 4
+        # fast только ликвидные; микрокапы без Bybit-ключей на Actions в паузе
+        run: python -m edgebot.cli autonomous --heavy 8 --medium 6 --fast 3
 
       - name: Commit public data
         run: |

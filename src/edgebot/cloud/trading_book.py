@@ -14,7 +14,7 @@ LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
 # bump при смене гейтов/стратегии/ордера → полная стату в ноль (1000$, 0 сделок)
-SETTINGS_REV = 8  # v8: три режима heavy/medium/fast, безопасный fast (крест+HTF, ≥2R)
+SETTINGS_REV = 9  # v9: live 5m/15m, мягче кресты, шире окно — видно сделки
 SIGNAL_MODE_V = SETTINGS_REV
 
 
@@ -271,9 +271,8 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
         "note_ru": (
             f"Живой эфир v{SETTINGS_REV}: старт {START_BALANCE:.0f} USDT, "
             f"ордер {ORDER_NOTIONAL:.0f}$ ×{int(LEVERAGE)}. "
-            "Медл/средн/быстр · fast: крест+HTF, тейк≥2R, кулдаун 180 мин, "
-            "макс 2 быстрых позиции. После стопа 90/180 мин "
-            "(серия ×3 → блэклист 6 ч). Бары: "
+            "Входы на 5m (HTF 15m), мягкий крест EMA. "
+            "Кулдаун после стопа 90/180 мин. Бары: "
             f"{getattr(emu, 'last_bars_source', '?')}."
         ),
     }
@@ -324,16 +323,17 @@ def update_trading_book(
 
     _log(f"live книга · очередь {n} · ордер {ORDER_NOTIONAL:.0f}$ ×{int(LEVERAGE)}")
     with BybitClient(timeout=20.0) as client:
-        if not client.has_keys and emu.ticks <= 1:
-            emu.log(
-                "нет BYBIT_API_KEY/SECRET · с облака Bybit часто 403, "
-                "берём OKX; монеты только на Bybit будут в паузе"
-            )
         try:
             emu.tick(client, cfg=cfg)
         except Exception as exc:  # noqa: BLE001
             emu.log(f"ошибка тика: {exc}")
             _log(f"live tick fail: {exc}")
+        if (not client.has_keys) and ("demo" in str(getattr(emu, "last_bars_source", ""))):
+            if emu.ticks % 20 == 1:
+                emu.log(
+                    "облако без BYBIT_API_KEY/SECRET · часть монет на demo/паузе, "
+                    "majors через OKX"
+                )
 
     book = _book_from_emu(emu)
     _write_json(PUBLIC_DIR / "trading.json", book)
