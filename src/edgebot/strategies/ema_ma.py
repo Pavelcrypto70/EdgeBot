@@ -22,8 +22,8 @@ HEAVY_DEFAULT = StrategyParams(
     name="heavy",
     ema_fast=20,
     ema_slow=50,
-    atr_mult=1.2,
-    take_profit_r=1.2,
+    atr_mult=1.5,
+    take_profit_r=2.0,
     min_htf_slope=0.0008,
     allow_short=True,
 )
@@ -32,8 +32,8 @@ FAST_DEFAULT = StrategyParams(
     name="fast",
     ema_fast=9,
     ema_slow=21,
-    atr_mult=1.0,
-    take_profit_r=1.5,
+    atr_mult=1.2,
+    take_profit_r=2.0,
     min_htf_slope=0.0005,
     allow_short=True,
 )

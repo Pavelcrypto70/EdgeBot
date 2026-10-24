@@ -10,21 +10,21 @@ from edgebot.backtest.engine import simulate_signals, split_train_oos, summarize
 from edgebot.research.proof import ProofGates
 from edgebot.strategies.ema_ma import StrategyParams, generate_signals
 
-# Тяжёлые — спокойнее, тейк не меньше 1.2R
+# Тяжёлые/средние: стоп чуть шире шума, тейк заметно дальше (не 1:1)
 HEAVY_GRID = {
     "ema_fast": [12, 15, 20, 25],
     "ema_slow": [34, 50, 80, 100],
-    "atr_mult": [1.0, 1.2, 1.5],
-    "take_profit_r": [1.2, 1.5, 2.0],
+    "atr_mult": [1.2, 1.5, 1.8],  # стоп = atr_mult * ATR (= 1R)
+    "take_profit_r": [1.8, 2.0, 2.5],  # тейк = 1.8–2.5R
     "min_htf_slope": [0.0, 0.0005],
 }
 
-# Быстрые — короткие EMA, но slow заметно длиннее fast (не 12/13)
+# Fast сетка оставлена, но live/скан fast выключен
 FAST_GRID = {
     "ema_fast": [5, 8, 9, 12],
     "ema_slow": [21, 26, 34],
-    "atr_mult": [0.9, 1.0, 1.2],
-    "take_profit_r": [1.2, 1.5],
+    "atr_mult": [1.0, 1.2, 1.5],
+    "take_profit_r": [1.8, 2.0],
     "min_htf_slope": [0.0, 0.0003],
 }
 
@@ -53,8 +53,8 @@ def _param_grid(bucket: str = "heavy") -> list[StrategyParams]:
     return out
 
 
-def _score(all_m: dict[str, Any], oos_m: dict[str, Any], gates: ProofGates) -> float:
-    """Скор под гейты: WR≥55%, сделки, плюсовой E[R], сильный OOS."""
+def _score(all_m: dict[str, Any], oos_m: dict[str, Any], gates: ProofGates, tp_r: float) -> float:
+    """Приоритет: E[R] и PF при тейке ≥1.8R, не голый высокий WR на 1.2R."""
     n = int(all_m.get("trades", 0) or 0)
     wr = float(all_m.get("winrate", 0) or 0)
     exp = float(all_m.get("expectancy_r", 0) or 0)
@@ -64,15 +64,25 @@ def _score(all_m: dict[str, Any], oos_m: dict[str, Any], gates: ProofGates) -> f
     oos_exp = float(oos_m.get("expectancy_r", 0) or 0)
     if n < gates.min_trades:
         return -999.0
-    sc = wr * 100.0 + min(exp, 1.0) * 8.0 + min(pf, 3.0) * 2.0 + min(n, 50) * 0.05
+    # R:R бонус: длинный тейк ценнее «пустого» WR
+    rr_bonus = max(0.0, tp_r - 1.5) * 10.0
+    sc = (
+        wr * 40.0
+        + min(exp, 1.5) * 45.0
+        + min(pf, 4.0) * 8.0
+        + rr_bonus
+        + min(n, 40) * 0.05
+    )
     if oos_n >= gates.min_oos_trades:
-        sc += oos_wr * 25.0 + min(oos_exp, 1.0) * 6.0
-        if oos_wr >= gates.oos_target_winrate and oos_exp >= 0:
-            sc += 12.0
+        sc += oos_wr * 15.0 + min(oos_exp, 1.5) * 20.0
+        if oos_exp >= gates.oos_min_expectancy_r and oos_wr >= gates.oos_target_winrate:
+            sc += 10.0
     else:
-        sc -= 20.0
-    if wr < gates.target_winrate or exp < 0 or pf < 1.0:
-        sc -= 30.0
+        sc -= 25.0
+    if wr < gates.target_winrate or exp < gates.min_expectancy_r or pf < gates.min_profit_factor:
+        sc -= 35.0
+    if tp_r < gates.min_take_profit_r:
+        sc -= 40.0
     return sc
 
 
@@ -100,7 +110,8 @@ def optimize_symbol(
         all_m = summarize_trades(trades)
         train_m = summarize_trades(trades[trades["entry_i"] < cut])
         oos_m = summarize_trades(trades[trades["entry_i"] >= cut])
-        sc = _score(all_m, oos_m, gates)
+        tp_r = float(p.take_profit_r)
+        sc = _score(all_m, oos_m, gates, tp_r)
         cand = {
             "params": asdict(p),
             "all": all_m,

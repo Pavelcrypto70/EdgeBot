@@ -88,14 +88,15 @@ def run_proof_research(
             allow_short = category == "linear"
             opt = optimize_symbol(entry, htf, bucket, allow_short=allow_short)
             all_m = opt.get("all") or opt["oos"]
+            params = opt.get("params") or {}
             proof = evaluate_proof(
                 opt["train"],
                 opt["oos"],
                 bucket=bucket,
                 gates=gates,
                 all_metrics=all_m,
+                params=params,
             )
-            params = opt.get("params") or {}
             style = params.get("name") or bucket
             wr_pct = float(proof.get("winrate_pct") or opt.get("winrate_pct") or 0)
             rows.append(

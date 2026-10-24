@@ -75,14 +75,15 @@ def run_cross_heavy_research(
             allow_short = category == "linear"
             opt = optimize_cross_symbol(entry, htf, allow_short=allow_short)
             all_m = opt.get("all") or opt["oos"]
+            params = opt.get("params") or {}
             proof = evaluate_proof(
                 opt["train"],
                 opt["oos"],
                 bucket="heavy",
                 gates=gates,
                 all_metrics=all_m,
+                params=params,
             )
-            params = opt.get("params") or {}
             wr_pct = float(proof.get("winrate_pct") or opt.get("winrate_pct") or 0)
             rows.append(
                 {

@@ -6,15 +6,19 @@ from typing import Any
 
 @dataclass(frozen=True, slots=True)
 class ProofGates:
-    """Whitelist только при рабочих цифрах на всём окне и на OOS."""
+    """
+    Whitelist под асимметричный R:R (тейк ≥ ~2R, стоп = 1R).
+    При тейке 2R безубыток по WR ≈ 35% до комиссий → цель WR ≥ 48–50% + плюсовой E[R].
+    """
 
     min_trades: int = 8
-    target_winrate: float = 0.55  # ≥ 55%
-    min_expectancy_r: float = 0.0  # E[R] > 0
-    min_profit_factor: float = 1.0
+    target_winrate: float = 0.50  # ≥ 50% (с тейком 2R этого достаточно)
+    min_expectancy_r: float = 0.08  # средний плюс в R
+    min_profit_factor: float = 1.25
     min_oos_trades: int = 3
-    oos_target_winrate: float = 0.55
+    oos_target_winrate: float = 0.48
     oos_min_expectancy_r: float = 0.0
+    min_take_profit_r: float = 1.8  # не пускаем почти 1:1
 
 
 def evaluate_proof(
@@ -24,8 +28,9 @@ def evaluate_proof(
     bucket: str,
     gates: ProofGates | None = None,
     all_metrics: dict[str, Any] | None = None,
+    params: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Whitelist = MA с WR≥55%, ≥8 сделок, плюсовым E[R], PF≥1 и нормальным OOS."""
+    """Whitelist = рабочий R:R + достаточный WR/OOS, не «высокий WR на тейке 1.2R»."""
     g = gates or ProofGates()
     book = all_metrics or oos
     n = int(book.get("trades", 0) or 0)
@@ -33,6 +38,7 @@ def evaluate_proof(
     exp = float(book.get("expectancy_r", 0) or 0)
     pf = float(book.get("profit_factor", 0) or 0)
     wr_pct = wr * 100
+    tp_r = float((params or {}).get("take_profit_r") or (params or {}).get("tp_r") or 0)
 
     oos_n = int(oos.get("trades", 0) or 0)
     oos_wr = float(oos.get("winrate", 0) or 0)
@@ -42,15 +48,20 @@ def evaluate_proof(
     reasons_ru: list[str] = []
     fails: list[str] = []
 
+    if tp_r and tp_r < g.min_take_profit_r:
+        fails.append("take_r")
+        reasons_ru.append(
+            f"Тейк {tp_r:.1f}R слишком близко к стопу (нужно ≥ {g.min_take_profit_r:.1f}R)."
+        )
+
     if n < g.min_trades:
         fails.append("trades")
-        reasons_ru.append(
-            f"Мало сделок: {n}, нужно ≥ {g.min_trades}."
-        )
+        reasons_ru.append(f"Мало сделок: {n}, нужно ≥ {g.min_trades}.")
     if wr < g.target_winrate:
         fails.append("winrate")
         reasons_ru.append(
-            f"Винрейт {wr_pct:.0f}% — ниже цели {g.target_winrate * 100:.0f}%."
+            f"Винрейт {wr_pct:.0f}% — ниже цели {g.target_winrate * 100:.0f}% "
+            f"(при тейке ≥{g.min_take_profit_r:.0f}R)."
         )
     if exp < g.min_expectancy_r:
         fails.append("expectancy")
@@ -60,7 +71,7 @@ def evaluate_proof(
     if pf < g.min_profit_factor and n >= g.min_trades:
         fails.append("profit_factor")
         reasons_ru.append(
-            f"Profit factor {pf:.2f} — нужно ≥ {g.min_profit_factor:.1f}."
+            f"Profit factor {pf:.2f} — нужно ≥ {g.min_profit_factor:.2f}."
         )
 
     if oos_n < g.min_oos_trades:
@@ -76,39 +87,35 @@ def evaluate_proof(
             )
         if oos_exp < g.oos_min_expectancy_r:
             fails.append("oos_expectancy")
-            reasons_ru.append(
-                f"OOS мат.ожидание {oos_exp:+.2f}R — нужно ≥ 0."
-            )
-        if oos_pf < g.min_profit_factor:
+            reasons_ru.append(f"OOS мат.ожидание {oos_exp:+.2f}R — нужно ≥ 0.")
+        if oos_pf < 1.1:
             fails.append("oos_pf")
-            reasons_ru.append(
-                f"OOS profit factor {oos_pf:.2f} — нужно ≥ {g.min_profit_factor:.1f}."
-            )
+            reasons_ru.append(f"OOS profit factor {oos_pf:.2f} — слабо.")
 
     passed = len(fails) == 0
     style = "тяжёлая" if bucket == "heavy" else "быстрая"
 
     if passed:
-        headline = f"Винрейт {wr_pct:.0f}% — берём в whitelist"
+        headline = f"WR {wr_pct:.0f}% · тейк {tp_r or '—'}R — в whitelist"
         summary = (
-            f"Рабочие средние ({style}): {n} сделок, WR {wr_pct:.0f}% "
-            f"(цель ≥ {g.target_winrate * 100:.0f}%), E[R]={exp:+.2f}, PF={pf:.2f}. "
+            f"Рабочие средние ({style}): {n} сделок, WR {wr_pct:.0f}%, "
+            f"E[R]={exp:+.2f}, PF={pf:.2f}, тейк≈{tp_r or g.min_take_profit_r:.1f}R. "
             f"OOS: {oos_n} сделок, WR {oos_wr * 100:.0f}%."
         )
         verdict = "В WHITELIST"
         verdict_short = f"{wr_pct:.0f}%"
     else:
-        headline = f"Лучший найденный винрейт {wr_pct:.0f}% — пока слабо"
+        headline = f"Лучший WR {wr_pct:.0f}% — пока слабо под R:R"
         summary = (
-            f"Нужно: WR ≥ {g.target_winrate * 100:.0f}%, ≥{g.min_trades} сделок, "
-            f"E[R]≥0, PF≥{g.min_profit_factor:.0f}, OOS ≥{g.min_oos_trades} с WR≥55%. "
-            f"Сейчас: {n} сделок / OOS {oos_n}."
+            f"Нужно: тейк ≥{g.min_take_profit_r:.1f}R, WR ≥{g.target_winrate * 100:.0f}%, "
+            f"≥{g.min_trades} сделок, E[R]≥{g.min_expectancy_r:.2f}, PF≥{g.min_profit_factor:.2f}, "
+            f"OOS ≥{g.min_oos_trades}. Сейчас: {n} / OOS {oos_n}, тейк={tp_r or '—'}."
         )
         verdict = "СЛАБО"
         verdict_short = f"{wr_pct:.0f}%"
 
     bullets = "".join(f"<li>{r}</li>" for r in reasons_ru) if reasons_ru else (
-        f"<li>Винрейт {wr_pct:.0f}% при {n} сделках — ок для эмулятора.</li>"
+        f"<li>WR {wr_pct:.0f}% при тейке {tp_r or g.min_take_profit_r:.1f}R — ок.</li>"
     )
     html = f"""
     <div class="proof-card {'ok' if passed else 'bad'}">
@@ -116,8 +123,8 @@ def evaluate_proof(
       <div class="proof-summary">{summary}</div>
       <ul class="proof-list">{bullets}</ul>
       <div class="proof-mini">
-        Цель: WR ≥ {g.target_winrate * 100:.0f}%, ≥{g.min_trades} сделок,
-        E[R]≥0, PF≥{g.min_profit_factor:.0f}; OOS ≥{g.min_oos_trades} с WR≥55%.
+        Цель: стоп=1R, тейк≥{g.min_take_profit_r:.1f}R, WR≥{g.target_winrate * 100:.0f}%,
+        E[R]≥{g.min_expectancy_r:.2f}, PF≥{g.min_profit_factor:.2f}.
       </div>
     </div>
     """

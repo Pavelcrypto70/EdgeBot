@@ -14,7 +14,7 @@ LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
 # bump при смене гейтов/стратегии/ордера → полная стату в ноль (1000$, 0 сделок)
-SETTINGS_REV = 6  # v6: без fast, кулдаун после стопа, фикс ложных стопов по старым барам
+SETTINGS_REV = 7  # v7: тейк 1.8–2.5R, стоп шире шума, скор по E[R]/PF
 SIGNAL_MODE_V = SETTINGS_REV
 
 
