@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import pandas as pd
@@ -11,9 +11,25 @@ from edgebot.bybit.client import BybitClient
 from edgebot.config import AppConfig, data_dir, load_config
 from edgebot.strategies.ema_ma import StrategyParams, generate_signals
 
+# после стопа не долбим ту же монету (минуты)
+COOLDOWN_AFTER_STOP_MIN = 90
+# серия стопов подряд → длинный блэклист
+STREAK_STOPS_FOR_BLACKLIST = 3
+BLACKLIST_AFTER_STREAK_MIN = 360
+
 
 def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _parse_ts(raw: str) -> datetime | None:
+    if not raw:
+        return None
+    try:
+        dt = datetime.strptime(str(raw)[:19].replace("T", " "), "%Y-%m-%d %H:%M:%S")
+        return dt.replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
 
 
 @dataclass(slots=True)
@@ -127,6 +143,9 @@ class PaperEmulator:
     running: bool = False
     ticks: int = 0
     _last_signal_key: dict[str, str] = field(default_factory=dict)
+    # symbol -> unix ts до которого вход запрещён
+    _cooldown_until: dict[str, float] = field(default_factory=dict)
+    _stop_streak: dict[str, int] = field(default_factory=dict)
     _started_at: str | None = None
     last_bars_source: str = "unknown"  # bybit | binance | demo | mixed
     _demo_entries_skipped: int = 0
@@ -167,12 +186,12 @@ class PaperEmulator:
                     continue
                 bucket = str(r.get("bucket") or "").lower()
                 strat = str(r.get("strategy") or "").lower()
-                if bucket == "fast":
-                    strat = "fast"
-                elif bucket == "heavy":
-                    # тяжёлые в live — через кресты (чистый cross), если не явно heavy
+                # fast отключён: только средние/медленные (heavy + кресты)
+                if bucket == "fast" or strat == "fast":
+                    continue
+                if bucket == "heavy":
                     strat = strat if strat in {"heavy", "cross"} else "cross"
-                elif strat not in {"heavy", "fast", "cross"}:
+                elif strat not in {"heavy", "cross"}:
                     strat = "cross"
                 self.bots[sym] = BotSpec(
                     symbol=sym,
@@ -211,7 +230,21 @@ class PaperEmulator:
         self.realized_pnl = 0.0
         self.wallet = float(self.starting_balance)
         self._last_signal_key.clear()
+        self._cooldown_until.clear()
+        self._stop_streak.clear()
         self.ticks = 0
+
+    def _on_cooldown(self, symbol: str) -> bool:
+        until = float(self._cooldown_until.get(symbol) or 0)
+        return until > datetime.now(timezone.utc).timestamp()
+
+    def _arm_cooldown(self, symbol: str, minutes: int, *, why: str) -> None:
+        until = datetime.now(timezone.utc) + timedelta(minutes=max(1, int(minutes)))
+        prev = float(self._cooldown_until.get(symbol) or 0)
+        ts = until.timestamp()
+        if ts > prev:
+            self._cooldown_until[symbol] = ts
+            self.log(f"блэклист {symbol} · {minutes} мин · {why}")
         self.log(f"счёт сброшен · {self.wallet:.2f} USDT")
 
     @property
@@ -365,6 +398,25 @@ class PaperEmulator:
         )
         self.history.append(closed)
         del self.positions[pos.symbol]
+        # после стопа — пауза; серия стопов → длинный блэклист
+        if reason == "stop":
+            streak = int(self._stop_streak.get(pos.symbol) or 0) + 1
+            self._stop_streak[pos.symbol] = streak
+            if streak >= STREAK_STOPS_FOR_BLACKLIST:
+                self._arm_cooldown(
+                    pos.symbol,
+                    BLACKLIST_AFTER_STREAK_MIN,
+                    why=f"серия стопов ×{streak}",
+                )
+                self._stop_streak[pos.symbol] = 0
+            else:
+                self._arm_cooldown(
+                    pos.symbol,
+                    COOLDOWN_AFTER_STOP_MIN,
+                    why="стоп",
+                )
+        else:
+            self._stop_streak[pos.symbol] = 0
         sign = "+" if pnl >= 0 else ""
         reason_ru = _REASON_RU.get(reason, reason)
         side_ru = _SIDE_RU.get(pos.side, pos.side)
@@ -437,21 +489,26 @@ class PaperEmulator:
         self.ticks += 1
         marks_cache: dict[str, dict[str, float]] = {}
         try:
-            # 1) refresh marks + exits (по марке и по high/low свечей — не пропустить стоп/тейк)
+            # 1) exits: только марка + свечи СТРОГО после opened_at
+            # (раньше брали last-8 любых баров → мгновенный «стоп» и цикл DOOD)
             for sym, pos in list(self.positions.items()):
                 try:
                     bars = fetch_bars(
-                        client, pos.category, sym, self.entry_tf, 12
+                        client, pos.category, sym, self.entry_tf, 16
                     )
                 except Exception:
                     bars = None
                 if bars is not None and bool(bars.attrs.get("edgebot_demo")):
-                    bars = None  # не обновляем PnL с synthetic ~$100
-                if bars is not None and len(bars) >= 2:
-                    # последние закрытые свечи после входа
-                    for j in range(max(0, len(bars) - 8), len(bars)):
-                        hi = float(bars["high"].iloc[j])
-                        lo = float(bars["low"].iloc[j])
+                    bars = None
+                opened_dt = _parse_ts(pos.opened_at)
+                if bars is not None and len(bars) >= 2 and "ts" in bars.columns and opened_dt:
+                    # только бары после входа (не старше чем opened)
+                    after = bars[pd.to_datetime(bars["ts"], utc=True) >= opened_dt]
+                    # не более 3 последних закрытых после входа
+                    after = after.tail(3)
+                    for j in range(len(after)):
+                        hi = float(after["high"].iloc[j])
+                        lo = float(after["low"].iloc[j])
                         if pos.side == "long":
                             if lo <= pos.stop:
                                 self._close(pos, pos.stop, "stop")
@@ -487,18 +544,20 @@ class PaperEmulator:
                     elif mark <= pos.take:
                         self._close(pos, pos.take, "take")
 
-            # 2) входы: свежий сигнал.
-            # fast — шире окно (откаты чаще), heavy/cross — узкое (чистый крест).
+            # 2) входы: только heavy/cross, узкое окно, с кулдауном после стопа
             self._demo_entries_skipped = 0
             self._sources_seen = set()
             for bot in list(self.bots.values()):
                 if bot.symbol in self.positions:
                     continue
+                if self._on_cooldown(bot.symbol):
+                    continue
                 if len(self.positions) >= self.max_positions:
                     break
                 mode = bot.params().name
-                lookback = 4 if mode == "fast" else 2
-                # уникальный seed на монету: при 403 Bybit demo-бары не будут одинаковыми
+                if mode == "fast":
+                    continue
+                lookback = 2  # только свежий крест на 1–2 барах
                 demo_seed = (abs(hash(bot.symbol)) % 9000) + 1
                 try:
                     entry = fetch_bars(
@@ -523,7 +582,6 @@ class PaperEmulator:
                 src = str(entry.attrs.get("edgebot_source") or ("demo" if entry.attrs.get("edgebot_demo") else "?"))
                 self._sources_seen.add(src)
                 if bool(entry.attrs.get("edgebot_demo")):
-                    # synthetic ~$100 — не открываем
                     self._demo_entries_skipped += 1
                     errs = entry.attrs.get("edgebot_fallback_errors")
                     if errs and self._demo_entries_skipped <= 2:
@@ -556,7 +614,6 @@ class PaperEmulator:
                 if mark is None:
                     mark = float(entry["close"].iloc[-1])
                 opened = self._try_open(bot, pick, mark)
-                # даже если не хватило маржи — помечаем сигнал, чтобы не долбить его вечно
                 self._last_signal_key[bot.symbol] = pick_key
                 if opened:
                     self.log(

@@ -14,8 +14,7 @@ LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
 # bump при смене гейтов/стратегии/ордера → полная стату в ноль (1000$, 0 сделок)
-SETTINGS_REV = 5
-# совместимость со старым полем в state
+SETTINGS_REV = 6  # v6: без fast, кулдаун после стопа, фикс ложных стопов по старым барам
 SIGNAL_MODE_V = SETTINGS_REV
 
 
@@ -65,6 +64,8 @@ def reset_trading_book(*, quiet: bool = False) -> dict[str, Any]:
             f"ордер {ORDER_NOTIONAL:.0f}$ ×{int(LEVERAGE)}"
         ],
         "last_signal_key": {},
+        "cooldown_until": {},
+        "stop_streak": {},
         "ticks": 0,
         "signal_mode_v": SIGNAL_MODE_V,
         "settings_rev": SETTINGS_REV,
@@ -93,6 +94,12 @@ def _restore_emu(state: dict[str, Any]) -> PaperEmulator:
     emu.realized_pnl = float(state.get("realized_pnl", 0.0))
     emu.ticks = int(state.get("ticks", 0))
     emu._last_signal_key = dict(state.get("last_signal_key") or {})
+    emu._cooldown_until = {
+        str(k): float(v) for k, v in (state.get("cooldown_until") or {}).items()
+    }
+    emu._stop_streak = {
+        str(k): int(v) for k, v in (state.get("stop_streak") or {}).items()
+    }
     emu.history = []
     for h in state.get("history") or []:
         try:
@@ -146,6 +153,8 @@ def _dump_state(emu: PaperEmulator) -> dict[str, Any]:
         "signal_mode_v": SIGNAL_MODE_V,
         "settings_rev": SETTINGS_REV,
         "last_signal_key": dict(emu._last_signal_key),
+        "cooldown_until": dict(emu._cooldown_until),
+        "stop_streak": dict(emu._stop_streak),
         "history": [
             {
                 "symbol": t.symbol,
@@ -230,6 +239,7 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
     return {
         "updated_at": _now_iso(),
         "status": "ok",
+        "settings_rev": SETTINGS_REV,
         "balance_start_usdt": START_BALANCE,
         "equity_usdt": snap["equity"],
         "realized_pnl": snap["realized"],
@@ -248,15 +258,11 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
         "logs": snap.get("logs") or [],
         "bars_source": getattr(emu, "last_bars_source", "unknown"),
         "note_ru": (
-            f"Живой эфир по whitelist: старт {START_BALANCE:.0f} USDT, "
-            f"ордер {ORDER_NOTIONAL:.0f} USDT (×{int(LEVERAGE)}). "
-            "Прогон входов ≈ каждую ~1 мин. Fast = крест+откат к EMA. "
-            "Входы только по живым свечам Bybit; при 403/demo — пропуск."
-            + (
-                f" Сейчас бары: {getattr(emu, 'last_bars_source', '?')}."
-                if getattr(emu, "last_bars_source", None)
-                else ""
-            )
+            f"Живой эфир v{SETTINGS_REV}: старт {START_BALANCE:.0f} USDT, "
+            f"ордер {ORDER_NOTIONAL:.0f}$ ×{int(LEVERAGE)}. "
+            "Только heavy/кресты (fast выкл). После стопа кулдаун 90 мин "
+            "(серия ×3 → блэклист 6 ч). Бары: "
+            f"{getattr(emu, 'last_bars_source', '?')}."
         ),
     }
 

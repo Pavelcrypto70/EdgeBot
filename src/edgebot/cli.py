@@ -31,8 +31,8 @@ def main(argv: list[str] | None = None) -> None:
         "autonomous",
         help="Облачный цикл: скан → diff whitelist → docs/data для GitHub Pages",
     )
-    p_auto.add_argument("--heavy", type=int, default=10)
-    p_auto.add_argument("--fast", type=int, default=8)
+    p_auto.add_argument("--heavy", type=int, default=12)
+    p_auto.add_argument("--fast", type=int, default=0, help="0 = fast выключен")
     p_auto.add_argument("--no-proof", action="store_true")
     p_auto.add_argument("--no-cross", action="store_true")
     p_auto.add_argument(

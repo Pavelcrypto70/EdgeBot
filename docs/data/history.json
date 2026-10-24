@@ -106,35 +106,22 @@
     ]
   },
   {
-    "run_id": "20261023_231814",
-    "ts": "2026-10-23T23:18:14Z",
-    "whitelist_n": 12,
-    "whitelist_heavy_n": 6,
-    "whitelist_fast_n": 6,
+    "run_id": "20261024_061508",
+    "ts": "2026-10-24T06:15:08Z",
+    "whitelist_n": 8,
+    "whitelist_heavy_n": 8,
+    "whitelist_fast_n": 0,
     "added": [
-      "COIN06USDT",
-      "COIN09USDT",
-      "COIN10USDT",
-      "COIN15USDT",
-      "COIN23USDT",
-      "COIN24USDT",
-      "COIN32USDT",
-      "COIN41USDT",
-      "COIN42USDT",
-      "COIN67USDT",
-      "COIN68USDT",
-      "COIN73USDT"
-    ],
-    "removed": [
-      "BTRUSDT",
-      "DOODUSDT",
+      "1000PEPEUSDT",
+      "BIRBUSDT",
+      "BTCUSDT",
+      "ENAUSDT",
+      "ETHUSDT",
       "NEARUSDT",
-      "SOPHUSDT",
-      "SOXLUSDT",
-      "XRPUSDT",
+      "SOLUSDT",
       "ZECUSDT"
     ],
-    "symbols_heavy": [
+    "removed": [
       "COIN06USDT",
       "COIN23USDT",
       "COIN24USDT",
@@ -142,27 +129,26 @@
       "COIN42USDT",
       "COIN73USDT"
     ],
-    "symbols_fast": [
-      "COIN09USDT",
-      "COIN10USDT",
-      "COIN15USDT",
-      "COIN41USDT",
-      "COIN67USDT",
-      "COIN68USDT"
+    "symbols_heavy": [
+      "1000PEPEUSDT",
+      "BIRBUSDT",
+      "BTCUSDT",
+      "ENAUSDT",
+      "ETHUSDT",
+      "NEARUSDT",
+      "SOLUSDT",
+      "ZECUSDT"
     ],
+    "symbols_fast": [],
     "symbols": [
-      "COIN06USDT",
-      "COIN23USDT",
-      "COIN24USDT",
-      "COIN32USDT",
-      "COIN42USDT",
-      "COIN73USDT",
-      "COIN09USDT",
-      "COIN10USDT",
-      "COIN15USDT",
-      "COIN41USDT",
-      "COIN67USDT",
-      "COIN68USDT"
+      "1000PEPEUSDT",
+      "BIRBUSDT",
+      "BTCUSDT",
+      "ENAUSDT",
+      "ETHUSDT",
+      "NEARUSDT",
+      "SOLUSDT",
+      "ZECUSDT"
     ],
     "sources": [
       "cross",
