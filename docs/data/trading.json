@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T08:24:54Z",
+  "updated_at": "2026-10-24T08:26:38Z",
   "status": "ok",
   "settings_rev": 8,
   "balance_start_usdt": 1000.0,
@@ -18,11 +18,6 @@
   "closed_trades": [],
   "by_symbol": [],
   "logs": [
-    "[2026-10-24 08:00:49] очередь загружена · 8 монет из whitelist",
-    "[2026-10-24 08:00:49] В ЭФИРЕ · старт · 8 монет в работе",
-    "[2026-10-24 08:00:52] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 08:00:53] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 08:00:53] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
     "[2026-10-24 08:02:25] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 08:02:25] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 08:02:29] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
@@ -97,7 +92,12 @@
     "[2026-10-24 08:24:49] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 08:24:53] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 08:24:54] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
-    "[2026-10-24 08:24:54] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx"
+    "[2026-10-24 08:24:54] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx",
+    "[2026-10-24 08:26:30] очередь загружена · 8 монет из whitelist",
+    "[2026-10-24 08:26:30] В ЭФИРЕ · старт · 8 монет в работе",
+    "[2026-10-24 08:26:36] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 08:26:37] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
+    "[2026-10-24 08:26:38] пропуск входов · demo-бары · 3 монет · источник тика: mixed:demo+okx"
   ],
   "bars_source": "mixed:demo+okx",
   "note_ru": "Живой эфир v8: старт 1000 USDT, ордер 300$ ×3. Медл/средн/быстр · fast: крест+HTF, тейк≥2R, кулдаун 180 мин, макс 2 быстрых позиции. После стопа 90/180 мин (серия ×3 → блэклист 6 ч). Бары: mixed:demo+okx."
