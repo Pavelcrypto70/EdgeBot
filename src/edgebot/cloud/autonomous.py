@@ -57,13 +57,14 @@ def _slim(row: dict[str, Any]) -> dict[str, Any]:
     out = {k: row.get(k) for k in keys if k in row}
     out["symbol"] = str(row.get("symbol") or "")
     out["whitelist"] = bool(row.get("whitelist"))
-    bucket = str(out.get("bucket") or "")
-    strat = str(out.get("strategy") or "")
-    # fast в live не торгуем — оставляем только heavy/cross
+    bucket = str(out.get("bucket") or "").lower()
+    strat = str(out.get("strategy") or "").lower()
     if bucket == "fast":
-        out["whitelist"] = False
-        return out
-    if bucket == "heavy" and strat not in {"heavy", "cross"}:
+        out["strategy"] = "fast"
+    elif bucket == "medium":
+        if strat not in {"medium", "cross"}:
+            out["strategy"] = "medium"
+    elif bucket == "heavy" and strat not in {"heavy", "cross"}:
         out["strategy"] = "cross"
     return out
 
@@ -72,20 +73,24 @@ def _bucket_rank(row: dict[str, Any]) -> int:
     b = str(row.get("bucket") or "")
     if b == "heavy":
         return 0
-    if b == "fast":
+    if b == "medium":
         return 1
-    return 2
+    if b == "fast":
+        return 2
+    return 3
 
 
 def _sort_whitelist(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Медленные (heavy) сверху, быстрые (fast) ниже — оба остаются в одном WL."""
+    """Медленные → средние → быстрые."""
     return sorted(rows, key=lambda r: (_bucket_rank(r), str(r.get("symbol") or "")))
 
 
-def _bucket_counts(rows: list[dict[str, Any]]) -> tuple[int, int]:
-    heavy_n = sum(1 for r in rows if str(r.get("bucket") or "") == "heavy")
-    fast_n = sum(1 for r in rows if str(r.get("bucket") or "") == "fast")
-    return heavy_n, fast_n
+def _bucket_counts(rows: list[dict[str, Any]]) -> dict[str, int]:
+    return {
+        "heavy": sum(1 for r in rows if str(r.get("bucket") or "") == "heavy"),
+        "medium": sum(1 for r in rows if str(r.get("bucket") or "") == "medium"),
+        "fast": sum(1 for r in rows if str(r.get("bucket") or "") == "fast"),
+    }
 
 
 def merge_whitelist(
@@ -105,16 +110,17 @@ def merge_whitelist(
 
 def run_autonomous_cycle(
     *,
-    max_heavy: int = 12,
-    max_fast: int = 0,
+    max_heavy: int = 8,
+    max_medium: int = 6,
+    max_fast: int = 4,
     do_proof: bool = True,
     do_cross: bool = True,
     quiet: bool = False,
 ) -> dict[str, Any]:
     """
     Полный автономный цикл:
-    1) Proof MA (только heavy) + кресты heavy
-    2) объединение whitelist (fast отключён)
+    1) Proof MA (heavy/medium/fast) + кресты heavy
+    2) объединение whitelist
     3) diff с прошлым live.json
     4) запись docs/data/* для GitHub Pages
     """
@@ -146,9 +152,13 @@ def run_autonomous_cycle(
             _log(f"кресты: WL {len(cross.whitelist)} / {len(cross.results)}")
 
         if do_proof:
-            _log("=== автономный скан: Proof MA ===")
+            _log("=== автономный скан: Proof MA (медл/средн/быстр) ===")
             proof = run_proof_research(
-                cfg=cfg, max_heavy=max_heavy, max_fast=max_fast, quiet=quiet
+                cfg=cfg,
+                max_heavy=max_heavy,
+                max_medium=max_medium,
+                max_fast=max_fast,
+                quiet=quiet,
             )
             if not proof.results.empty:
                 all_rows.extend(proof.results.to_dict(orient="records"))
@@ -181,12 +191,9 @@ def run_autonomous_cycle(
         raise
 
     # Если одна монета прошла в нескольких прогонах — берём с лучшим winrate
-    # fast не берём в WL (фокус: средние/медленные + кресты)
     best: dict[str, dict[str, Any]] = {}
     for row in all_rows:
         if not row.get("whitelist"):
-            continue
-        if str(row.get("bucket") or "") == "fast":
             continue
         sym = _row_key(row)
         if not sym:
@@ -199,13 +206,18 @@ def run_autonomous_cycle(
             best[sym] = cand
 
     fresh_wl = list(best.values())
-    # вычистить fast из прошлого live, если остались
-    previous_wl = [r for r in previous_wl if str(r.get("bucket") or "") != "fast"]
     merged, added, removed = merge_whitelist(previous_wl, fresh_wl)
-    heavy_n, fast_n = _bucket_counts(merged)
+    counts = _bucket_counts(merged)
+    heavy_n = counts["heavy"]
+    medium_n = counts["medium"]
+    fast_n = counts["fast"]
 
     ts = _now_iso()
     run_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    note = (
+        "Три режима: медленные (heavy), средние (medium), быстрые (fast). "
+        "Fast = короткий крест + HTF, тейк ≥2R, жёсткий кулдаун."
+    )
     snapshot = {
         "run_id": run_id,
         "ts": ts,
@@ -213,13 +225,14 @@ def run_autonomous_cycle(
         "researched": len(all_rows),
         "whitelist_n": len(merged),
         "whitelist_heavy_n": heavy_n,
+        "whitelist_medium_n": medium_n,
         "whitelist_fast_n": fast_n,
         "added": added,
         "removed": removed,
         "whitelist": merged,
         "order": {"margin_usdt": 100, "leverage": 3, "notional_usdt": 300},
         "balance_start_usdt": 1000,
-        "note_ru": "Автоскан: медленные (heavy) и быстрые (fast) в одном whitelist, в отчёте разделены.",
+        "note_ru": note,
     }
 
     live = {
@@ -229,12 +242,16 @@ def run_autonomous_cycle(
         "whitelist": merged,
         "whitelist_n": len(merged),
         "whitelist_heavy_n": heavy_n,
+        "whitelist_medium_n": medium_n,
         "whitelist_fast_n": fast_n,
         "last_added": added,
         "last_removed": removed,
         "order": snapshot["order"],
         "balance_start_usdt": 1000,
-        "next_scan_hint_ru": "Скан ≈ каждый час · только средние/медленные (heavy) + кресты, fast выключен",
+        "next_scan_hint_ru": (
+            "Скан ≈ каждый час · медленные + средние + быстрые "
+            "(fast: крест+HTF, тейк≥2R, кулдаун после стопа)"
+        ),
         "history_preview": {
             "added": added,
             "removed": removed,
@@ -250,10 +267,12 @@ def run_autonomous_cycle(
             "ts": ts,
             "whitelist_n": len(merged),
             "whitelist_heavy_n": heavy_n,
+            "whitelist_medium_n": medium_n,
             "whitelist_fast_n": fast_n,
             "added": added,
             "removed": removed,
             "symbols_heavy": [r["symbol"] for r in merged if r.get("bucket") == "heavy"],
+            "symbols_medium": [r["symbol"] for r in merged if r.get("bucket") == "medium"],
             "symbols_fast": [r["symbol"] for r in merged if r.get("bucket") == "fast"],
             "symbols": [r["symbol"] for r in merged],
             "sources": sources,
@@ -264,8 +283,6 @@ def run_autonomous_cycle(
     _write_json(live_path, live)
     _write_json(history_path, history)
     _write_json(scans_dir / f"{run_id}.json", snapshot)
-
-    # плоский CSV-подобный JSON для удобства скачивания данных
     _write_json(PUBLIC_DIR / "whitelist.json", merged)
 
     try:
@@ -279,6 +296,8 @@ def run_autonomous_cycle(
         _log(f"торговая книга: {book_exc}")
 
     _log(
-        f"готово · WL={len(merged)} (медл={heavy_n} быстр={fast_n}) · +{added} · -{removed} · {live_path}"
+        f"готово · WL={len(merged)} "
+        f"(медл={heavy_n} средн={medium_n} быстр={fast_n}) · "
+        f"+{added} · -{removed} · {live_path}"
     )
     return live

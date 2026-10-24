@@ -50,7 +50,13 @@ def run_cross_heavy_research(
     with BybitClient() as client:
         universe = screen_tickers(client, cfg)
         _log(f"Universe: {len(universe)}")
-        classified = classify_universe(universe, heavy_top_n=20, fast_min_abs_delta_pct=99, fast_top_n=0)
+        classified = classify_universe(
+            universe,
+            heavy_top_n=20,
+            medium_top_n=0,
+            fast_min_abs_delta_pct=99,
+            fast_top_n=0,
+        )
         heavy = classified[classified["bucket"] == "heavy"].head(max_heavy)
         _log(f"Cross-heavy set: {len(heavy)}")
 

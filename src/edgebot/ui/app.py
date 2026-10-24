@@ -116,6 +116,7 @@ body {
 .badge.wl { background: rgba(61,220,151,.15); color: var(--good); }
 .badge.rej { background: rgba(255,107,122,.12); color: var(--bad); }
 .badge.fast { background: rgba(240,180,41,.14); color: var(--gold); margin-left: 6px; }
+.badge.medium { background: rgba(120,160,255,.14); color: #78a0ff; margin-left: 6px; }
 .badge.heavy { background: rgba(46,196,182,.14); color: var(--teal); margin-left: 6px; }
 
 .main-body { padding: 12px 14px 18px; }
@@ -280,8 +281,9 @@ def build_ui() -> None:
                     value="linear",
                     label="Рынок",
                 )
-                heavy_n = ui.number("Heavy", value=8, min=4, max=15)
-                fast_n = ui.number("Fast Δ", value=10, min=4, max=20)
+                heavy_n = ui.number("Медл", value=8, min=4, max=15)
+                medium_n = ui.number("Средн", value=6, min=0, max=12)
+                fast_n = ui.number("Быстр", value=4, min=0, max=10)
                 min_turn = ui.number("Мин. оборот млн", value=2.0, min=0.5, max=50, step=0.5)
                 status_lbl = ui.label("idle").classes("status").style("align-self:center")
 
@@ -429,7 +431,8 @@ def build_ui() -> None:
         if not row:
             main_sub.set_text("нет результата")
             return
-        bucket_ru = "тяжёлая" if row.get("bucket") == "heavy" else "быстрая"
+        _bru = {"heavy": "медленная", "medium": "средняя", "fast": "быстрая"}
+        bucket_ru = _bru.get(str(row.get("bucket") or ""), str(row.get("bucket") or ""))
         wr_pct = float(row.get("winrate_pct") or 0)
         main_sub.set_text(f"{bucket_ru} · винрейт {wr_pct:.0f}%")
         m_labels["wr"].set_text(f"{wr_pct:.0f}%")
@@ -504,7 +507,10 @@ def build_ui() -> None:
                 sym = str(r.get("symbol"))
                 active = "active" if sym == state["selected"] else ""
                 badge = "wl" if r.get("whitelist") else "rej"
-                bucket = "heavy" if r.get("bucket") == "heavy" else "fast"
+                bucket = str(r.get("bucket") or "heavy")
+                if bucket not in {"heavy", "medium", "fast"}:
+                    bucket = "heavy"
+                _bru = {"heavy": "медл", "medium": "средн", "fast": "быстр"}
                 wr = float(r.get("winrate_pct") or 0)
                 card = ui.element("button").classes(f"card {active}")
                 card.on("click", lambda _e=None, s=sym: show_symbol(s))
@@ -514,7 +520,7 @@ def build_ui() -> None:
                         f'<div class="meta">средние {r.get("ema_fast")}/{r.get("ema_slow")} · '
                         f'{r.get("trades_n") or r.get("oos_n")} сделок</div>'
                         f'<span class="badge {badge}">{"WL" if r.get("whitelist") else "слабый"}</span>'
-                        f'<span class="badge {bucket}">{"тяжёлая" if bucket=="heavy" else "быстрая"}</span>'
+                        f'<span class="badge {bucket}">{_bru.get(bucket, bucket)}</span>'
                     )
 
     def sync_buttons() -> None:
@@ -677,7 +683,8 @@ def build_ui() -> None:
             return run_proof_research(
                 cfg=cfg,
                 max_heavy=int(heavy_n.value or 8),
-                max_fast=int(fast_n.value or 10),
+                max_medium=int(medium_n.value or 6),
+                max_fast=int(fast_n.value or 4),
                 quiet=True,
                 on_progress=on_progress,
             )
@@ -730,7 +737,8 @@ def build_ui() -> None:
             return run_proof_research(
                 cfg=cfg,
                 max_heavy=int(heavy_n.value or 8),
-                max_fast=int(fast_n.value or 10),
+                max_medium=int(medium_n.value or 6),
+                max_fast=int(fast_n.value or 4),
                 quiet=True,
                 on_progress=on_progress,
             )

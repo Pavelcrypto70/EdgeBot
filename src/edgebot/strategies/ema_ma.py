@@ -9,7 +9,7 @@ from edgebot.analytics.indicators import enrich
 
 @dataclass(frozen=True, slots=True)
 class StrategyParams:
-    name: str  # heavy | fast | cross
+    name: str  # heavy | medium | fast | cross
     ema_fast: int
     ema_slow: int
     atr_mult: float
@@ -21,18 +21,28 @@ class StrategyParams:
 HEAVY_DEFAULT = StrategyParams(
     name="heavy",
     ema_fast=20,
-    ema_slow=50,
+    ema_slow=80,
     atr_mult=1.5,
     take_profit_r=2.0,
     min_htf_slope=0.0008,
     allow_short=True,
 )
 
+MEDIUM_DEFAULT = StrategyParams(
+    name="medium",
+    ema_fast=12,
+    ema_slow=50,
+    atr_mult=1.5,
+    take_profit_r=2.0,
+    min_htf_slope=0.0005,
+    allow_short=True,
+)
+
 FAST_DEFAULT = StrategyParams(
     name="fast",
-    ema_fast=9,
-    ema_slow=21,
-    atr_mult=1.2,
+    ema_fast=8,
+    ema_slow=26,
+    atr_mult=1.3,
     take_profit_r=2.0,
     min_htf_slope=0.0005,
     allow_short=True,
@@ -47,10 +57,11 @@ def generate_signals(
     allow_short: bool | None = None,
 ) -> pd.DataFrame:
     """
-    Medium MA edge:
-    - heavy: classic EMA cross with HTF slope filter (slower, cleaner)
-    - fast: faster cross + pullback-to-fast EMA continuation
-    - cross: чистый крест fast/slow (отдельный режим под тяжёлые)
+    Три режима:
+    - heavy: медленный крест + жёсткий HTF + цена vs HTF EMA
+    - medium: средний крест + мягкий HTF
+    - fast: короткий крест + HTF (без pullback-спама)
+    - cross: чистый крест (для heavy research)
     """
     short_ok = params.allow_short if allow_short is None else allow_short
     e = enrich(entry, ema_fast=params.ema_fast, ema_slow=params.ema_slow)
@@ -58,8 +69,6 @@ def generate_signals(
     if e.empty or h.empty:
         return pd.DataFrame()
 
-    htf_slope = h["ema_slow_slope"].reindex(e.index, method="ffill")
-    # Align HTF onto entry by timestamp merge_asof if both have ts
     if "ts" in e.columns and "ts" in h.columns:
         left = e.reset_index(drop=True)
         right = h[["ts", "ema_slow_slope", "ema_slow"]].rename(
@@ -70,26 +79,29 @@ def generate_signals(
         e = pd.merge_asof(left, right, on="ts", direction="backward")
     else:
         e = e.copy()
-        e["htf_slope"] = float(h["ema_slow_slope"].dropna().iloc[-1]) if h["ema_slow_slope"].notna().any() else 0.0
+        e["htf_slope"] = (
+            float(h["ema_slow_slope"].dropna().iloc[-1]) if h["ema_slow_slope"].notna().any() else 0.0
+        )
         e["htf_ema"] = float(h["ema_slow"].iloc[-1])
 
     e["prev_fast"] = e["ema_fast"].shift(1)
     e["prev_slow"] = e["ema_slow"].shift(1)
     cross_up = (e["prev_fast"] <= e["prev_slow"]) & (e["ema_fast"] > e["ema_slow"])
     cross_dn = (e["prev_fast"] >= e["prev_slow"]) & (e["ema_fast"] < e["ema_slow"])
+    slope = float(params.min_htf_slope or 0.0)
 
     if params.name == "fast":
-        # Continuation: touch/near fast EMA after trend established
-        dist = (e["close"] - e["ema_fast"]).abs() / e["atr"].replace(0, pd.NA)
-        near_fast = dist <= 0.45
-        long_cont = (e["ema_fast"] > e["ema_slow"]) & (e["htf_slope"] > params.min_htf_slope) & near_fast
-        short_cont = (e["ema_fast"] < e["ema_slow"]) & (e["htf_slope"] < -params.min_htf_slope) & near_fast
-        # Fire on cross OR first near-touch after cross window
-        long_sig = cross_up | (long_cont & ~long_cont.shift(1).fillna(False))
-        short_sig = cross_dn | (short_cont & ~short_cont.shift(1).fillna(False))
+        # Без pullback: только крест + направление HTF (иначе ночной спам)
+        long_sig = cross_up & (e["htf_slope"] > slope)
+        short_sig = cross_dn & (e["htf_slope"] < -slope)
+    elif params.name == "medium":
+        if slope <= 0:
+            long_sig = cross_up
+            short_sig = cross_dn
+        else:
+            long_sig = cross_up & (e["htf_slope"] >= 0)
+            short_sig = cross_dn & (e["htf_slope"] <= 0)
     elif params.name == "cross":
-        # Чистый крест: только пересечение, HTF — мягкий фильтр направления
-        slope = params.min_htf_slope
         if slope <= 0:
             long_sig = cross_up
             short_sig = cross_dn
@@ -97,8 +109,9 @@ def generate_signals(
             long_sig = cross_up & (e["htf_slope"] >= 0)
             short_sig = cross_dn & (e["htf_slope"] <= 0)
     else:
-        long_sig = cross_up & (e["htf_slope"] > params.min_htf_slope) & (e["close"] >= e["htf_ema"])
-        short_sig = cross_dn & (e["htf_slope"] < -params.min_htf_slope) & (e["close"] <= e["htf_ema"])
+        # heavy / slow
+        long_sig = cross_up & (e["htf_slope"] > slope) & (e["close"] >= e["htf_ema"])
+        short_sig = cross_dn & (e["htf_slope"] < -slope) & (e["close"] <= e["htf_ema"])
 
     rows: list[dict] = []
     for i in range(len(e)):

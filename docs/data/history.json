@@ -1,33 +1,52 @@
 [
   {
-    "run_id": "20261024_062419",
-    "ts": "2026-10-24T06:24:19Z",
-    "whitelist_n": 7,
-    "whitelist_heavy_n": 7,
-    "whitelist_fast_n": 0,
+    "run_id": "20261024_063629",
+    "ts": "2026-10-24T06:36:29Z",
+    "whitelist_n": 8,
+    "whitelist_heavy_n": 3,
+    "whitelist_medium_n": 2,
+    "whitelist_fast_n": 3,
     "added": [
+      "BMTUSDT",
+      "ERAUSDT",
+      "JCTUSDT",
+      "SNDKUSDT",
+      "WLDUSDT"
+    ],
+    "removed": [
       "1000PEPEUSDT",
       "BIRBUSDT",
       "ENAUSDT",
+      "SOLUSDT"
+    ],
+    "symbols_heavy": [
       "ETHUSDT",
       "NEARUSDT",
-      "SOLUSDT",
       "ZECUSDT"
     ],
-    "removed": [],
+    "symbols_medium": [
+      "SNDKUSDT",
+      "WLDUSDT"
+    ],
+    "symbols_fast": [
+      "BMTUSDT",
+      "ERAUSDT",
+      "JCTUSDT"
+    ],
     "symbols": [
-      "1000PEPEUSDT",
-      "BIRBUSDT",
-      "ENAUSDT",
       "ETHUSDT",
       "NEARUSDT",
-      "SOLUSDT",
-      "ZECUSDT"
+      "ZECUSDT",
+      "SNDKUSDT",
+      "WLDUSDT",
+      "BMTUSDT",
+      "ERAUSDT",
+      "JCTUSDT"
     ],
     "sources": [
       "cross",
       "proof"
     ],
-    "note": "чистый старт v7 · тейк 1.8-2.5R · только heavy"
+    "note_ru": "Чистый старт v8: три режима медл/средн/быстр"
   }
 ]

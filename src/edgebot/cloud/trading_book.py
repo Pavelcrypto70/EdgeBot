@@ -14,7 +14,7 @@ LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
 # bump при смене гейтов/стратегии/ордера → полная стату в ноль (1000$, 0 сделок)
-SETTINGS_REV = 7  # v7: тейк 1.8–2.5R, стоп шире шума, скор по E[R]/PF
+SETTINGS_REV = 8  # v8: три режима heavy/medium/fast, безопасный fast (крест+HTF, ≥2R)
 SIGNAL_MODE_V = SETTINGS_REV
 
 
@@ -226,12 +226,15 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
             row["ema"] = f"{bot.ema_fast}/{bot.ema_slow}"
             row["strategy"] = bot.strategy
             row["bucket"] = bot.bucket or (
-                bot.strategy if bot.strategy in {"heavy", "fast"} else row.get("bucket")
+                bot.strategy
+                if bot.strategy in {"heavy", "medium", "fast"}
+                else row.get("bucket")
             )
 
+    _br = {"heavy": 0, "medium": 1, "fast": 2}
     by_symbol.sort(
         key=lambda x: (
-            0 if x.get("bucket") == "heavy" else 1 if x.get("bucket") == "fast" else 2,
+            _br.get(str(x.get("bucket") or ""), 3),
             -float(x.get("pnl") or 0),
         )
     )
@@ -260,7 +263,8 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
         "note_ru": (
             f"Живой эфир v{SETTINGS_REV}: старт {START_BALANCE:.0f} USDT, "
             f"ордер {ORDER_NOTIONAL:.0f}$ ×{int(LEVERAGE)}. "
-            "Только heavy/кресты (fast выкл). После стопа кулдаун 90 мин "
+            "Медл/средн/быстр · fast: крест+HTF, тейк≥2R, кулдаун 180 мин, "
+            "макс 2 быстрых позиции. После стопа 90/180 мин "
             "(серия ×3 → блэклист 6 ч). Бары: "
             f"{getattr(emu, 'last_bars_source', '?')}."
         ),

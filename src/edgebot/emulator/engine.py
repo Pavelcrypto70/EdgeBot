@@ -13,9 +13,11 @@ from edgebot.strategies.ema_ma import StrategyParams, generate_signals
 
 # после стопа не долбим ту же монету (минуты)
 COOLDOWN_AFTER_STOP_MIN = 90
+COOLDOWN_FAST_AFTER_STOP_MIN = 180  # fast: длиннее пауза
 # серия стопов подряд → длинный блэклист
 STREAK_STOPS_FOR_BLACKLIST = 3
 BLACKLIST_AFTER_STREAK_MIN = 360
+MAX_FAST_OPEN = 2  # не больше двух быстрых позиций сразу
 
 
 def _now() -> str:
@@ -48,13 +50,16 @@ class BotSpec:
 
     def params(self) -> StrategyParams:
         # Режим сигналов: bucket важнее strategy из бэктеста.
-        # Быстрые всегда в режиме fast (крест + откат), иначе live почти молчит.
         bucket = (self.bucket or "").lower()
         name = (self.strategy or "").lower()
         if bucket == "fast":
             name = "fast"
-        elif name not in {"heavy", "fast", "cross"}:
-            name = "heavy" if bucket == "heavy" else "cross"
+        elif bucket == "medium":
+            name = name if name in {"medium", "cross"} else "medium"
+        elif bucket == "heavy":
+            name = name if name in {"heavy", "cross"} else "heavy"
+        elif name not in {"heavy", "medium", "fast", "cross"}:
+            name = "cross"
         return StrategyParams(
             name=name,
             ema_fast=int(self.ema_fast),
@@ -117,7 +122,12 @@ _REASON_RU = {
 
 _SIDE_RU = {"long": "ЛОНГ", "short": "ШОРТ"}
 
-_STRAT_RU = {"heavy": "тяжёлая", "fast": "быстрая", "cross": "крест"}
+_STRAT_RU = {
+    "heavy": "медленная",
+    "medium": "средняя",
+    "fast": "быстрая",
+    "cross": "крест",
+}
 
 
 @dataclass
@@ -186,21 +196,25 @@ class PaperEmulator:
                     continue
                 bucket = str(r.get("bucket") or "").lower()
                 strat = str(r.get("strategy") or "").lower()
-                # fast отключён: только средние/медленные (heavy + кресты)
-                if bucket == "fast" or strat == "fast":
-                    continue
-                if bucket == "heavy":
+                if bucket == "fast":
+                    strat = "fast"
+                elif bucket == "medium":
+                    strat = strat if strat in {"medium", "cross"} else "medium"
+                elif bucket == "heavy":
                     strat = strat if strat in {"heavy", "cross"} else "cross"
-                elif strat not in {"heavy", "cross"}:
+                elif strat not in {"heavy", "medium", "fast", "cross"}:
                     strat = "cross"
+                tp = float(r.get("tp_r") or r.get("take_profit_r") or 2.0)
+                if bucket == "fast" and tp < 2.0:
+                    tp = 2.0
                 self.bots[sym] = BotSpec(
                     symbol=sym,
                     category=str(r.get("category") or "linear"),
                     strategy=strat,
                     ema_fast=fast,
                     ema_slow=slow,
-                    atr_mult=float(r.get("atr_mult") or 1.2),
-                    take_profit_r=float(r.get("tp_r") or r.get("take_profit_r") or 1.2),
+                    atr_mult=float(r.get("atr_mult") or 1.5),
+                    take_profit_r=tp,
                     min_htf_slope=float(r.get("htf_slope_min") or r.get("min_htf_slope") or 0.0),
                     leverage=float(self.default_leverage),
                     proof_wr=float(r.get("winrate_pct") or 0.0),
@@ -244,8 +258,22 @@ class PaperEmulator:
         ts = until.timestamp()
         if ts > prev:
             self._cooldown_until[symbol] = ts
-            self.log(f"блэклист {symbol} · {minutes} мин · {why}")
-        self.log(f"счёт сброшен · {self.wallet:.2f} USDT")
+            self.log(f"пауза {symbol} · {minutes} мин · {why}")
+
+    def _fast_open_count(self) -> int:
+        n = 0
+        for sym in self.positions:
+            bot = self.bots.get(sym)
+            if bot and (bot.bucket or bot.strategy or "").lower() == "fast":
+                n += 1
+        return n
+
+    def _cooldown_minutes_for(self, symbol: str) -> int:
+        bot = self.bots.get(symbol)
+        bucket = ((bot.bucket if bot else "") or (bot.strategy if bot else "") or "").lower()
+        if bucket == "fast":
+            return COOLDOWN_FAST_AFTER_STOP_MIN
+        return COOLDOWN_AFTER_STOP_MIN
 
     @property
     def margin_used(self) -> float:
@@ -412,7 +440,7 @@ class PaperEmulator:
             else:
                 self._arm_cooldown(
                     pos.symbol,
-                    COOLDOWN_AFTER_STOP_MIN,
+                    self._cooldown_minutes_for(pos.symbol),
                     why="стоп",
                 )
         else:
@@ -544,7 +572,7 @@ class PaperEmulator:
                     elif mark <= pos.take:
                         self._close(pos, pos.take, "take")
 
-            # 2) входы: только heavy/cross, узкое окно, с кулдауном после стопа
+            # 2) входы: heavy/medium/fast, узкое окно, кулдаун после стопа
             self._demo_entries_skipped = 0
             self._sources_seen = set()
             for bot in list(self.bots.values()):
@@ -555,9 +583,16 @@ class PaperEmulator:
                 if len(self.positions) >= self.max_positions:
                     break
                 mode = bot.params().name
-                if mode == "fast":
+                bucket = (bot.bucket or mode or "").lower()
+                if bucket == "fast" and self._fast_open_count() >= MAX_FAST_OPEN:
                     continue
-                lookback = 2  # только свежий крест на 1–2 барах
+                # lookback: heavy чуть шире, fast — только свежий бар
+                if bucket == "fast":
+                    lookback = 1
+                elif bucket == "medium":
+                    lookback = 2
+                else:
+                    lookback = 3
                 demo_seed = (abs(hash(bot.symbol)) % 9000) + 1
                 try:
                     entry = fetch_bars(

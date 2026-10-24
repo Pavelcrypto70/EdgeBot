@@ -21,6 +21,35 @@ class ProofGates:
     min_take_profit_r: float = 1.8  # не пускаем почти 1:1
 
 
+def _gates_for_bucket(bucket: str, base: ProofGates | None = None) -> ProofGates:
+    """Fast жёстче по тейку; medium чуть мягче по числу сделок."""
+    g = base or ProofGates()
+    b = (bucket or "heavy").lower()
+    if b == "fast":
+        return ProofGates(
+            min_trades=max(g.min_trades, 8),
+            target_winrate=max(g.target_winrate, 0.48),
+            min_expectancy_r=max(g.min_expectancy_r, 0.10),
+            min_profit_factor=max(g.min_profit_factor, 1.30),
+            min_oos_trades=g.min_oos_trades,
+            oos_target_winrate=g.oos_target_winrate,
+            oos_min_expectancy_r=g.oos_min_expectancy_r,
+            min_take_profit_r=max(g.min_take_profit_r, 2.0),
+        )
+    if b == "medium":
+        return ProofGates(
+            min_trades=g.min_trades,
+            target_winrate=g.target_winrate,
+            min_expectancy_r=g.min_expectancy_r,
+            min_profit_factor=g.min_profit_factor,
+            min_oos_trades=g.min_oos_trades,
+            oos_target_winrate=g.oos_target_winrate,
+            oos_min_expectancy_r=g.oos_min_expectancy_r,
+            min_take_profit_r=max(g.min_take_profit_r, 1.8),
+        )
+    return g
+
+
 def evaluate_proof(
     train: dict[str, Any],
     oos: dict[str, Any],
@@ -31,7 +60,7 @@ def evaluate_proof(
     params: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Whitelist = рабочий R:R + достаточный WR/OOS, не «высокий WR на тейке 1.2R»."""
-    g = gates or ProofGates()
+    g = _gates_for_bucket(bucket, gates)
     book = all_metrics or oos
     n = int(book.get("trades", 0) or 0)
     wr = float(book.get("winrate", 0) or 0)
@@ -93,7 +122,8 @@ def evaluate_proof(
             reasons_ru.append(f"OOS profit factor {oos_pf:.2f} — слабо.")
 
     passed = len(fails) == 0
-    style = "тяжёлая" if bucket == "heavy" else "быстрая"
+    _style = {"heavy": "медленная", "medium": "средняя", "fast": "быстрая"}
+    style = _style.get((bucket or "").lower(), bucket or "MA")
 
     if passed:
         headline = f"WR {wr_pct:.0f}% · тейк {tp_r or '—'}R — в whitelist"

@@ -20,9 +20,10 @@ def main(argv: list[str] | None = None) -> None:
 
     sub.add_parser("ui", help="Open screener desk (browser UI)")
 
-    p_proof = sub.add_parser("proof", help="MA heavy/fast optimize + whitelist proof")
-    p_proof.add_argument("--heavy", type=int, default=10)
-    p_proof.add_argument("--fast", type=int, default=12)
+    p_proof = sub.add_parser("proof", help="MA heavy/medium/fast optimize + whitelist proof")
+    p_proof.add_argument("--heavy", type=int, default=8)
+    p_proof.add_argument("--medium", type=int, default=6)
+    p_proof.add_argument("--fast", type=int, default=4)
 
     p_cross = sub.add_parser("crosses", help="Отдельно: кресты EMA только на тяжёлых")
     p_cross.add_argument("--heavy", type=int, default=12)
@@ -31,8 +32,9 @@ def main(argv: list[str] | None = None) -> None:
         "autonomous",
         help="Облачный цикл: скан → diff whitelist → docs/data для GitHub Pages",
     )
-    p_auto.add_argument("--heavy", type=int, default=12)
-    p_auto.add_argument("--fast", type=int, default=0, help="0 = fast выключен")
+    p_auto.add_argument("--heavy", type=int, default=8)
+    p_auto.add_argument("--medium", type=int, default=6)
+    p_auto.add_argument("--fast", type=int, default=4)
     p_auto.add_argument("--no-proof", action="store_true")
     p_auto.add_argument("--no-cross", action="store_true")
     p_auto.add_argument(
@@ -91,7 +93,12 @@ def main(argv: list[str] | None = None) -> None:
     if args.cmd == "proof":
         from edgebot.research.pipeline import run_proof_research
 
-        bundle = run_proof_research(max_heavy=args.heavy, max_fast=args.fast, quiet=False)
+        bundle = run_proof_research(
+            max_heavy=args.heavy,
+            max_medium=args.medium,
+            max_fast=args.fast,
+            quiet=False,
+        )
         rprint(
             {
                 "researched": len(bundle.results),
@@ -140,6 +147,7 @@ def main(argv: list[str] | None = None) -> None:
 
         live = run_autonomous_cycle(
             max_heavy=args.heavy,
+            max_medium=args.medium,
             max_fast=args.fast,
             do_proof=not args.no_proof,
             do_cross=not args.no_cross,

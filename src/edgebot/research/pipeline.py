@@ -33,7 +33,8 @@ def run_proof_research(
     *,
     cfg: AppConfig | None = None,
     max_heavy: int = 10,
-    max_fast: int = 12,
+    max_medium: int = 6,
+    max_fast: int = 4,
     quiet: bool = True,
     on_progress: Callable[[str], None] | None = None,
 ) -> ProofBundle:
@@ -49,7 +50,7 @@ def run_proof_research(
 
     bars_entry = max(cfg.analytics.bars_entry, 700)
     bars_htf = max(cfg.analytics.bars_htf, 350)
-    gates = ProofGates()  # WR≥55%, ≥8 сделок, E[R]≥0, PF≥1, OOS≥3
+    gates = ProofGates()
     artifacts: dict[str, Any] = {}
 
     with BybitClient() as client:
@@ -57,14 +58,16 @@ def run_proof_research(
         _log(f"Universe: {len(universe)}")
         classified = classify_universe(
             universe,
-            heavy_top_n=15,
-            fast_min_abs_delta_pct=2.5,
-            fast_top_n=max(max_fast + 8, 20),
+            heavy_top_n=max(max_heavy + 4, 12),
+            medium_top_n=max(max_medium + 4, 8),
+            fast_min_abs_delta_pct=3.5,
+            fast_top_n=max(max_fast + 4, 8),
         )
         heavy = classified[classified["bucket"] == "heavy"].head(max_heavy)
+        medium = classified[classified["bucket"] == "medium"].head(max_medium)
         fast = classified[classified["bucket"] == "fast"].head(max_fast)
-        work = pd.concat([heavy, fast], ignore_index=True)
-        _log(f"Research set: heavy={len(heavy)} fast={len(fast)}")
+        work = pd.concat([heavy, medium, fast], ignore_index=True)
+        _log(f"Research set: heavy={len(heavy)} medium={len(medium)} fast={len(fast)}")
 
         rows: list[dict] = []
         for i, row in enumerate(work.itertuples(index=False)):
@@ -135,7 +138,6 @@ def run_proof_research(
                 }
             )
 
-            # Keep full proof package for UI charts (all researched; WL first)
             if opt.get("ok") and params:
                 art = artifact_from_opt(
                     entry,
