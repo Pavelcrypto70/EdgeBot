@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T09:54:16Z",
+  "updated_at": "2026-10-24T09:55:54Z",
   "status": "ok",
   "settings_rev": 8,
   "balance_start_usdt": 1000.0,
@@ -18,7 +18,6 @@
   "closed_trades": [],
   "by_symbol": [],
   "logs": [
-    "[2026-10-24 09:29:38] очередь загружена · 8 монет из whitelist",
     "[2026-10-24 09:29:38] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 09:29:42] нет живых баров BMTUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=BMTUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
     "[2026-10-24 09:29:43] нет живых баров ERAUSDT: [\"binance:Client error '451 ' for url 'https://fapi.binance.com/fapi/v1/klines?symbol=ERAUSDT&interval=15m&limit=160'\\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/451\", 'okx:okx error: {\\'code\\': \\'51001\\', \\'data\\': [], \\'msg\\': \"Instrument ID, Instrument ID code, or Spread ID doesn\\'t exist.\"}']",
@@ -97,8 +96,9 @@
     "[2026-10-24 09:54:12] В ЭФИРЕ · старт · 8 монет в работе",
     "[2026-10-24 09:54:15] пауза BMTUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-24 09:54:16] пауза ERAUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
-    "[2026-10-24 09:54:16] пауза JCTUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets"
+    "[2026-10-24 09:54:16] пауза JCTUSDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
+    "[2026-10-24 09:55:51] очередь загружена · 8 монет из whitelist"
   ],
-  "bars_source": "mixed:demo+okx",
-  "note_ru": "Живой эфир v8: старт 1000 USDT, ордер 300$ ×3. Медл/средн/быстр · fast: крест+HTF, тейк≥2R, кулдаун 180 мин, макс 2 быстрых позиции. После стопа 90/180 мин (серия ×3 → блэклист 6 ч). Бары: mixed:demo+okx."
+  "bars_source": "okx",
+  "note_ru": "Живой эфир v8: старт 1000 USDT, ордер 300$ ×3. Медл/средн/быстр · fast: крест+HTF, тейк≥2R, кулдаун 180 мин, макс 2 быстрых позиции. После стопа 90/180 мин (серия ×3 → блэклист 6 ч). Бары: okx."
 }
