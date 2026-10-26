@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-26T14:27:38Z",
+  "updated_at": "2026-10-26T15:19:01Z",
   "status": "ok",
   "settings_rev": 8,
   "balance_start_usdt": 1000.0,
@@ -199,55 +199,43 @@
       "trades": 4,
       "winrate_pct": 50.0,
       "pnl": 9.05,
-      "ema": "12/60",
-      "strategy": "cross",
-      "bucket": "heavy"
-    },
-    {
-      "symbol": "NEARUSDT",
-      "trades": 4,
-      "winrate_pct": 25.0,
-      "pnl": -3.91,
-      "ema": "30/60",
-      "strategy": "cross",
-      "bucket": "heavy"
-    },
-    {
-      "symbol": "ETHUSDT",
-      "trades": 6,
-      "winrate_pct": 0.0,
-      "pnl": -6.14,
-      "ema": "25/80",
-      "strategy": "cross",
-      "bucket": "heavy"
+      "ema": "—",
+      "strategy": "live"
     },
     {
       "symbol": "SNDKUSDT",
       "trades": 6,
       "winrate_pct": 33.3,
       "pnl": -3.45,
-      "ema": "12/34",
-      "strategy": "medium",
-      "bucket": "medium"
+      "ema": "—",
+      "strategy": "live"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "trades": 4,
+      "winrate_pct": 25.0,
+      "pnl": -3.91,
+      "ema": "—",
+      "strategy": "live"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "trades": 6,
+      "winrate_pct": 0.0,
+      "pnl": -6.14,
+      "ema": "—",
+      "strategy": "live"
     },
     {
       "symbol": "WLDUSDT",
       "trades": 2,
       "winrate_pct": 0.0,
       "pnl": -7.56,
-      "ema": "20/60",
-      "strategy": "medium",
-      "bucket": "medium"
+      "ema": "—",
+      "strategy": "live"
     }
   ],
   "logs": [
-    "[2026-10-26 12:30:39] очередь загружена · 8 монет из whitelist",
-    "[2026-10-26 12:30:39] ТЕЙК ЛОНГ ZECUSDT @ 1246.44 результат +6.86 USDT",
-    "[2026-10-26 12:30:41] без живых баров · 3 монет (BMTUSDT, ERAUSDT, JCTUSDT) · живых 5 · источник okx",
-    "[2026-10-26 12:30:41] пульс · капитал 989.42 USDT · открыто 1 · очередь 8 · ждём крест EMA · src okx",
-    "[2026-10-26 12:32:20] очередь загружена · 8 монет из whitelist",
-    "[2026-10-26 12:33:58] очередь загружена · 8 монет из whitelist",
-    "[2026-10-26 12:35:30] очередь загружена · 8 монет из whitelist",
     "[2026-10-26 12:37:03] очередь загружена · 8 монет из whitelist",
     "[2026-10-26 12:38:41] очередь загружена · 8 монет из whitelist",
     "[2026-10-26 12:38:43] пульс · капитал 989.55 USDT · открыто 1 · очередь 8 · ждём крест EMA · src okx",
@@ -320,8 +308,15 @@
     "[2026-10-26 14:22:43] пульс · капитал 984.36 USDT · открыто 0 · очередь 8 · ждём крест EMA · src okx",
     "[2026-10-26 14:24:16] очередь загружена · 8 монет из whitelist",
     "[2026-10-26 14:26:02] очередь загружена · 8 монет из whitelist",
-    "[2026-10-26 14:27:37] очередь загружена · 8 монет из whitelist"
+    "[2026-10-26 14:27:37] очередь загружена · 8 монет из whitelist",
+    "[2026-10-26 15:18:57] очередь загружена · 6 монет из whitelist",
+    "[2026-10-26 15:18:58] пауза COIN06USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
+    "[2026-10-26 15:18:59] пауза COIN73USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
+    "[2026-10-26 15:18:59] пауза COIN01USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
+    "[2026-10-26 15:19:00] пауза COIN25USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
+    "[2026-10-26 15:19:00] пауза COIN53USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
+    "[2026-10-26 15:19:01] пауза COIN56USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets"
   ],
-  "bars_source": "okx",
-  "note_ru": "Живой эфир v8: старт 1000 USDT, ордер 300$ ×3. Медл/средн/быстр · fast: крест+HTF, тейк≥2R, кулдаун 180 мин, макс 2 быстрых позиции. После стопа 90/180 мин (серия ×3 → блэклист 6 ч). Бары: okx."
+  "bars_source": "demo",
+  "note_ru": "Живой эфир v8: старт 1000 USDT, ордер 300$ ×3. Медл/средн/быстр · fast: крест+HTF, тейк≥2R, кулдаун 180 мин, макс 2 быстрых позиции. После стопа 90/180 мин (серия ×3 → блэклист 6 ч). Бары: demo."
 }
