@@ -1,7 +1,7 @@
 {
   "wallet": 984.3552409085223,
   "realized_pnl": -12.014759091478536,
-  "ticks": 2020,
+  "ticks": 2021,
   "signal_mode_v": 8,
   "settings_rev": 8,
   "last_signal_key": {
@@ -313,9 +313,6 @@
   ],
   "positions": {},
   "logs": [
-    "[2026-10-26 11:46:05] очередь загружена · 8 монет из whitelist",
-    "[2026-10-26 11:47:38] очередь загружена · 8 монет из whitelist",
-    "[2026-10-26 11:47:40] пульс · капитал 982.92 USDT · открыто 2 · очередь 8 · ждём крест EMA · src okx",
     "[2026-10-26 11:52:38] очередь загружена · 8 монет из whitelist",
     "[2026-10-26 11:54:05] очередь загружена · 8 монет из whitelist",
     "[2026-10-26 11:55:37] очередь загружена · 8 монет из whitelist",
@@ -432,6 +429,9 @@
     "[2026-10-26 15:18:59] пауза COIN01USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-26 15:19:00] пауза COIN25USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-26 15:19:00] пауза COIN53USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
-    "[2026-10-26 15:19:01] пауза COIN56USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets"
+    "[2026-10-26 15:19:01] пауза COIN56USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
+    "[2026-10-26 19:26:09] очередь загружена · 6 монет из whitelist",
+    "[2026-10-26 19:26:09] без живых баров · 9 монет (BMTUSDT, COIN01USDT, COIN06USDT, COIN25USDT, COIN53USDT) · живых 5 · источник unknown",
+    "[2026-10-26 19:26:09] пульс · капитал 984.36 USDT · открыто 0 · очередь 6 · ждём крест EMA · src unknown"
   ]
 }
