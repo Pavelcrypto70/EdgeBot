@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-26T15:18:57Z",
-  "run_id": "20261026_151857",
+  "updated_at": "2026-10-26T20:41:06Z",
+  "run_id": "20261026_204106",
   "status": "ok",
   "whitelist": [
     {
@@ -122,24 +122,8 @@
   "whitelist_heavy_n": 2,
   "whitelist_medium_n": 4,
   "whitelist_fast_n": 0,
-  "last_added": [
-    "COIN01USDT",
-    "COIN06USDT",
-    "COIN25USDT",
-    "COIN53USDT",
-    "COIN56USDT",
-    "COIN73USDT"
-  ],
-  "last_removed": [
-    "BMTUSDT",
-    "ERAUSDT",
-    "ETHUSDT",
-    "JCTUSDT",
-    "NEARUSDT",
-    "SNDKUSDT",
-    "WLDUSDT",
-    "ZECUSDT"
-  ],
+  "last_added": [],
+  "last_removed": [],
   "order": {
     "margin_usdt": 100,
     "leverage": 3,
@@ -148,24 +132,8 @@
   "balance_start_usdt": 1000,
   "next_scan_hint_ru": "Скан ≈ каждый час · медленные + средние + быстрые (fast: крест+HTF, тейк≥2R, кулдаун после стопа)",
   "history_preview": {
-    "added": [
-      "COIN01USDT",
-      "COIN06USDT",
-      "COIN25USDT",
-      "COIN53USDT",
-      "COIN56USDT",
-      "COIN73USDT"
-    ],
-    "removed": [
-      "BMTUSDT",
-      "ERAUSDT",
-      "ETHUSDT",
-      "JCTUSDT",
-      "NEARUSDT",
-      "SNDKUSDT",
-      "WLDUSDT",
-      "ZECUSDT"
-    ]
+    "added": [],
+    "removed": []
   },
   "trading_equity": 984.36,
   "trading_wr": 22.7

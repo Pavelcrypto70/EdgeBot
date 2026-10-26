@@ -135,5 +135,38 @@
       "cross",
       "proof"
     ]
+  },
+  {
+    "run_id": "20261026_204106",
+    "ts": "2026-10-26T20:41:06Z",
+    "whitelist_n": 6,
+    "whitelist_heavy_n": 2,
+    "whitelist_medium_n": 4,
+    "whitelist_fast_n": 0,
+    "added": [],
+    "removed": [],
+    "symbols_heavy": [
+      "COIN06USDT",
+      "COIN73USDT"
+    ],
+    "symbols_medium": [
+      "COIN01USDT",
+      "COIN25USDT",
+      "COIN53USDT",
+      "COIN56USDT"
+    ],
+    "symbols_fast": [],
+    "symbols": [
+      "COIN06USDT",
+      "COIN73USDT",
+      "COIN01USDT",
+      "COIN25USDT",
+      "COIN53USDT",
+      "COIN56USDT"
+    ],
+    "sources": [
+      "cross",
+      "proof"
+    ]
   }
 ]
