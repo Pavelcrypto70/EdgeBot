@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-27T02:36:06Z",
+  "updated_at": "2026-10-27T02:37:38Z",
   "status": "ok",
   "settings_rev": 8,
   "balance_start_usdt": 1000.0,
@@ -236,7 +236,6 @@
     }
   ],
   "logs": [
-    "[2026-10-26 15:18:59] пауза COIN01USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-26 15:19:00] пауза COIN25USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-26 15:19:00] пауза COIN53USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
     "[2026-10-26 15:19:01] пауза COIN56USDT · нет живых баров (okx:no-symbol, binance:geo-block) · нужны BYBIT_API_KEY/SECRET в GitHub Secrets",
@@ -315,7 +314,8 @@
     "[2026-10-27 02:33:03] очередь загружена · 6 монет из whitelist",
     "[2026-10-27 02:33:03] пульс · капитал 984.36 USDT · открыто 0 · очередь 6 · ждём крест EMA · src unknown",
     "[2026-10-27 02:34:35] очередь загружена · 6 монет из whitelist",
-    "[2026-10-27 02:36:06] очередь загружена · 6 монет из whitelist"
+    "[2026-10-27 02:36:06] очередь загружена · 6 монет из whitelist",
+    "[2026-10-27 02:37:38] очередь загружена · 6 монет из whitelist"
   ],
   "bars_source": "unknown",
   "note_ru": "Живой эфир v8: старт 1000 USDT, ордер 300$ ×3. Медл/средн/быстр · fast: крест+HTF, тейк≥2R, кулдаун 180 мин, макс 2 быстрых позиции. После стопа 90/180 мин (серия ×3 → блэклист 6 ч). Бары: unknown."
