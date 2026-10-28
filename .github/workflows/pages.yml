@@ -15,7 +15,8 @@ permissions:
 
 concurrency:
   group: pages-deploy
-  cancel-in-progress: true
+  # не рвём деплой каждым тиком — иначе сайт залипает на старом артефакте
+  cancel-in-progress: false
 
 jobs:
   deploy:

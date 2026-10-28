@@ -61,6 +61,14 @@ jobs:
           git commit -m "chore: live trading tick $(date -u +%Y-%m-%dT%H:%MZ)"
           git push origin HEAD:main
 
+      - name: Refresh GitHub Pages
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.EDGEBOT_TICK_TOKEN || github.token }}
+        run: |
+          # Pages path-фильтр иногда не успевает / отменяется — дергаем явно
+          gh workflow run "Deploy GitHub Pages" --ref main || true
+
       - name: Queue next tick (~1 min)
         if: success()
         env:

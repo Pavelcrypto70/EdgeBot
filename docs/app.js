@@ -1,21 +1,40 @@
-// Свежие тики читаем с raw main (не ждём деплой Pages каждые 10 мин)
+// Берём свежайшее из Pages (same-origin) и raw main — деплой Pages часто отстаёт от тиков
 const RAW_DATA =
   "https://raw.githubusercontent.com/Pavelcrypto70/EdgeBot/main/docs/data/";
+const JSDELIVR =
+  "https://cdn.jsdelivr.net/gh/Pavelcrypto70/EdgeBot@main/docs/data/";
 
 async function loadJsonUrl(url) {
   const res = await fetch(url + (url.includes("?") ? "&" : "?") + "t=" + Date.now(), {
     cache: "no-store",
+    mode: "cors",
   });
   if (!res.ok) throw new Error(url + " " + res.status);
   return res.json();
 }
 
-async function loadJson(name) {
-  try {
-    return await loadJsonUrl(RAW_DATA + name);
-  } catch {
-    return await loadJsonUrl("data/" + name);
+function _stamp(obj) {
+  if (!obj) return "";
+  if (Array.isArray(obj)) {
+    if (!obj.length) return "";
+    const last = obj[obj.length - 1] || {};
+    return String(last.ts || last.updated_at || last.run_id || "");
   }
+  return String(obj.updated_at || obj.ts || obj.run_id || "");
+}
+
+async function loadJson(name) {
+  const urls = ["data/" + name, RAW_DATA + name, JSDELIVR + name];
+  const settled = await Promise.allSettled(urls.map((u) => loadJsonUrl(u)));
+  const ok = settled
+    .filter((r) => r.status === "fulfilled")
+    .map((r) => r.value);
+  if (!ok.length) {
+    const err = settled.find((r) => r.status === "rejected");
+    throw err?.reason || new Error("no data " + name);
+  }
+  ok.sort((a, b) => _stamp(b).localeCompare(_stamp(a)));
+  return ok[0];
 }
 
 function chips(list, cls) {
