@@ -14,7 +14,7 @@ LEVERAGE = 3.0
 ORDER_MARGIN = ORDER_NOTIONAL / LEVERAGE  # 100
 START_BALANCE = 1000.0
 # bump при смене гейтов/стратегии/ордера → полная стату в ноль (1000$, 0 сделок)
-SETTINGS_REV = 9  # v9: live 5m/15m, мягче кресты, шире окно — видно сделки
+SETTINGS_REV = 10  # v10: live=proof 15m/60m, шире ATR, тейк≥2R, без demo COIN*
 SIGNAL_MODE_V = SETTINGS_REV
 
 
@@ -271,8 +271,8 @@ def _book_from_emu(emu: PaperEmulator) -> dict[str, Any]:
         "note_ru": (
             f"Живой эфир v{SETTINGS_REV}: старт {START_BALANCE:.0f} USDT, "
             f"ордер {ORDER_NOTIONAL:.0f}$ ×{int(LEVERAGE)}. "
-            "Входы на 5m (HTF 15m), мягкий крест EMA. "
-            "Кулдаун после стопа 90/180 мин. Бары: "
+            "Входы 15m/60m = proof EMA/ATR/TP (≥2R, ATR шире). "
+            "Кулдаун после стопа 120/240 мин. Бары: "
             f"{getattr(emu, 'last_bars_source', '?')}."
         ),
     }

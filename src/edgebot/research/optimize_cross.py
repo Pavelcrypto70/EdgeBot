@@ -13,8 +13,8 @@ from edgebot.strategies.ema_ma import StrategyParams, generate_signals
 CROSS_GRID = {
     "ema_fast": [12, 15, 20, 25, 30],
     "ema_slow": [40, 50, 60, 80, 100],
-    "atr_mult": [1.2, 1.5, 1.8],  # стоп = 1R, чуть шире шума 15m
-    "take_profit_r": [1.8, 2.0, 2.5],  # тейк дальше стопа
+    "atr_mult": [1.6, 1.8, 2.0],  # v10: шире стоп после live 77% stops
+    "take_profit_r": [2.0, 2.5],
     "min_htf_slope": [0.0, 0.0008],
 }
 

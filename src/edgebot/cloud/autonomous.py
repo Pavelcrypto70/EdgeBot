@@ -57,6 +57,11 @@ def _slim(row: dict[str, Any]) -> dict[str, Any]:
     out = {k: row.get(k) for k in keys if k in row}
     out["symbol"] = str(row.get("symbol") or "")
     out["whitelist"] = bool(row.get("whitelist"))
+    sym = out["symbol"].upper()
+    # demo-вселенная с Actions (COIN01…) в live не пускаем
+    if sym.startswith("COIN") and sym.endswith("USDT") and sym[4:-4].isdigit():
+        out["whitelist"] = False
+        return out
     bucket = str(out.get("bucket") or "").lower()
     strat = str(out.get("strategy") or "").lower()
     if bucket == "fast":

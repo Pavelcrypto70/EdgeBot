@@ -21,28 +21,28 @@ class StrategyParams:
 HEAVY_DEFAULT = StrategyParams(
     name="heavy",
     ema_fast=20,
-    ema_slow=80,
-    atr_mult=1.5,
-    take_profit_r=2.0,
-    min_htf_slope=0.0008,
+    ema_slow=60,
+    atr_mult=1.8,
+    take_profit_r=2.5,
+    min_htf_slope=0.0005,
     allow_short=True,
 )
 
 MEDIUM_DEFAULT = StrategyParams(
     name="medium",
-    ema_fast=12,
+    ema_fast=15,
     ema_slow=50,
-    atr_mult=1.5,
+    atr_mult=1.7,
     take_profit_r=2.0,
-    min_htf_slope=0.0005,
+    min_htf_slope=0.0003,
     allow_short=True,
 )
 
 FAST_DEFAULT = StrategyParams(
     name="fast",
-    ema_fast=8,
+    ema_fast=9,
     ema_slow=26,
-    atr_mult=1.3,
+    atr_mult=1.6,
     take_profit_r=2.0,
     min_htf_slope=0.0005,
     allow_short=True,

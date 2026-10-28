@@ -12,11 +12,11 @@ from edgebot.config import AppConfig, data_dir, load_config
 from edgebot.strategies.ema_ma import StrategyParams, generate_signals
 
 # после стопа не долбим ту же монету (минуты)
-COOLDOWN_AFTER_STOP_MIN = 90
-COOLDOWN_FAST_AFTER_STOP_MIN = 180  # fast: длиннее пауза
+COOLDOWN_AFTER_STOP_MIN = 120
+COOLDOWN_FAST_AFTER_STOP_MIN = 240  # fast: длиннее пауза
 # серия стопов подряд → длинный блэклист
 STREAK_STOPS_FOR_BLACKLIST = 3
-BLACKLIST_AFTER_STREAK_MIN = 360
+BLACKLIST_AFTER_STREAK_MIN = 480
 MAX_FAST_OPEN = 2  # не больше двух быстрых позиций сразу
 
 
@@ -49,25 +49,24 @@ class BotSpec:
     bucket: str = ""
 
     def params(self) -> StrategyParams:
-        """
-        Live-сигналы отдельно от пруфа: короткие EMA на 5m, иначе тишина часами.
-        Из WL берём только ATR/тейк и список монет.
-        """
+        """Live = те же EMA/ATR/TP/HTF, что прошли proof (15m/60m)."""
         bucket = (self.bucket or "").lower()
+        name = (self.strategy or "").lower()
         if bucket == "fast":
-            name, ema_fast, ema_slow = "fast", 8, 21
+            name = "fast"
         elif bucket == "medium":
-            name, ema_fast, ema_slow = "medium", 9, 21
-        else:
-            # heavy → как средние на live
-            name, ema_fast, ema_slow = "medium", 12, 26
+            name = name if name in {"medium", "cross"} else "medium"
+        elif bucket == "heavy":
+            name = name if name in {"heavy", "cross"} else "heavy"
+        elif name not in {"heavy", "medium", "fast", "cross"}:
+            name = "cross"
         return StrategyParams(
             name=name,
-            ema_fast=ema_fast,
-            ema_slow=ema_slow,
-            atr_mult=float(self.atr_mult or 1.5),
-            take_profit_r=max(float(self.take_profit_r or 2.0), 1.8),
-            min_htf_slope=0.0,
+            ema_fast=int(self.ema_fast),
+            ema_slow=int(self.ema_slow),
+            atr_mult=max(float(self.atr_mult or 1.8), 1.5),
+            take_profit_r=max(float(self.take_profit_r or 2.0), 2.0),
+            min_htf_slope=float(self.min_htf_slope or 0.0),
             allow_short=self.category == "linear",
         )
 
@@ -140,11 +139,11 @@ class PaperEmulator:
     default_leverage: float = 3.0  # плечо x3
     fee_rate: float = 0.00055
     max_positions: int = 10
-    bars_entry: int = 240
-    bars_htf: int = 160
-    # live быстрее пруфа: 5m вход / 15m HTF — иначе кресты раз в полдня
-    entry_tf: int = 5
-    htf: int = 15
+    bars_entry: int = 200
+    bars_htf: int = 120
+    # как в proof: 15m / 60m (5m давал шум → 77% стопов в live)
+    entry_tf: int = 15
+    htf: int = 60
 
     wallet: float = 1000.0
     realized_pnl: float = 0.0
@@ -520,9 +519,9 @@ class PaperEmulator:
         if not self.running:
             return self.snapshot()
         cfg = cfg or load_config()
-        # не перетираем live 5m/15m конфигом research (там обычно 15/60)
-        self.entry_tf = int(self.entry_tf or 5)
-        self.htf = int(self.htf or 15)
+        # держим 15m/60m в линии с proof
+        self.entry_tf = int(cfg.analytics.entry_tf or self.entry_tf or 15)
+        self.htf = int(cfg.analytics.htf or self.htf or 60)
         own = client is None
         client = client or BybitClient(timeout=12.0)
         self.ticks += 1
@@ -597,8 +596,13 @@ class PaperEmulator:
                 bucket = (bot.bucket or mode or "").lower()
                 if bucket == "fast" and self._fast_open_count() >= MAX_FAST_OPEN:
                     continue
-                # 5m бары: окно ~4 часа (иначе крест уезжает между тиками Actions)
-                lookback = 48
+                # 15m: узкое окно свежего креста (не догоняем старый сигнал)
+                if bucket == "fast":
+                    lookback = 3
+                elif bucket == "medium":
+                    lookback = 4
+                else:
+                    lookback = 5
                 if bot.symbol in self._dead_live:
                     self._demo_entries_skipped += 1
                     continue

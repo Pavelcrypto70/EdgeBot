@@ -127,5 +127,42 @@
       "cross",
       "proof"
     ]
+  },
+  {
+    "run_id": "20261028_083310",
+    "ts": "2026-10-28T08:33:10Z",
+    "whitelist_n": 4,
+    "whitelist_heavy_n": 4,
+    "whitelist_medium_n": 0,
+    "whitelist_fast_n": 0,
+    "added": [
+      "BTCUSDT",
+      "HYPEUSDT",
+      "SOXLUSDT"
+    ],
+    "removed": [
+      "AKEUSDT",
+      "BMTUSDT",
+      "MSTRUSDT",
+      "SNDKUSDT"
+    ],
+    "symbols_heavy": [
+      "BTCUSDT",
+      "HYPEUSDT",
+      "SOXLUSDT",
+      "ZECUSDT"
+    ],
+    "symbols_medium": [],
+    "symbols_fast": [],
+    "symbols": [
+      "BTCUSDT",
+      "HYPEUSDT",
+      "SOXLUSDT",
+      "ZECUSDT"
+    ],
+    "sources": [
+      "cross",
+      "proof"
+    ]
   }
 ]

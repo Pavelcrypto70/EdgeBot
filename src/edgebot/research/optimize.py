@@ -10,29 +10,27 @@ from edgebot.backtest.engine import simulate_signals, split_train_oos, summarize
 from edgebot.research.proof import ProofGates
 from edgebot.strategies.ema_ma import StrategyParams, generate_signals
 
-# Медленные (heavy): длинные EMA, широкий стоп, тейк 2–2.5R
+# v10 по live: 77% стопов → шире ATR, тейк только ≥2R, без ультракоротких стопов
 HEAVY_GRID = {
     "ema_fast": [15, 20, 25, 30],
-    "ema_slow": [50, 80, 100],
-    "atr_mult": [1.5, 1.8],
+    "ema_slow": [50, 60, 80, 100],
+    "atr_mult": [1.6, 1.8, 2.0],
     "take_profit_r": [2.0, 2.5],
-    "min_htf_slope": [0.0003, 0.0008],
+    "min_htf_slope": [0.0003, 0.0005, 0.0008],
 }
 
-# Средние: средние EMA, чистый крест, тейк ~2R
 MEDIUM_GRID = {
     "ema_fast": [10, 12, 15, 20],
     "ema_slow": [34, 50, 60],
-    "atr_mult": [1.3, 1.5, 1.8],
-    "take_profit_r": [1.8, 2.0, 2.5],
-    "min_htf_slope": [0.0, 0.0005],
+    "atr_mult": [1.5, 1.7, 1.9],
+    "take_profit_r": [2.0, 2.5],
+    "min_htf_slope": [0.0, 0.0003, 0.0005],
 }
 
-# Быстрые: короткие EMA, только крест (без спама pullback), тейк ≥2R
 FAST_GRID = {
-    "ema_fast": [5, 8, 9, 12],
-    "ema_slow": [21, 26, 34],
-    "atr_mult": [1.2, 1.5],
+    "ema_fast": [8, 9, 12],
+    "ema_slow": [26, 34],
+    "atr_mult": [1.4, 1.6, 1.8],
     "take_profit_r": [2.0, 2.5],
     "min_htf_slope": [0.0003, 0.0005],
 }
@@ -42,8 +40,8 @@ def _param_grid(bucket: str = "heavy") -> list[StrategyParams]:
     b = (bucket or "heavy").lower()
     if b == "fast":
         grid = FAST_GRID
-        styles = ("fast",)  # безопасный fast = короткие EMA + крест+HTF
-        min_gap = 10
+        styles = ("fast",)
+        min_gap = 12
     elif b == "medium":
         grid = MEDIUM_GRID
         styles = ("medium", "cross")
@@ -77,18 +75,20 @@ def _score(all_m: dict[str, Any], oos_m: dict[str, Any], gates: ProofGates, tp_r
     oos_exp = float(oos_m.get("expectancy_r", 0) or 0)
     if n < gates.min_trades:
         return -999.0
-    rr_bonus = max(0.0, tp_r - 1.5) * 10.0
+    rr_bonus = max(0.0, tp_r - 1.8) * 12.0
     sc = (
-        wr * 40.0
-        + min(exp, 1.5) * 45.0
-        + min(pf, 4.0) * 8.0
+        wr * 45.0
+        + min(exp, 1.5) * 50.0
+        + min(pf, 4.0) * 10.0
         + rr_bonus
         + min(n, 40) * 0.05
     )
     if oos_n >= gates.min_oos_trades:
-        sc += oos_wr * 15.0 + min(oos_exp, 1.5) * 20.0
+        sc += oos_wr * 18.0 + min(oos_exp, 1.5) * 22.0
         if oos_exp >= gates.oos_min_expectancy_r and oos_wr >= gates.oos_target_winrate:
             sc += 10.0
+        if oos_exp < 0:
+            sc -= 25.0
     else:
         sc -= 25.0
     if wr < gates.target_winrate or exp < gates.min_expectancy_r or pf < gates.min_profit_factor:

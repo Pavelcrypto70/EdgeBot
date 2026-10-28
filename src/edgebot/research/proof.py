@@ -12,13 +12,13 @@ class ProofGates:
     """
 
     min_trades: int = 8
-    target_winrate: float = 0.50  # ≥ 50% (с тейком 2R этого достаточно)
-    min_expectancy_r: float = 0.08  # средний плюс в R
-    min_profit_factor: float = 1.25
+    target_winrate: float = 0.50  # ≥ 50% при тейке ≥2R
+    min_expectancy_r: float = 0.10  # после live −12$ поднимаем планку
+    min_profit_factor: float = 1.30
     min_oos_trades: int = 3
-    oos_target_winrate: float = 0.48
+    oos_target_winrate: float = 0.45
     oos_min_expectancy_r: float = 0.0
-    min_take_profit_r: float = 1.8  # не пускаем почти 1:1
+    min_take_profit_r: float = 2.0  # v10: без 1.8R
 
 
 def _gates_for_bucket(bucket: str, base: ProofGates | None = None) -> ProofGates:
@@ -45,7 +45,7 @@ def _gates_for_bucket(bucket: str, base: ProofGates | None = None) -> ProofGates
             min_oos_trades=g.min_oos_trades,
             oos_target_winrate=g.oos_target_winrate,
             oos_min_expectancy_r=g.oos_min_expectancy_r,
-            min_take_profit_r=max(g.min_take_profit_r, 1.8),
+            min_take_profit_r=max(g.min_take_profit_r, 2.0),
         )
     return g
 
