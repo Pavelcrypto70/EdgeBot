@@ -1,14 +1,14 @@
 {
-  "updated_at": "2026-10-29T00:54:06Z",
+  "updated_at": "2026-10-29T00:55:51Z",
   "status": "ok",
   "settings_rev": 10,
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 982.64,
-  "realized_pnl": -8.2,
-  "unrealized_pnl": -8.0,
+  "equity_usdt": 983.52,
+  "realized_pnl": -11.68,
+  "unrealized_pnl": -3.65,
   "winrate_pct": 0.0,
-  "closed_n": 4,
-  "open_n": 3,
+  "closed_n": 5,
+  "open_n": 2,
   "order": {
     "notional_usdt": 300.0,
     "leverage": 3.0,
@@ -16,30 +16,15 @@
   },
   "open_positions": [
     {
-      "symbol": "HYPEUSDT",
-      "side": "ЛОНГ",
-      "side_raw": "long",
-      "size": 3.701647,
-      "value": 297.14,
-      "entry": 81.045,
-      "mark": 80.273,
-      "pnl": -2.86,
-      "pnl_pct": -2.86,
-      "lev": "x3",
-      "margin": 100.0,
-      "stop": 80.14988571428572,
-      "take": 82.83522857142856
-    },
-    {
       "symbol": "SOXLUSDT",
       "side": "ШОРТ",
       "side_raw": "short",
       "size": 2.973241,
-      "value": 303.09,
+      "value": 301.61,
       "entry": 100.9,
-      "mark": 101.94,
-      "pnl": -3.09,
-      "pnl_pct": -3.09,
+      "mark": 101.44,
+      "pnl": -1.61,
+      "pnl_pct": -1.61,
       "lev": "x3",
       "margin": 100.0,
       "stop": 105.11,
@@ -52,7 +37,7 @@
       "size": 0.22919,
       "value": 297.95,
       "entry": 1308.96,
-      "mark": 1300.01,
+      "mark": 1300.03,
       "pnl": -2.05,
       "pnl_pct": -2.05,
       "lev": "x3",
@@ -62,6 +47,14 @@
     }
   ],
   "closed_trades": [
+    {
+      "symbol": "HYPEUSDT",
+      "side": "ЛОНГ",
+      "pnl": -3.48,
+      "reason": "стоп",
+      "when": "2026-10-29 00:55:49",
+      "win": false
+    },
     {
       "symbol": "BTCUSDT",
       "side": "ЛОНГ",
@@ -97,15 +90,6 @@
   ],
   "by_symbol": [
     {
-      "symbol": "HYPEUSDT",
-      "trades": 1,
-      "winrate_pct": 0.0,
-      "pnl": -2.19,
-      "ema": "25/40",
-      "strategy": "cross",
-      "bucket": "heavy"
-    },
-    {
       "symbol": "ZECUSDT",
       "trades": 1,
       "winrate_pct": 0.0,
@@ -122,12 +106,18 @@
       "ema": "25/100",
       "strategy": "cross",
       "bucket": "heavy"
+    },
+    {
+      "symbol": "HYPEUSDT",
+      "trades": 2,
+      "winrate_pct": 0.0,
+      "pnl": -5.67,
+      "ema": "25/40",
+      "strategy": "cross",
+      "bucket": "heavy"
     }
   ],
   "logs": [
-    "[2026-10-28 23:09:53] пульс · капитал 984.57 USDT · открыто 3 · очередь 4 · ждём крест EMA · src okx",
-    "[2026-10-28 23:11:34] очередь загружена · 4 монет из whitelist",
-    "[2026-10-28 23:13:08] очередь загружена · 4 монет из whitelist",
     "[2026-10-28 23:14:40] очередь загружена · 4 монет из whitelist",
     "[2026-10-28 23:16:07] очередь загружена · 4 монет из whitelist",
     "[2026-10-28 23:17:41] очередь загружена · 4 монет из whitelist",
@@ -204,7 +194,10 @@
     "[2026-10-29 00:50:54] очередь загружена · 4 монет из whitelist",
     "[2026-10-29 00:52:29] очередь загружена · 4 монет из whitelist",
     "[2026-10-29 00:52:32] пульс · капитал 983.27 USDT · открыто 3 · очередь 4 · ждём крест EMA · src okx",
-    "[2026-10-29 00:54:04] очередь загружена · 4 монет из whitelist"
+    "[2026-10-29 00:54:04] очередь загружена · 4 монет из whitelist",
+    "[2026-10-29 00:55:49] очередь загружена · 4 монет из whitelist",
+    "[2026-10-29 00:55:49] пауза HYPEUSDT · 120 мин · стоп",
+    "[2026-10-29 00:55:49] СТОП ЛОНГ HYPEUSDT @ 80.1499 результат -3.48 USDT"
   ],
   "bars_source": "okx",
   "note_ru": "Живой эфир v10: старт 1000 USDT, ордер 300$ ×3. Входы 15m/60m = proof EMA/ATR/TP (≥2R, ATR шире). Кулдаун после стопа 120/240 мин. Бары: okx."
