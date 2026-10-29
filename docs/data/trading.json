@@ -1,14 +1,14 @@
 {
-  "updated_at": "2026-10-29T01:08:45Z",
+  "updated_at": "2026-10-29T01:10:09Z",
   "status": "ok",
   "settings_rev": 10,
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 982.1,
-  "realized_pnl": -11.68,
-  "unrealized_pnl": -5.07,
+  "equity_usdt": 982.29,
+  "realized_pnl": -15.7,
+  "unrealized_pnl": -0.86,
   "winrate_pct": 0.0,
-  "closed_n": 5,
-  "open_n": 2,
+  "closed_n": 6,
+  "open_n": 1,
   "order": {
     "notional_usdt": 300.0,
     "leverage": 3.0,
@@ -20,33 +20,26 @@
       "side": "ШОРТ",
       "side_raw": "short",
       "size": 2.973241,
-      "value": 301.64,
+      "value": 300.86,
       "entry": 100.9,
-      "mark": 101.45,
-      "pnl": -1.64,
-      "pnl_pct": -1.64,
+      "mark": 101.19,
+      "pnl": -0.86,
+      "pnl_pct": -0.86,
       "lev": "x3",
       "margin": 100.0,
       "stop": 105.11,
       "take": 92.48
-    },
-    {
-      "symbol": "ZECUSDT",
-      "side": "ЛОНГ",
-      "side_raw": "long",
-      "size": 0.22919,
-      "value": 296.56,
-      "entry": 1308.96,
-      "mark": 1293.97,
-      "pnl": -3.44,
-      "pnl_pct": -3.44,
-      "lev": "x3",
-      "margin": 100.0,
-      "stop": 1292.128,
-      "take": 1351.0400000000002
     }
   ],
   "closed_trades": [
+    {
+      "symbol": "ZECUSDT",
+      "side": "ЛОНГ",
+      "pnl": -4.02,
+      "reason": "стоп",
+      "when": "2026-10-29 01:10:08",
+      "win": false
+    },
     {
       "symbol": "HYPEUSDT",
       "side": "ЛОНГ",
@@ -90,15 +83,6 @@
   ],
   "by_symbol": [
     {
-      "symbol": "ZECUSDT",
-      "trades": 1,
-      "winrate_pct": 0.0,
-      "pnl": -2.89,
-      "ema": "30/50",
-      "strategy": "cross",
-      "bucket": "heavy"
-    },
-    {
       "symbol": "BTCUSDT",
       "trades": 2,
       "winrate_pct": 0.0,
@@ -115,12 +99,18 @@
       "ema": "25/40",
       "strategy": "cross",
       "bucket": "heavy"
+    },
+    {
+      "symbol": "ZECUSDT",
+      "trades": 2,
+      "winrate_pct": 0.0,
+      "pnl": -6.91,
+      "ema": "30/50",
+      "strategy": "cross",
+      "bucket": "heavy"
     }
   ],
   "logs": [
-    "[2026-10-28 23:27:02] очередь загружена · 4 монет из whitelist",
-    "[2026-10-28 23:28:29] очередь загружена · 4 монет из whitelist",
-    "[2026-10-28 23:29:59] очередь загружена · 4 монет из whitelist",
     "[2026-10-28 23:31:34] очередь загружена · 4 монет из whitelist",
     "[2026-10-28 23:32:59] очередь загружена · 4 монет из whitelist",
     "[2026-10-28 23:33:02] пульс · капитал 990.37 USDT · открыто 3 · очередь 4 · ждём крест EMA · src okx",
@@ -197,7 +187,10 @@
     "[2026-10-29 01:05:36] очередь загружена · 4 монет из whitelist",
     "[2026-10-29 01:07:04] очередь загружена · 4 монет из whitelist",
     "[2026-10-29 01:08:43] очередь загружена · 4 монет из whitelist",
-    "[2026-10-29 01:08:45] пульс · капитал 982.10 USDT · открыто 2 · очередь 4 · ждём крест EMA · src okx"
+    "[2026-10-29 01:08:45] пульс · капитал 982.10 USDT · открыто 2 · очередь 4 · ждём крест EMA · src okx",
+    "[2026-10-29 01:10:07] очередь загружена · 4 монет из whitelist",
+    "[2026-10-29 01:10:08] пауза ZECUSDT · 120 мин · стоп",
+    "[2026-10-29 01:10:08] СТОП ЛОНГ ZECUSDT @ 1292.13 результат -4.02 USDT"
   ],
   "bars_source": "okx",
   "note_ru": "Живой эфир v10: старт 1000 USDT, ордер 300$ ×3. Входы 15m/60m = proof EMA/ATR/TP (≥2R, ATR шире). Кулдаун после стопа 120/240 мин. Бары: okx."
