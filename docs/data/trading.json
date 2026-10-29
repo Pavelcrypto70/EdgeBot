@@ -1,14 +1,14 @@
 {
-  "updated_at": "2026-10-29T12:44:41Z",
+  "updated_at": "2026-10-29T12:46:11Z",
   "status": "ok",
   "settings_rev": 10,
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 993.49,
-  "realized_pnl": -14.09,
-  "unrealized_pnl": 9.39,
-  "winrate_pct": 11.1,
-  "closed_n": 9,
-  "open_n": 2,
+  "equity_usdt": 994.15,
+  "realized_pnl": -6.98,
+  "unrealized_pnl": 2.94,
+  "winrate_pct": 20.0,
+  "closed_n": 10,
+  "open_n": 1,
   "order": {
     "notional_usdt": 300.0,
     "leverage": 3.0,
@@ -20,33 +20,26 @@
       "side": "ШОРТ",
       "side_raw": "short",
       "size": 2.973241,
-      "value": 296.76,
+      "value": 297.06,
       "entry": 100.9,
-      "mark": 99.81,
-      "pnl": 3.24,
-      "pnl_pct": 3.24,
+      "mark": 99.91,
+      "pnl": 2.94,
+      "pnl_pct": 2.94,
       "lev": "x3",
       "margin": 100.0,
       "stop": 105.11,
       "take": 92.48
-    },
-    {
-      "symbol": "HYPEUSDT",
-      "side": "ЛОНГ",
-      "side_raw": "long",
-      "size": 3.448712,
-      "value": 306.15,
-      "entry": 86.989,
-      "mark": 88.773,
-      "pnl": 6.15,
-      "pnl_pct": 6.15,
-      "lev": "x3",
-      "margin": 100.0,
-      "stop": 85.93394285714287,
-      "take": 89.0991142857143
     }
   ],
   "closed_trades": [
+    {
+      "symbol": "HYPEUSDT",
+      "side": "ЛОНГ",
+      "pnl": 7.11,
+      "reason": "тейк",
+      "when": "2026-10-29 12:46:11",
+      "win": true
+    },
     {
       "symbol": "HYPEUSDT",
       "side": "ЛОНГ",
@@ -123,9 +116,9 @@
   "by_symbol": [
     {
       "symbol": "HYPEUSDT",
-      "trades": 3,
-      "winrate_pct": 33.3,
-      "pnl": 1.65,
+      "trades": 4,
+      "winrate_pct": 50.0,
+      "pnl": 8.76,
       "ema": "25/40",
       "strategy": "cross",
       "bucket": "heavy"
@@ -150,8 +143,6 @@
     }
   ],
   "logs": [
-    "[2026-10-29 11:07:31] очередь загружена · 4 монет из whitelist",
-    "[2026-10-29 11:07:33] пульс · капитал 983.15 USDT · открыто 2 · очередь 4 · ждём крест EMA · src unknown",
     "[2026-10-29 11:09:05] очередь загружена · 4 монет из whitelist",
     "[2026-10-29 11:10:37] очередь загружена · 4 монет из whitelist",
     "[2026-10-29 11:12:10] очередь загружена · 4 монет из whitelist",
@@ -229,8 +220,10 @@
     "[2026-10-29 12:40:08] пульс · капитал 994.50 USDT · открыто 2 · очередь 4 · ждём крест EMA · src unknown",
     "[2026-10-29 12:41:33] очередь загружена · 4 монет из whitelist",
     "[2026-10-29 12:43:06] очередь загружена · 4 монет из whitelist",
-    "[2026-10-29 12:44:40] очередь загружена · 4 монет из whitelist"
+    "[2026-10-29 12:44:40] очередь загружена · 4 монет из whitelist",
+    "[2026-10-29 12:46:10] очередь загружена · 4 монет из whitelist",
+    "[2026-10-29 12:46:11] ТЕЙК ЛОНГ HYPEUSDT @ 89.0991 результат +7.11 USDT"
   ],
-  "bars_source": "unknown",
-  "note_ru": "Живой эфир v10: старт 1000 USDT, ордер 300$ ×3. Входы 15m/60m = proof EMA/ATR/TP (≥2R, ATR шире). Кулдаун после стопа 120/240 мин. Бары: unknown."
+  "bars_source": "okx",
+  "note_ru": "Живой эфир v10: старт 1000 USDT, ордер 300$ ×3. Входы 15m/60m = proof EMA/ATR/TP (≥2R, ATR шире). Кулдаун после стопа 120/240 мин. Бары: okx."
 }
