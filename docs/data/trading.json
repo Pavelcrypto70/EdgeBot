@@ -1,37 +1,29 @@
 {
-  "updated_at": "2026-10-30T14:19:48Z",
+  "updated_at": "2026-10-30T15:00:11Z",
   "status": "ok",
   "settings_rev": 10,
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 946.93,
-  "realized_pnl": -49.18,
-  "unrealized_pnl": -1.08,
-  "winrate_pct": 12.5,
-  "closed_n": 16,
-  "open_n": 1,
+  "equity_usdt": 942.94,
+  "realized_pnl": -54.25,
+  "unrealized_pnl": 0,
+  "winrate_pct": 11.8,
+  "closed_n": 17,
+  "open_n": 0,
   "order": {
     "notional_usdt": 300.0,
     "leverage": 3.0,
     "margin_usdt": 100.0
   },
-  "open_positions": [
+  "open_positions": [],
+  "closed_trades": [
     {
       "symbol": "HYPEUSDT",
       "side": "ШОРТ",
-      "side_raw": "short",
-      "size": 3.305057,
-      "value": 301.08,
-      "entry": 90.77,
-      "mark": 91.096,
-      "pnl": -1.08,
-      "pnl_pct": -1.08,
-      "lev": "x3",
-      "margin": 100.0,
-      "stop": 92.25332857142857,
-      "take": 87.80334285714285
-    }
-  ],
-  "closed_trades": [
+      "pnl": -5.07,
+      "reason": "стоп",
+      "when": "2026-10-30 15:00:10",
+      "win": false
+    },
     {
       "symbol": "ZECUSDT",
       "side": "ШОРТ",
@@ -164,9 +156,9 @@
   "by_symbol": [
     {
       "symbol": "HYPEUSDT",
-      "trades": 5,
-      "winrate_pct": 40.0,
-      "pnl": 1.51,
+      "trades": 6,
+      "winrate_pct": 33.3,
+      "pnl": -3.56,
       "ema": "25/40",
       "strategy": "cross",
       "bucket": "heavy"
@@ -200,9 +192,6 @@
     }
   ],
   "logs": [
-    "[2026-10-30 12:06:46] очередь загружена · 4 монет из whitelist",
-    "[2026-10-30 12:08:23] очередь загружена · 4 монет из whitelist",
-    "[2026-10-30 12:10:02] очередь загружена · 4 монет из whitelist",
     "[2026-10-30 12:10:05] пульс · капитал 948.18 USDT · открыто 0 · очередь 4 · ждём крест EMA · src okx",
     "[2026-10-30 12:11:39] очередь загружена · 4 монет из whitelist",
     "[2026-10-30 12:13:13] очередь загружена · 4 монет из whitelist",
@@ -279,7 +268,10 @@
     "[2026-10-30 14:16:33] очередь загружена · 4 монет из whitelist",
     "[2026-10-30 14:16:36] пульс · капитал 947.65 USDT · открыто 1 · очередь 4 · ждём крест EMA · src okx",
     "[2026-10-30 14:18:09] очередь загружена · 4 монет из whitelist",
-    "[2026-10-30 14:19:45] очередь загружена · 4 монет из whitelist"
+    "[2026-10-30 14:19:45] очередь загружена · 4 монет из whitelist",
+    "[2026-10-30 15:00:09] очередь загружена · 4 монет из whitelist",
+    "[2026-10-30 15:00:10] пауза HYPEUSDT · 120 мин · стоп",
+    "[2026-10-30 15:00:10] СТОП ШОРТ HYPEUSDT @ 92.2533 результат -5.07 USDT"
   ],
   "bars_source": "okx",
   "note_ru": "Живой эфир v10: старт 1000 USDT, ордер 300$ ×3. Входы 15m/60m = proof EMA/ATR/TP (≥2R, ATR шире). Кулдаун после стопа 120/240 мин. Бары: okx."
