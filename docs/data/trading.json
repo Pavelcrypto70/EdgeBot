@@ -1,37 +1,29 @@
 {
-  "updated_at": "2026-11-01T22:58:59Z",
+  "updated_at": "2026-11-01T23:00:33Z",
   "status": "ok",
   "settings_rev": 10,
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 936.97,
-  "realized_pnl": -58.06,
-  "unrealized_pnl": -0.34,
-  "winrate_pct": 14.8,
-  "closed_n": 27,
-  "open_n": 1,
+  "equity_usdt": 934.8,
+  "realized_pnl": -60.58,
+  "unrealized_pnl": 0,
+  "winrate_pct": 14.3,
+  "closed_n": 28,
+  "open_n": 0,
   "order": {
     "notional_usdt": 300.0,
     "leverage": 3.0,
     "margin_usdt": 100.0
   },
-  "open_positions": [
+  "open_positions": [],
+  "closed_trades": [
     {
       "symbol": "SOXLUSDT",
       "side": "ЛОНГ",
-      "side_raw": "long",
-      "size": 3.817765,
-      "value": 299.66,
-      "entry": 78.58,
-      "mark": 78.49,
-      "pnl": -0.34,
-      "pnl_pct": -0.34,
-      "lev": "x3",
-      "margin": 100.0,
-      "stop": 77.96285714285715,
-      "take": 79.81428571428572
-    }
-  ],
-  "closed_trades": [
+      "pnl": -2.52,
+      "reason": "стоп",
+      "when": "2026-11-01 23:00:32",
+      "win": false
+    },
     {
       "symbol": "SOXLUSDT",
       "side": "ШОРТ",
@@ -270,9 +262,9 @@
     },
     {
       "symbol": "SOXLUSDT",
-      "trades": 4,
-      "winrate_pct": 25.0,
-      "pnl": -20.39,
+      "trades": 5,
+      "winrate_pct": 20.0,
+      "pnl": -22.91,
       "ema": "12/80",
       "strategy": "cross",
       "bucket": "heavy"
@@ -288,9 +280,6 @@
     }
   ],
   "logs": [
-    "[2026-11-01 21:19:02] очередь загружена · 4 монет из whitelist",
-    "[2026-11-01 21:20:39] очередь загружена · 4 монет из whitelist",
-    "[2026-11-01 21:20:40] пульс · капитал 937.48 USDT · открыто 0 · очередь 4 · ждём крест EMA · src okx",
     "[2026-11-01 21:22:17] очередь загружена · 4 монет из whitelist",
     "[2026-11-01 21:23:45] очередь загружена · 4 монет из whitelist",
     "[2026-11-01 21:25:13] очередь загружена · 4 монет из whitelist",
@@ -367,7 +356,10 @@
     "[2026-11-01 22:54:21] пульс · капитал 937.32 USDT · открыто 1 · очередь 4 · ждём крест EMA · src okx",
     "[2026-11-01 22:55:53] очередь загружена · 4 монет из whitelist",
     "[2026-11-01 22:57:20] очередь загружена · 4 монет из whitelist",
-    "[2026-11-01 22:58:57] очередь загружена · 4 монет из whitelist"
+    "[2026-11-01 22:58:57] очередь загружена · 4 монет из whitelist",
+    "[2026-11-01 23:00:31] очередь загружена · 4 монет из whitelist",
+    "[2026-11-01 23:00:32] пауза SOXLUSDT · 120 мин · стоп",
+    "[2026-11-01 23:00:32] СТОП ЛОНГ SOXLUSDT @ 77.9629 результат -2.52 USDT"
   ],
   "bars_source": "okx",
   "note_ru": "Живой эфир v10: старт 1000 USDT, ордер 300$ ×3. Входы 15m/60m = proof EMA/ATR/TP (≥2R, ATR шире). Кулдаун после стопа 120/240 мин. Бары: okx."
