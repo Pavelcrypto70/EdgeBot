@@ -164,5 +164,28 @@
       "cross",
       "proof"
     ]
+  },
+  {
+    "run_id": "20261102_235947",
+    "ts": "2026-11-02T23:59:47Z",
+    "whitelist_n": 0,
+    "whitelist_heavy_n": 0,
+    "whitelist_medium_n": 0,
+    "whitelist_fast_n": 0,
+    "added": [],
+    "removed": [
+      "BTCUSDT",
+      "HYPEUSDT",
+      "SOXLUSDT",
+      "ZECUSDT"
+    ],
+    "symbols_heavy": [],
+    "symbols_medium": [],
+    "symbols_fast": [],
+    "symbols": [],
+    "sources": [
+      "cross",
+      "proof"
+    ]
   }
 ]
