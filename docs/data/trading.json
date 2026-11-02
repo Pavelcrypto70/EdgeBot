@@ -1,14 +1,14 @@
 {
-  "updated_at": "2026-11-02T13:36:26Z",
+  "updated_at": "2026-11-02T13:37:55Z",
   "status": "ok",
   "settings_rev": 10,
   "balance_start_usdt": 1000.0,
-  "equity_usdt": 927.72,
-  "realized_pnl": -64.23,
-  "unrealized_pnl": -2.77,
-  "winrate_pct": 13.3,
-  "closed_n": 30,
-  "open_n": 2,
+  "equity_usdt": 927.09,
+  "realized_pnl": -70.42,
+  "unrealized_pnl": 2.79,
+  "winrate_pct": 12.9,
+  "closed_n": 31,
+  "open_n": 1,
   "order": {
     "notional_usdt": 300.0,
     "leverage": 3.0,
@@ -20,33 +20,26 @@
       "side": "ЛОНГ",
       "side_raw": "long",
       "size": 0.240058,
-      "value": 298.94,
+      "value": 302.79,
       "entry": 1249.7,
-      "mark": 1245.28,
-      "pnl": -1.06,
-      "pnl_pct": -1.06,
+      "mark": 1261.33,
+      "pnl": 2.79,
+      "pnl_pct": 2.79,
       "lev": "x3",
       "margin": 100.0,
       "stop": 1233.6725714285715,
       "take": 1289.7685714285715
-    },
-    {
-      "symbol": "SOXLUSDT",
-      "side": "ШОРТ",
-      "side_raw": "short",
-      "size": 3.798911,
-      "value": 301.71,
-      "entry": 78.97,
-      "mark": 79.42,
-      "pnl": -1.71,
-      "pnl_pct": -1.71,
-      "lev": "x3",
-      "margin": 100.0,
-      "stop": 80.55571428571429,
-      "take": 75.79857142857144
     }
   ],
   "closed_trades": [
+    {
+      "symbol": "SOXLUSDT",
+      "side": "ШОРТ",
+      "pnl": -6.19,
+      "reason": "стоп",
+      "when": "2026-11-02 13:37:55",
+      "win": false
+    },
     {
       "symbol": "BTCUSDT",
       "side": "ШОРТ",
@@ -308,15 +301,6 @@
       "bucket": "heavy"
     },
     {
-      "symbol": "SOXLUSDT",
-      "trades": 5,
-      "winrate_pct": 20.0,
-      "pnl": -22.91,
-      "ema": "12/80",
-      "strategy": "cross",
-      "bucket": "heavy"
-    },
-    {
       "symbol": "ZECUSDT",
       "trades": 6,
       "winrate_pct": 0.0,
@@ -324,12 +308,18 @@
       "ema": "30/50",
       "strategy": "cross",
       "bucket": "heavy"
+    },
+    {
+      "symbol": "SOXLUSDT",
+      "trades": 6,
+      "winrate_pct": 16.7,
+      "pnl": -29.1,
+      "ema": "12/80",
+      "strategy": "cross",
+      "bucket": "heavy"
     }
   ],
   "logs": [
-    "[2026-11-02 11:53:53] пульс · капитал 931.91 USDT · открыто 2 · очередь 4 · ждём крест EMA · src okx",
-    "[2026-11-02 11:55:33] очередь загружена · 4 монет из whitelist",
-    "[2026-11-02 11:57:11] очередь загружена · 4 монет из whitelist",
     "[2026-11-02 11:58:45] очередь загружена · 4 монет из whitelist",
     "[2026-11-02 12:00:21] очередь загружена · 4 монет из whitelist",
     "[2026-11-02 12:01:56] очередь загружена · 4 монет из whitelist",
@@ -406,7 +396,10 @@
     "[2026-11-02 13:31:35] пульс · капитал 929.61 USDT · открыто 2 · очередь 4 · ждём крест EMA · src okx",
     "[2026-11-02 13:33:07] очередь загружена · 4 монет из whitelist",
     "[2026-11-02 13:34:45] очередь загружена · 4 монет из whitelist",
-    "[2026-11-02 13:36:25] очередь загружена · 4 монет из whitelist"
+    "[2026-11-02 13:36:25] очередь загружена · 4 монет из whitelist",
+    "[2026-11-02 13:37:53] очередь загружена · 4 монет из whitelist",
+    "[2026-11-02 13:37:55] пауза SOXLUSDT · 480 мин · серия стопов ×3",
+    "[2026-11-02 13:37:55] СТОП ШОРТ SOXLUSDT @ 80.5557 результат -6.19 USDT"
   ],
   "bars_source": "okx",
   "note_ru": "Живой эфир v10: старт 1000 USDT, ордер 300$ ×3. Входы 15m/60m = proof EMA/ATR/TP (≥2R, ATR шире). Кулдаун после стопа 120/240 мин. Бары: okx."
