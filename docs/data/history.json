@@ -223,5 +223,23 @@
       "cross",
       "proof"
     ]
+  },
+  {
+    "run_id": "20261105_163659",
+    "ts": "2026-11-05T16:36:59Z",
+    "whitelist_n": 0,
+    "whitelist_heavy_n": 0,
+    "whitelist_medium_n": 0,
+    "whitelist_fast_n": 0,
+    "added": [],
+    "removed": [],
+    "symbols_heavy": [],
+    "symbols_medium": [],
+    "symbols_fast": [],
+    "symbols": [],
+    "sources": [
+      "cross",
+      "proof"
+    ]
   }
 ]
