@@ -1,0 +1,23 @@
+{
+  "run_id": "20261109_185759",
+  "ts": "2026-11-09T18:57:59Z",
+  "sources": [
+    "cross",
+    "proof"
+  ],
+  "researched": 25,
+  "whitelist_n": 0,
+  "whitelist_heavy_n": 0,
+  "whitelist_medium_n": 0,
+  "whitelist_fast_n": 0,
+  "added": [],
+  "removed": [],
+  "whitelist": [],
+  "order": {
+    "margin_usdt": 100,
+    "leverage": 3,
+    "notional_usdt": 300
+  },
+  "balance_start_usdt": 1000,
+  "note_ru": "Три режима: медленные (heavy), средние (medium), быстрые (fast). Fast = короткий крест + HTF, тейк ≥2R, жёсткий кулдаун."
+}
